@@ -2,7 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Components
+use Orisai\OpenAPI\Utils\SpecUtils;
+
+final class Components implements SpecObject
 {
 
 	/** @var array<string, Schema|Reference> */
@@ -34,5 +36,21 @@ final class Components
 
 	/** @var array<string, PathItem|Reference> */
 	public array $pathItems;
+
+	public function toArray(): array
+	{
+		return [
+			'schemas' => SpecUtils::specsToArray($this->schemas),
+			'responses' => SpecUtils::specsToArray($this->responses),
+			'parameters' => SpecUtils::specsToArray($this->parameters),
+			'examples' => SpecUtils::specsToArray($this->examples),
+			'requestBodies' => SpecUtils::specsToArray($this->requestBodies),
+			'headers' => SpecUtils::specsToArray($this->headers),
+			'securitySchemes' => SpecUtils::specsToArray($this->securitySchemes),
+			'links' => SpecUtils::specsToArray($this->links),
+			'callbacks' => SpecUtils::specsToArray($this->callbacks),
+			'pathItems' => SpecUtils::specsToArray($this->pathItems),
+		];
+	}
 
 }

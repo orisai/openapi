@@ -2,7 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class PathItem
+use Orisai\OpenAPI\Utils\SpecUtils;
+
+final class PathItem implements SpecObject
 {
 
 	public ?string $ref;
@@ -32,5 +34,23 @@ final class PathItem
 
 	/** @var list<Parameter|Reference>  */
 	public array $parameters;
+
+	public function toArray(): array
+	{
+		return [
+			'$ref' => $this->ref,
+			'summary' => $this->summary,
+			'get' => $this->get !== null ? $this->get->toArray() : null,
+			'put' => $this->put !== null ? $this->put->toArray() : null,
+			'post' => $this->post !== null ? $this->post->toArray() : null,
+			'delete' => $this->delete !== null ? $this->delete->toArray() : null,
+			'options' => $this->options !== null ? $this->options->toArray() : null,
+			'head' => $this->head !== null ? $this->head->toArray() : null,
+			'patch' => $this->patch !== null ? $this->patch->toArray() : null,
+			'trace' => $this->trace !== null ? $this->trace->toArray() : null,
+			'servers' => SpecUtils::specsToArray($this->servers),
+			'parameters' => SpecUtils::specsToArray($this->parameters),
+		];
+	}
 
 }

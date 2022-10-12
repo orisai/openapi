@@ -2,7 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Encoding
+use Orisai\OpenAPI\Utils\SpecUtils;
+
+final class Encoding implements SpecObject
 {
 
 	public ?string $contentType;
@@ -15,5 +17,16 @@ final class Encoding
 	public bool $explode;
 
 	public bool $allowReserved;
+
+	public function toArray(): array
+	{
+		return [
+			'contentType' => $this->contentType,
+			'headers' => SpecUtils::specsToArray($this->headers),
+			'style' => $this->style,
+			'explode' => $this->explode,
+			'allowReserved' => $this->allowReserved,
+		];
+	}
 
 }

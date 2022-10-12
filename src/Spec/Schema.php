@@ -2,7 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Schema
+final class Schema implements SpecObject
 {
 
 	public ?Discriminator $discriminator;
@@ -13,5 +13,15 @@ final class Schema
 
 	/** @var mixed */
 	public $example;
+
+	public function toArray(): array
+	{
+		return [
+			'discriminator' => $this->discriminator !== null ? $this->discriminator->toArray() : null,
+			'xml' => $this->xml !== null ? $this->xml->toArray() : null,
+			'externalDocs' => $this->externalDocs !== null ? $this->externalDocs->toArray() : null,
+			'example' => $this->example,
+		];
+	}
 
 }

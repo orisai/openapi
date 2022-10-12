@@ -2,7 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Response
+use Orisai\OpenAPI\Utils\SpecUtils;
+
+final class Response implements SpecObject
 {
 
 	public string $description;
@@ -15,5 +17,15 @@ final class Response
 
 	/** @var array<string, Link|Reference> */
 	public array $links;
+
+	public function toArray(): array
+	{
+		return [
+			'description' => $this->description,
+			'headers' => SpecUtils::specsToArray($this->headers),
+			'content' => SpecUtils::specsToArray($this->content),
+			'links' => SpecUtils::specsToArray($this->links),
+		];
+	}
 
 }

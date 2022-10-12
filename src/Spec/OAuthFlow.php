@@ -2,7 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class OAuthFlow
+final class OAuthFlow implements SpecObject
 {
 
 	public string $authorizationUrl;
@@ -13,5 +13,15 @@ final class OAuthFlow
 
 	/** @var array<string, string> */
 	public array $scopes;
+
+	public function toArray(): array
+	{
+		return [
+			'authorizationUrl' => $this->authorizationUrl,
+			'tokenUrl' => $this->tokenUrl,
+			'refreshUrl' => $this->refreshUrl,
+			'scopes' => $this->scopes,
+		];
+	}
 
 }

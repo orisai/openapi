@@ -2,7 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Operation
+use Orisai\OpenAPI\Utils\SpecUtils;
+
+final class Operation implements SpecObject
 {
 
 	/** @var list<string> */
@@ -34,5 +36,23 @@ final class Operation
 
 	/** @var list<Server> */
 	public array $servers;
+
+	public function toArray(): array
+	{
+		return [
+			'tags' => $this->tags,
+			'summary' => $this->summary,
+			'description' => $this->description,
+			'externalDocs' => $this->externalDocs !== null ? $this->externalDocs->toArray() : null,
+			'operationId' => $this->operationId,
+			'parameters' => SpecUtils::specsToArray($this->parameters),
+			'requestBody' => $this->requestBody !== null ? $this->requestBody->toArray() : null,
+			'responses' => $this->responses !== null ? $this->responses->toArray() : null,
+			'callbacks' => SpecUtils::specsToArray($this->callbacks),
+			'deprecated' => $this->deprecated,
+			'security' => SpecUtils::specsToArray($this->security),
+			'servers' => SpecUtils::specsToArray($this->servers),
+		];
+	}
 
 }

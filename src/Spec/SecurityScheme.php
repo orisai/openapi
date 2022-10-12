@@ -2,7 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class SecurityScheme
+final class SecurityScheme implements SpecObject
 {
 
 	public string $type;
@@ -20,5 +20,19 @@ final class SecurityScheme
 	public OAuthFlows $flows;
 
 	public string $openIdConnectUrl;
+
+	public function toArray(): array
+	{
+		return [
+			'type' => $this->type,
+			'description' => $this->description,
+			'name' => $this->name,
+			'in' => $this->in,
+			'scheme' => $this->scheme,
+			'bearerFormat' => $this->bearerFormat,
+			'flows' => $this->flows->toArray(),
+			'openIdConnectUrl' => $this->openIdConnectUrl,
+		];
+	}
 
 }

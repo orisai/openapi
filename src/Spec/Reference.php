@@ -2,7 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Reference
+final class Reference implements SpecObject
 {
 
 	public string $ref;
@@ -10,5 +10,13 @@ final class Reference
 	public ?string $summary;
 
 	public string $description;
+
+	public function toArray(): array
+	{
+		return [
+			'$ref' => $this->ref,
+			'summary' => $this->summary,
+		];
+	}
 
 }

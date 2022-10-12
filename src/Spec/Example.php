@@ -2,7 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Example
+final class Example implements SpecObject
 {
 
 	public ?string $summary;
@@ -13,5 +13,15 @@ final class Example
 	public $value;
 
 	public ?string $externalValue;
+
+	public function toArray(): array
+	{
+		return [
+			'summary' => $this->summary,
+			'description' => $this->description,
+			'value' => $this->value,
+			'externalValue' => $this->externalValue,
+		];
+	}
 
 }

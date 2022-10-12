@@ -2,7 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class RequestBody
+use Orisai\OpenAPI\Utils\SpecUtils;
+
+final class RequestBody implements SpecObject
 {
 
 	public ?string $description;
@@ -11,5 +13,14 @@ final class RequestBody
 	public array $content;
 
 	public bool $required;
+
+	public function toArray(): array
+	{
+		return [
+			'description' => $this->description,
+			'content' => SpecUtils::specsToArray($this->content),
+			'required' => $this->required,
+		];
+	}
 
 }

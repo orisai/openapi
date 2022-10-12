@@ -2,7 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Server
+use Orisai\OpenAPI\Utils\SpecUtils;
+
+final class Server implements SpecObject
 {
 
 	public string $url;
@@ -11,5 +13,14 @@ final class Server
 
 	/** @var array<string, ServerVariable> */
 	public array $variables;
+
+	public function toArray(): array
+	{
+		return [
+			'url' => $this->url,
+			'description' => $this->description,
+			'variables' => SpecUtils::specsToArray($this->variables),
+		];
+	}
 
 }

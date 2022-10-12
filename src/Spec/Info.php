@@ -2,7 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Info
+final class Info implements SpecObject
 {
 
 	public string $title;
@@ -18,5 +18,18 @@ final class Info
 	public ?License $license;
 
 	public string $version;
+
+	public function toArray(): array
+	{
+		return [
+			'title' => $this->title,
+			'summary' => $this->summary,
+			'description' => $this->description,
+			'termsOfService' => $this->termsOfService,
+			'contact' => $this->contact !== null ? $this->contact->toArray() : null,
+			'licence' => $this->license !== null ? $this->license->toArray() : null,
+			'version' => $this->version,
+		];
+	}
 
 }

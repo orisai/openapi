@@ -2,7 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class License
+final class License implements SpecObject
 {
 
 	public string $name;
@@ -10,5 +10,14 @@ final class License
 	public ?string $identifier;
 
 	public ?string $url;
+
+	public function toArray(): array
+	{
+		return [
+			'name' => $this->name,
+			'identifier' => $this->identifier,
+			'url' => $this->url,
+		];
+	}
 
 }

@@ -2,7 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class MediaType
+use Orisai\OpenAPI\Utils\SpecUtils;
+
+final class MediaType implements SpecObject
 {
 
 	public ?Schema $schema;
@@ -15,5 +17,15 @@ final class MediaType
 
 	/** @var array<string, Encoding> */
 	public array $encoding;
+
+	public function toArray(): array
+	{
+		return [
+			'schema' => $this->schema !== null ? $this->schema->toArray() : null,
+			'example' => $this->example,
+			'examples' => SpecUtils::specsToArray($this->examples),
+			'encoding' => SpecUtils::specsToArray($this->encoding),
+		];
+	}
 
 }

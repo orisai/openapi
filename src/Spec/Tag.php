@@ -2,7 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Tag
+final class Tag implements SpecObject
 {
 
 	public string $name;
@@ -10,5 +10,14 @@ final class Tag
 	public ?string $description;
 
 	public ?ExternalDocumentation $externalDocs;
+
+	public function toArray(): array
+	{
+		return [
+			'name' => $this->name,
+			'description' => $this->description,
+			'externalDocs' => $this->externalDocs !== null ? $this->externalDocs->toArray() : null,
+		];
+	}
 
 }

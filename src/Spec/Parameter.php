@@ -2,7 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Parameter
+use Orisai\OpenAPI\Utils\SpecUtils;
+
+final class Parameter implements SpecObject
 {
 
 	public string $name;
@@ -33,5 +35,24 @@ final class Parameter
 
 	/** @var array<string, MediaType> */
 	public array $content;
+
+	public function toArray(): array
+	{
+		return [
+			'name' => $this->name,
+			'in' => $this->in,
+			'description' => $this->description,
+			'required' => $this->required,
+			'deprecated' => $this->deprecated,
+			'allowEmptyValue' => $this->allowEmptyValue,
+			'style' => $this->style,
+			'explode' => $this->explode,
+			'allowReserved' => $this->allowReserved,
+			'schema' => $this->schema !== null ? $this->schema->toArray() : null,
+			'example' => $this->example,
+			'examples' => SpecUtils::specsToArray($this->examples),
+			'content' => SpecUtils::specsToArray($this->content),
+		];
+	}
 
 }

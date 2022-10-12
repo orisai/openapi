@@ -2,10 +2,17 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Callback
+use Orisai\OpenAPI\Utils\SpecUtils;
+
+final class Callback implements SpecObject
 {
 
 	/** @var array<string, PathItem> */
 	public array $expressions;
+
+	public function toArray(): array
+	{
+		return SpecUtils::specsToArray($this->expressions);
+	}
 
 }

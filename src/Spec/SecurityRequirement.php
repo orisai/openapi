@@ -2,10 +2,15 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class SecurityRequirement
+final class SecurityRequirement implements SpecObject
 {
 
-	/** @var array<string, list<string> */
+	/** @var array<string, list<string>> */
 	public array $requirements;
+
+	public function toArray(): array
+	{
+		return $this->requirements;
+	}
 
 }

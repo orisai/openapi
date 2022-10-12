@@ -2,7 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Contact
+final class Contact implements SpecObject
 {
 
 	public ?string $name;
@@ -10,5 +10,14 @@ final class Contact
 	public ?string $url;
 
 	public ?string $email;
+
+	public function toArray(): array
+	{
+		return [
+			'name' => $this->name,
+			'url' => $this->url,
+			'email' => $this->email,
+		];
+	}
 
 }

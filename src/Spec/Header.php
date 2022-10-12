@@ -2,7 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Header
+final class Header implements SpecObject
 {
 
 	public ?string $description;
@@ -29,5 +29,19 @@ final class Header
 
 	/** @var array<string, MediaType> */
 	public array $content;
+
+	public function toArray(): array
+	{
+		return [
+			'description' => $this->description,
+			'required' => $this->required,
+			'deprecated' => $this->deprecated,
+			'allowEmptyValue' => $this->allowEmptyValue,
+			'style' => $this->style,
+			'explode' => $this->explode,
+			'allowReserved' => $this->allowReserved,
+			'schema' => $this->schema !== null ? $this->schema->toArray() : null,
+		];
+	}
 
 }
