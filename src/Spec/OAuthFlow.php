@@ -2,26 +2,36 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class OAuthFlow implements SpecObject
+/**
+ * @internal
+ */
+abstract class OAuthFlow implements SpecObject
 {
-
-	public string $authorizationUrl;
-
-	public string $tokenUrl;
-
-	public ?string $refreshUrl;
 
 	/** @var array<string, string> */
 	public array $scopes;
 
+	public ?string $refreshUrl = null;
+
+	/**
+	 * @param array<string, string> $scopes
+	 */
+	public function __construct(array $scopes)
+	{
+		$this->scopes = $scopes;
+	}
+
 	public function toArray(): array
 	{
-		return [
-			'authorizationUrl' => $this->authorizationUrl,
-			'tokenUrl' => $this->tokenUrl,
-			'refreshUrl' => $this->refreshUrl,
+		$data = [
 			'scopes' => $this->scopes,
 		];
+
+		if ($this->refreshUrl !== null) {
+			$data['refreshUrl'] = $this->refreshUrl;
+		}
+
+		return $data;
 	}
 
 }

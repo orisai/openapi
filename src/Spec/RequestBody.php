@@ -7,20 +7,36 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class RequestBody implements SpecObject
 {
 
-	public ?string $description;
+	public ?string $description = null;
 
 	/** @var array<string, MediaType> */
 	public array $content;
 
-	public bool $required;
+	public bool $required = false;
+
+	/**
+	 * @param array<string, MediaType> $content
+	 */
+	public function __construct(array $content)
+	{
+		$this->content = $content;
+	}
 
 	public function toArray(): array
 	{
-		return [
-			'description' => $this->description,
+		$data = [
 			'content' => SpecUtils::specsToArray($this->content),
-			'required' => $this->required,
 		];
+
+		if ($this->description !== null) {
+			$data['description'] = $this->description;
+		}
+
+		if ($this->required) {
+			$data['required'] = $this->required;
+		}
+
+		return $data;
 	}
 
 }

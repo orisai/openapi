@@ -6,19 +6,32 @@ final class ServerVariable implements SpecObject
 {
 
 	/** @var non-empty-array<string>|null */
-	public ?array $enum;
+	public ?array $enum = null;
 
 	public string $default;
 
-	public ?string $description;
+	public ?string $description = null;
+
+	public function __construct(string $default)
+	{
+		$this->default = $default;
+	}
 
 	public function toArray(): array
 	{
-		return [
-			'enum' => $this->enum,
+		$data = [
 			'default' => $this->default,
-			'description' => $this->description,
 		];
+
+		if ($this->enum !== null) {
+			$data['enum'] = $this->enum;
+		}
+
+		if ($this->description !== null) {
+			$data['description'] = $this->description;
+		}
+
+		return $data;
 	}
 
 }

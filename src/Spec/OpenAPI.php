@@ -12,45 +12,76 @@ final class OpenAPI implements SpecObject
 
 	public Info $info;
 
-	public ?string $jsonSchemaDialect;
+	public ?string $jsonSchemaDialect = null;
 
 	/** @var list<Server> */
-	public array $servers;
+	public array $servers = [];
 
-	public ?Paths $paths;
+	public Paths $paths;
 
 	/** @var array<string, PathItem|Reference> */
-	public array $webhooks;
+	public array $webhooks = [];
 
-	public ?Components $components;
+	public Components $components;
 
 	/** @var list<SecurityRequirement> */
-	public array $security;
+	public array $security = [];
 
 	/** @var list<Tag> */
-	public array $tags;
+	public array $tags = [];
 
-	public ?ExternalDocumentation $externalDocs;
+	public ?ExternalDocumentation $externalDocs = null;
 
-	public function __construct()
+	public function __construct(Info $info)
 	{
 		$this->openapi = '3.1.0';
+		$this->info = $info;
+		$this->components = new Components();
+		$this->paths = new Paths();
 	}
 
 	public function toArray(): array
 	{
-		return [
+		$data = [
 			'openapi' => $this->openapi,
 			'info' => $this->info->toArray(),
-			'jsonSchemaDialect' => $this->jsonSchemaDialect,
-			'servers' => SpecUtils::specsToArray($this->servers),
-			'paths' => $this->paths !== null ? $this->paths->toArray() : null,
-			'webhooks' => SpecUtils::specsToArray($this->webhooks),
-			'components' => $this->components !== null ? $this->components->toArray() : null,
-			'security' => SpecUtils::specsToArray($this->security),
-			'tags' => SpecUtils::specsToArray($this->tags),
-			'externalDocs' => $this->externalDocs !== null ? $this->externalDocs->toArray() : null,
 		];
+
+		if ($this->jsonSchemaDialect !== null) {
+			$data['jsonSchemaDialect'] = $this->jsonSchemaDialect;
+		}
+
+		if ($this->servers !== []) {
+			$data['servers'] = SpecUtils::specsToArray($this->servers);
+		}
+
+		$pathsData = $this->paths->toArray();
+		if ($pathsData !== []) {
+			$data['paths'] = $pathsData;
+		}
+
+		if ($this->webhooks !== []) {
+			$data['webhooks'] = SpecUtils::specsToArray($this->webhooks);
+		}
+
+		$componentsData = $this->components->toArray();
+		if ($componentsData !== []) {
+			$data['components'] = $componentsData;
+		}
+
+		if ($this->security !== []) {
+			$data['security'] = SpecUtils::specsToArray($this->security);
+		}
+
+		if ($this->tags !== []) {
+			$data['tags'] = SpecUtils::specsToArray($this->tags);
+		}
+
+		if ($this->externalDocs !== null) {
+			$data['externalDocs'] = $this->externalDocs->toArray();
+		}
+
+		return $data;
 	}
 
 }

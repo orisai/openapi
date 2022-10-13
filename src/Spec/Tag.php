@@ -7,17 +7,30 @@ final class Tag implements SpecObject
 
 	public string $name;
 
-	public ?string $description;
+	public ?string $description = null;
 
-	public ?ExternalDocumentation $externalDocs;
+	public ?ExternalDocumentation $externalDocs = null;
+
+	public function __construct(string $name)
+	{
+		$this->name = $name;
+	}
 
 	public function toArray(): array
 	{
-		return [
+		$data = [
 			'name' => $this->name,
-			'description' => $this->description,
-			'externalDocs' => $this->externalDocs !== null ? $this->externalDocs->toArray() : null,
 		];
+
+		if ($this->description !== null) {
+			$data['description'] = $this->description;
+		}
+
+		if ($this->externalDocs !== null) {
+			$data['externalDocs'] = $this->externalDocs->toArray();
+		}
+
+		return $data;
 	}
 
 }

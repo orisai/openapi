@@ -6,7 +6,7 @@ final class SecurityRequirement implements SpecObject
 {
 
 	/** @var array<string, list<string>> */
-	public array $requirements;
+	public array $requirements = [];
 
 	public function toArray(): array
 	{

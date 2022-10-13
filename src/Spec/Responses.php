@@ -11,12 +11,15 @@ final class Responses implements SpecObject
 	public $default;
 
 	/** @var array<int, Response|Reference> */
-	public array $responses;
+	public array $responses = [];
 
 	public function toArray(): array
 	{
 		$data = SpecUtils::specsToArray($this->responses);
-		$data['default'] = $this->default !== null ? $this->default->toArray() : null;
+
+		if ($this->default !== null) {
+			$data['default'] = $this->default->toArray();
+		}
 
 		return $data;
 	}

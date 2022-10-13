@@ -5,25 +5,41 @@ namespace Orisai\OpenAPI\Spec;
 final class XML implements SpecObject
 {
 
-	public ?string $name;
+	public ?string $name = null;
 
-	public ?string $namespace;
+	public ?string $namespace = null;
 
-	public ?string $prefix;
+	public ?string $prefix = null;
 
-	public bool $attribute;
+	public bool $attribute = false;
 
-	public bool $wrapped;
+	public bool $wrapped = false;
 
 	public function toArray(): array
 	{
-		return [
-			'name' => $this->name,
-			'namespace' => $this->namespace,
-			'prefix' => $this->prefix,
-			'attribute' => $this->attribute,
-			'wrapped' => $this->wrapped,
-		];
+		$data = [];
+
+		if ($this->name !== null) {
+			$data['name'] = $this->name;
+		}
+
+		if ($this->namespace !== null) {
+			$data['namespace'] = $this->namespace;
+		}
+
+		if ($this->prefix !== null) {
+			$data['prefix'] = $this->prefix;
+		}
+
+		if ($this->attribute) {
+			$data['attribute'] = $this->attribute;
+		}
+
+		if ($this->wrapped) {
+			$data['wrapped'] = $this->wrapped;
+		}
+
+		return $data;
 	}
 
 }

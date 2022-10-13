@@ -5,22 +5,35 @@ namespace Orisai\OpenAPI\Spec;
 final class OAuthFlows implements SpecObject
 {
 
-	public ?OAuthFlow $implicit;
+	public ?ImplicitOAuthFlow $implicit = null;
 
-	public ?OAuthFlow $password;
+	public ?PasswordOAuthFlow $password = null;
 
-	public ?OAuthFlow $clientCredentials;
+	public ?ClientCredentialsOAuthFlow $clientCredentials = null;
 
-	public ?OAuthFlow $authorizationCode;
+	public ?AuthorizationCodeOAuthFlow $authorizationCode = null;
 
 	public function toArray(): array
 	{
-		return [
-			'implicit' => $this->implicit !== null ? $this->implicit->toArray() : null,
-			'password' => $this->password !== null ? $this->password->toArray() : null,
-			'clientCredentials' => $this->clientCredentials !== null ? $this->clientCredentials->toArray() : null,
-			'authorizationCode' => $this->authorizationCode !== null ? $this->authorizationCode->toArray() : null,
-		];
+		$data = [];
+
+		if ($this->implicit !== null) {
+			$data['implicit'] = $this->implicit->toArray();
+		}
+
+		if ($this->password !== null) {
+			$data['password'] = $this->password->toArray();
+		}
+
+		if ($this->clientCredentials !== null) {
+			$data['clientCredentials'] = $this->clientCredentials->toArray();
+		}
+
+		if ($this->authorizationCode !== null) {
+			$data['authorizationCode'] = $this->authorizationCode->toArray();
+		}
+
+		return $data;
 	}
 
 }

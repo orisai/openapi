@@ -7,50 +7,87 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class PathItem implements SpecObject
 {
 
-	public ?string $ref;
+	public ?string $ref = null;
 
-	public ?string $summary;
+	public ?string $summary = null;
 
-	public ?string $description;
+	public ?string $description = null;
 
-	public ?Operation $get;
+	public ?Operation $get = null;
 
-	public ?Operation $put;
+	public ?Operation $put = null;
 
-	public ?Operation $post;
+	public ?Operation $post = null;
 
-	public ?Operation $delete;
+	public ?Operation $delete = null;
 
-	public ?Operation $options;
+	public ?Operation $options = null;
 
-	public ?Operation $head;
+	public ?Operation $head = null;
 
-	public ?Operation $patch;
+	public ?Operation $patch = null;
 
-	public ?Operation $trace;
+	public ?Operation $trace = null;
 
 	/** @var list<Server> */
-	public array $servers;
+	public array $servers = [];
 
-	/** @var list<Parameter|Reference>  */
-	public array $parameters;
+	/** @var list<Parameter|Reference> */
+	public array $parameters = [];
 
 	public function toArray(): array
 	{
-		return [
-			'$ref' => $this->ref,
-			'summary' => $this->summary,
-			'get' => $this->get !== null ? $this->get->toArray() : null,
-			'put' => $this->put !== null ? $this->put->toArray() : null,
-			'post' => $this->post !== null ? $this->post->toArray() : null,
-			'delete' => $this->delete !== null ? $this->delete->toArray() : null,
-			'options' => $this->options !== null ? $this->options->toArray() : null,
-			'head' => $this->head !== null ? $this->head->toArray() : null,
-			'patch' => $this->patch !== null ? $this->patch->toArray() : null,
-			'trace' => $this->trace !== null ? $this->trace->toArray() : null,
-			'servers' => SpecUtils::specsToArray($this->servers),
-			'parameters' => SpecUtils::specsToArray($this->parameters),
-		];
+		$data = [];
+
+		if ($this->ref !== null) {
+			$data['$ref'] = $this->ref;
+		}
+
+		if ($this->summary !== null) {
+			$data['summary'] = $this->summary;
+		}
+
+		if ($this->get !== null) {
+			$data['get'] = $this->get->toArray();
+		}
+
+		if ($this->put !== null) {
+			$data['put'] = $this->put->toArray();
+		}
+
+		if ($this->post !== null) {
+			$data['post'] = $this->post->toArray();
+		}
+
+		if ($this->delete !== null) {
+			$data['delete'] = $this->delete->toArray();
+		}
+
+		if ($this->options !== null) {
+			$data['options'] = $this->options->toArray();
+		}
+
+		if ($this->head !== null) {
+			$data['head'] = $this->head->toArray();
+		}
+
+		if ($this->patch !== null) {
+			$data['patch'] = $this->patch->toArray();
+		}
+
+		if ($this->trace !== null) {
+			$data['trace'] = $this->trace->toArray();
+		}
+
+		if ($this->servers !== []) {
+			$data['servers'] = SpecUtils::specsToArray($this->servers);
+		}
+
+		if ($this->parameters !== []) {
+			$data['parameters'] = SpecUtils::specsToArray($this->parameters);
+		}
+
+		return $data;
 	}
 
 }

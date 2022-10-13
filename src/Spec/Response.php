@@ -10,22 +10,38 @@ final class Response implements SpecObject
 	public string $description;
 
 	/** @var array<string, Header|Reference> */
-	public array $headers;
+	public array $headers = [];
 
 	/** @var array<string, MediaType> */
-	public array $content;
+	public array $content = [];
 
 	/** @var array<string, Link|Reference> */
-	public array $links;
+	public array $links = [];
+
+	public function __construct(string $description)
+	{
+		$this->description = $description;
+	}
 
 	public function toArray(): array
 	{
-		return [
+		$data = [
 			'description' => $this->description,
-			'headers' => SpecUtils::specsToArray($this->headers),
-			'content' => SpecUtils::specsToArray($this->content),
-			'links' => SpecUtils::specsToArray($this->links),
 		];
+
+		if ($this->headers !== []) {
+			$data['headers'] = SpecUtils::specsToArray($this->headers);
+		}
+
+		if ($this->content !== []) {
+			$data['content'] = SpecUtils::specsToArray($this->content);
+		}
+
+		if ($this->links !== []) {
+			$data['links'] = SpecUtils::specsToArray($this->links);
+		}
+
+		return $data;
 	}
 
 }

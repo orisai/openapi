@@ -8,7 +8,7 @@ final class Paths implements SpecObject
 {
 
 	/** @var array<string, PathItem> */
-	public array $paths;
+	public array $paths = [];
 
 	public function toArray(): array
 	{

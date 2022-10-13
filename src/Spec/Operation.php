@@ -8,51 +8,94 @@ final class Operation implements SpecObject
 {
 
 	/** @var list<string> */
-	public array $tags;
+	public array $tags = [];
 
-	public ?string $summary;
+	public ?string $summary = null;
 
-	public ?string $description;
+	public ?string $description = null;
 
-	public ?ExternalDocumentation $externalDocs;
+	public ?ExternalDocumentation $externalDocs = null;
 
-	public ?string $operationId;
+	public ?string $operationId = null;
 
 	/** @var list<Parameter|Reference> */
-	public array $parameters;
+	public array $parameters = [];
 
 	/** @var RequestBody|Reference|null */
 	public $requestBody;
 
-	public ?Responses $responses;
+	public Responses $responses;
 
 	/** @var array<string, Callback|Reference> */
-	public array $callbacks;
+	public array $callbacks = [];
 
-	public bool $deprecated;
+	public bool $deprecated = false;
 
 	/** @var list<SecurityRequirement> */
-	public array $security;
+	public array $security = [];
 
 	/** @var list<Server> */
-	public array $servers;
+	public array $servers = [];
+
+	public function __construct()
+	{
+		$this->responses = new Responses();
+	}
 
 	public function toArray(): array
 	{
-		return [
-			'tags' => $this->tags,
-			'summary' => $this->summary,
-			'description' => $this->description,
-			'externalDocs' => $this->externalDocs !== null ? $this->externalDocs->toArray() : null,
-			'operationId' => $this->operationId,
-			'parameters' => SpecUtils::specsToArray($this->parameters),
-			'requestBody' => $this->requestBody !== null ? $this->requestBody->toArray() : null,
-			'responses' => $this->responses !== null ? $this->responses->toArray() : null,
-			'callbacks' => SpecUtils::specsToArray($this->callbacks),
-			'deprecated' => $this->deprecated,
-			'security' => SpecUtils::specsToArray($this->security),
-			'servers' => SpecUtils::specsToArray($this->servers),
-		];
+		$data = [];
+
+		if ($this->tags !== []) {
+			$data['tags'] = $this->tags;
+		}
+
+		if ($this->summary !== null) {
+			$data['summary'] = $this->summary;
+		}
+
+		if ($this->description !== null) {
+			$data['description'] = null;
+		}
+
+		if ($this->externalDocs !== null) {
+			$data['externalDocs'] = $this->externalDocs->toArray();
+		}
+
+		if ($this->operationId !== null) {
+			$data['operationId'] = $this->operationId;
+		}
+
+		if ($this->parameters !== []) {
+			$data['parameters'] = SpecUtils::specsToArray($this->parameters);
+		}
+
+		if ($this->requestBody !== null) {
+			$data['requestBody'] = $this->requestBody->toArray();
+		}
+
+		$responsesData = $this->responses->toArray();
+		if ($responsesData !== []) {
+			$data['responses'] = $responsesData;
+		}
+
+		if ($this->callbacks !== []) {
+			$data['callbacks'] = SpecUtils::specsToArray($this->callbacks);
+		}
+
+		if ($this->deprecated) {
+			$data['deprecated'] = $this->deprecated;
+		}
+
+		if ($this->security !== []) {
+			$data['security'] = SpecUtils::specsToArray($this->security);
+		}
+
+		if ($this->servers !== []) {
+			$data['servers'] = SpecUtils::specsToArray($this->servers);
+		}
+
+		return $data;
 	}
 
 }

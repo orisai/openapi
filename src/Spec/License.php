@@ -7,17 +7,30 @@ final class License implements SpecObject
 
 	public string $name;
 
-	public ?string $identifier;
+	public ?string $identifier = null;
 
-	public ?string $url;
+	public ?string $url = null;
+
+	public function __construct(string $name)
+	{
+		$this->name = $name;
+	}
 
 	public function toArray(): array
 	{
-		return [
+		$data = [
 			'name' => $this->name,
-			'identifier' => $this->identifier,
-			'url' => $this->url,
 		];
+
+		if ($this->identifier !== null) {
+			$data['identifier'] = $this->identifier;
+		}
+
+		if ($this->url !== null) {
+			$data['url'] = $this->url;
+		}
+
+		return $data;
 	}
 
 }

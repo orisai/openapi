@@ -8,14 +8,24 @@ final class Discriminator implements SpecObject
 	public string $propertyName;
 
 	/** @var array<string, string> */
-	public array $mapping;
+	public array $mapping = [];
+
+	public function __construct(string $propertyName)
+	{
+		$this->propertyName = $propertyName;
+	}
 
 	public function toArray(): array
 	{
-		return [
+		$data = [
 			'propertyName' => $this->propertyName,
-			'mapping' => $this->mapping,
 		];
+
+		if ($this->mapping !== []) {
+			$data['mapping'] = $this->mapping;
+		}
+
+		return $data;
 	}
 
 }

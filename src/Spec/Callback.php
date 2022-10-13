@@ -8,7 +8,7 @@ final class Callback implements SpecObject
 {
 
 	/** @var array<string, PathItem> */
-	public array $expressions;
+	public array $expressions = [];
 
 	public function toArray(): array
 	{

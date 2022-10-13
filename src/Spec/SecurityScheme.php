@@ -2,37 +2,34 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class SecurityScheme implements SpecObject
+use Orisai\OpenAPI\Enum\SecuritySchemeType;
+
+/**
+ * @internal
+ */
+abstract class SecurityScheme implements SpecObject
 {
 
-	public string $type;
+	public SecuritySchemeType $type;
 
-	public ?string $description;
+	public ?string $description = null;
 
-	public string $name;
-
-	public string $in;
-
-	public string $scheme;
-
-	public ?string $bearerFormat;
-
-	public OAuthFlows $flows;
-
-	public string $openIdConnectUrl;
+	public function __construct(SecuritySchemeType $type)
+	{
+		$this->type = $type;
+	}
 
 	public function toArray(): array
 	{
-		return [
-			'type' => $this->type,
-			'description' => $this->description,
-			'name' => $this->name,
-			'in' => $this->in,
-			'scheme' => $this->scheme,
-			'bearerFormat' => $this->bearerFormat,
-			'flows' => $this->flows->toArray(),
-			'openIdConnectUrl' => $this->openIdConnectUrl,
+		$data = [
+			'type' => $this->type->value,
 		];
+
+		if ($this->description !== null) {
+			$data['description'] = $this->description;
+		}
+
+		return $data;
 	}
 
 }

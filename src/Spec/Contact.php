@@ -5,19 +5,29 @@ namespace Orisai\OpenAPI\Spec;
 final class Contact implements SpecObject
 {
 
-	public ?string $name;
+	public ?string $name = null;
 
-	public ?string $url;
+	public ?string $url = null;
 
-	public ?string $email;
+	public ?string $email = null;
 
 	public function toArray(): array
 	{
-		return [
-			'name' => $this->name,
-			'url' => $this->url,
-			'email' => $this->email,
-		];
+		$data = [];
+
+		if ($this->name !== null) {
+			$data['name'] = $this->name;
+		}
+
+		if ($this->url !== null) {
+			$data['url'] = $this->url;
+		}
+
+		if ($this->email !== null) {
+			$data['email'] = $this->email;
+		}
+
+		return $data;
 	}
 
 }
