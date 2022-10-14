@@ -7,7 +7,7 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class Callback implements SpecObject
 {
 
-	/** @var array<string, PathItem> */
+	/** @var array<string, PathItem|Reference> */
 	public array $expressions = [];
 
 	public function toArray(): array
