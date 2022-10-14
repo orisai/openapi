@@ -7,11 +7,11 @@ use ValueError;
 final class SecuritySchemeType
 {
 
-	private const ApiKey = 1,
-		Http = 2,
-		MutualTLS = 3,
-		OAuth2 = 4,
-		OpenIdConnect = 5;
+	private const ApiKey = 'apiKey',
+		Http = 'http',
+		MutualTLS = 'mutualTLS',
+		OAuth2 = 'oauth2',
+		OpenIdConnect = 'openIdConnect';
 
 	private const ValuesAndNames = [
 		self::ApiKey => 'apiKey',
@@ -25,12 +25,12 @@ final class SecuritySchemeType
 	public string $name;
 
 	/** @readonly */
-	public int $value;
+	public string $value;
 
 	/** @var array<string, self> */
 	private static array $instances = [];
 
-	private function __construct(string $name, int $value)
+	private function __construct(string $name, string $value)
 	{
 		$this->name = $name;
 		$this->value = $value;
@@ -61,7 +61,7 @@ final class SecuritySchemeType
 		return self::from(self::OpenIdConnect);
 	}
 
-	public static function tryFrom(int $value): ?self
+	public static function tryFrom(string $value): ?self
 	{
 		$key = self::ValuesAndNames[$value] ?? null;
 
@@ -72,7 +72,7 @@ final class SecuritySchemeType
 		return self::$instances[$key] ??= new self($key, $value);
 	}
 
-	public static function from(int $value): self
+	public static function from(string $value): self
 	{
 		$self = self::tryFrom($value);
 

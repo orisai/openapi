@@ -7,10 +7,10 @@ use ValueError;
 final class ParameterIn
 {
 
-	private const Cookie = 1,
-		Header = 2,
-		Path = 3,
-		Query = 4;
+	private const Cookie = 'cookie',
+		Header = 'header',
+		Path = 'path',
+		Query = 'query';
 
 	private const ValuesAndNames = [
 		self::Cookie => 'cookie',
@@ -23,12 +23,12 @@ final class ParameterIn
 	public string $name;
 
 	/** @readonly */
-	public int $value;
+	public string $value;
 
 	/** @var array<string, self> */
 	private static array $instances = [];
 
-	private function __construct(string $name, int $value)
+	private function __construct(string $name, string $value)
 	{
 		$this->name = $name;
 		$this->value = $value;
@@ -54,7 +54,7 @@ final class ParameterIn
 		return self::from(self::Query);
 	}
 
-	public static function tryFrom(int $value): ?self
+	public static function tryFrom(string $value): ?self
 	{
 		$key = self::ValuesAndNames[$value] ?? null;
 
@@ -65,7 +65,7 @@ final class ParameterIn
 		return self::$instances[$key] ??= new self($key, $value);
 	}
 
-	public static function from(int $value): self
+	public static function from(string $value): self
 	{
 		$self = self::tryFrom($value);
 
