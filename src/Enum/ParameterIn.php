@@ -3,7 +3,6 @@
 namespace Orisai\OpenAPI\Enum;
 
 use ValueError;
-use function array_key_exists;
 
 final class ParameterIn
 {
@@ -25,6 +24,9 @@ final class ParameterIn
 
 	/** @readonly */
 	public int $value;
+
+	/** @var array<string, self> */
+	private static array $instances = [];
 
 	private function __construct(string $name, int $value)
 	{
@@ -54,11 +56,13 @@ final class ParameterIn
 
 	public static function tryFrom(int $value): ?self
 	{
-		if (!array_key_exists($value, self::ValuesAndNames)) {
+		$key = self::ValuesAndNames[$value] ?? null;
+
+		if ($key === null) {
 			return null;
 		}
 
-		return new self(self::ValuesAndNames[$value], $value);
+		return self::$instances[$key] ??= new self($key, $value);
 	}
 
 	public static function from(int $value): self
