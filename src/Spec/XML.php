@@ -5,6 +5,8 @@ namespace Orisai\OpenAPI\Spec;
 final class XML implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public ?string $name = null;
 
 	public ?string $namespace = null;
@@ -38,6 +40,8 @@ final class XML implements SpecObject
 		if ($this->wrapped) {
 			$data['wrapped'] = $this->wrapped;
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

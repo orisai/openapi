@@ -5,6 +5,8 @@ namespace Orisai\OpenAPI\Spec;
 final class License implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public string $name;
 
 	public ?string $identifier = null;
@@ -29,6 +31,8 @@ final class License implements SpecObject
 		if ($this->url !== null) {
 			$data['url'] = $this->url;
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

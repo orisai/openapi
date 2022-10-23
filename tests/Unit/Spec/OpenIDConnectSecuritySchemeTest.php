@@ -21,11 +21,13 @@ final class OpenIDConnectSecuritySchemeTest extends TestCase
 
 		$s2 = new OpenIDConnectSecurityScheme('https://example.com');
 		$s2->description = 'description';
+		$s2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'type' => 'openIdConnect',
 				'description' => 'description',
 				'openIdConnectUrl' => 'https://example.com',
+				'x-a' => null,
 			],
 			$s2->toArray(),
 		);

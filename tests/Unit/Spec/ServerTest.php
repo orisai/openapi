@@ -21,10 +21,15 @@ final class ServerTest extends TestCase
 
 		$s2 = new Server('https://example.com');
 		$s2->description = 'description';
+
 		$v1 = new ServerVariable('1');
-		$v2 = new ServerVariable('2');
 		$s2->variables['v1'] = $v1;
+
+		$v2 = new ServerVariable('2');
 		$s2->variables['v2'] = $v2;
+
+		$s2->addExtension('x-a', null);
+
 		self::assertSame(
 			[
 				'url' => 'https://example.com',
@@ -33,6 +38,7 @@ final class ServerTest extends TestCase
 					'v1' => $v1->toArray(),
 					'v2' => $v2->toArray(),
 				],
+				'x-a' => null,
 			],
 			$s2->toArray(),
 		);

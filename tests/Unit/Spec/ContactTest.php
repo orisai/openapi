@@ -17,11 +17,13 @@ final class ContactTest extends TestCase
 		$c2->name = 'Example';
 		$c2->url = 'https://example.com';
 		$c2->email = 'example@example.com';
+		$c2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'name' => 'Example',
 				'url' => 'https://example.com',
 				'email' => 'example@example.com',
+				'x-a' => null,
 			],
 			$c2->toArray(),
 		);

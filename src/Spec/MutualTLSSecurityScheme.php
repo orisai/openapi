@@ -7,9 +7,19 @@ use Orisai\OpenAPI\Enum\SecuritySchemeType;
 final class MutualTLSSecurityScheme extends SecurityScheme
 {
 
+	use SupportsSpecExtensions;
+
 	public function __construct()
 	{
 		parent::__construct(SecuritySchemeType::mutualTLS());
+	}
+
+	public function toArray(): array
+	{
+		$data = parent::toArray();
+		$this->addExtensionsToData($data);
+
+		return $data;
 	}
 
 }

@@ -20,9 +20,12 @@ final class SchemaTest extends TestCase
 		$s2->discriminator = $d2;
 		$x2 = $s2->xml;
 		$x2->name = 'name';
+
 		$ed2 = new ExternalDocumentation('https://example.com');
 		$s2->externalDocs = $ed2;
+
 		$s2->example = null;
+
 		self::assertSame(
 			[
 				'discriminator' => $d2->toArray(),

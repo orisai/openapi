@@ -18,12 +18,14 @@ final class ExampleTest extends TestCase
 		$e2->description = 'description';
 		$e2->value = null;
 		$e2->externalValue = 'https://example.com/user-example.json';
+		$e2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'summary' => 'summary',
 				'description' => 'description',
 				'value' => null,
 				'externalValue' => 'https://example.com/user-example.json',
+				'x-a' => null,
 			],
 			$e2->toArray(),
 		);

@@ -21,6 +21,7 @@ final class LinkTest extends TestCase
 		$l2->requestBody = 'requestBody';
 		$l2->description = 'description';
 		$l2->server = $s2 = new Server('https://example.com');
+		$l2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'operationRef' => 'operationRef',
@@ -31,6 +32,7 @@ final class LinkTest extends TestCase
 				'requestBody' => 'requestBody',
 				'description' => 'description',
 				'server' => $s2->toArray(),
+				'x-a' => null,
 			],
 			$l2->toArray(),
 		);

@@ -7,6 +7,8 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class Operation implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	/** @var list<string> */
 	public array $tags = [];
 
@@ -94,6 +96,8 @@ final class Operation implements SpecObject
 		if ($this->servers !== []) {
 			$data['servers'] = SpecUtils::specsToArray($this->servers);
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

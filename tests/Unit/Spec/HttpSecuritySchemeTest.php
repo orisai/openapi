@@ -22,12 +22,14 @@ final class HttpSecuritySchemeTest extends TestCase
 		$s2 = new HttpSecurityScheme('Bearer');
 		$s2->description = 'description';
 		$s2->bearerFormat = 'JWT';
+		$s2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'type' => 'http',
 				'description' => 'description',
 				'scheme' => 'Bearer',
 				'bearerFormat' => 'JWT',
+				'x-a' => null,
 			],
 			$s2->toArray(),
 		);

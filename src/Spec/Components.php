@@ -7,6 +7,8 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class Components implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	/** @var array<string, Schema|Reference> */
 	public array $schemas = [];
 
@@ -84,6 +86,8 @@ final class Components implements SpecObject
 		if ($this->pathItems !== []) {
 			$data['pathItems'] = SpecUtils::specsToArray($this->pathItems);
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

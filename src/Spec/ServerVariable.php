@@ -5,6 +5,8 @@ namespace Orisai\OpenAPI\Spec;
 final class ServerVariable implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	/** @var non-empty-array<string>|null */
 	public ?array $enum = null;
 
@@ -30,6 +32,8 @@ final class ServerVariable implements SpecObject
 		if ($this->description !== null) {
 			$data['description'] = $this->description;
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

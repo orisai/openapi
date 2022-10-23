@@ -21,11 +21,13 @@ final class LicenseTest extends TestCase
 		$l2 = new License('The Unlicense');
 		$l2->identifier = 'Unlicense';
 		$l2->url = 'https://unlicense.org';
+		$l2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'name' => 'The Unlicense',
 				'identifier' => 'Unlicense',
 				'url' => 'https://unlicense.org',
+				'x-a' => null,
 			],
 			$l2->toArray(),
 		);

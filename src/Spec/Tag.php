@@ -5,6 +5,8 @@ namespace Orisai\OpenAPI\Spec;
 final class Tag implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public string $name;
 
 	public ?string $description = null;
@@ -29,6 +31,8 @@ final class Tag implements SpecObject
 		if ($this->externalDocs !== null) {
 			$data['externalDocs'] = $this->externalDocs->toArray();
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

@@ -25,11 +25,14 @@ final class ResponsesTest extends TestCase
 		$rs2r2 = new Response('not found');
 		$rs2->responses[404] = $rs2r2;
 
+		$rs2->addExtension('x-a', null);
+
 		self::assertSame(
 			[
 				204 => $rs2r1->toArray(),
 				404 => $rs2r2->toArray(),
 				'default' => $rs1rsd->toArray(),
+				'x-a' => null,
 			],
 			$rs2->toArray(),
 		);

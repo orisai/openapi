@@ -7,6 +7,8 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class Responses implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	/** @var Response|Reference|null */
 	public $default;
 
@@ -20,6 +22,8 @@ final class Responses implements SpecObject
 		if ($this->default !== null) {
 			$data['default'] = $this->default->toArray();
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

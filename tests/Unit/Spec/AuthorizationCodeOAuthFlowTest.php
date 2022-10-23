@@ -33,6 +33,7 @@ final class AuthorizationCodeOAuthFlowTest extends TestCase
 			'https://example.com/api/oauth/token',
 		);
 		$f2->refreshUrl = 'https://example.com/api/oauth/refresh';
+		$f2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'scopes' => [
@@ -42,6 +43,7 @@ final class AuthorizationCodeOAuthFlowTest extends TestCase
 				'refreshUrl' => 'https://example.com/api/oauth/refresh',
 				'authorizationUrl' => 'https://example.com/api/oauth/dialog',
 				'tokenUrl' => 'https://example.com/api/oauth/token',
+				'x-a' => null,
 			],
 			$f2->toArray(),
 		);

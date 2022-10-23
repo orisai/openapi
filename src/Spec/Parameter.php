@@ -9,6 +9,8 @@ use ReflectionProperty;
 final class Parameter implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public string $name;
 
 	public ParameterIn $in;
@@ -102,6 +104,8 @@ final class Parameter implements SpecObject
 		if ($this->content !== []) {
 			$data['content'] = SpecUtils::specsToArray($this->content);
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

@@ -5,6 +5,8 @@ namespace Orisai\OpenAPI\Spec;
 final class Info implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public string $title;
 
 	public ?string $summary = null;
@@ -51,6 +53,8 @@ final class Info implements SpecObject
 		if ($this->license !== null) {
 			$data['license'] = $this->license->toArray();
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

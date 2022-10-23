@@ -23,12 +23,14 @@ final class ApiKeySecuritySchemeTest extends TestCase
 
 		$s2 = new ApiKeySecurityScheme('access_cookie', SecuritySchemeIn::cookie());
 		$s2->description = 'description';
+		$s2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'type' => 'apiKey',
 				'description' => 'description',
 				'name' => 'access_cookie',
 				'in' => 'cookie',
+				'x-a' => null,
 			],
 			$s2->toArray(),
 		);

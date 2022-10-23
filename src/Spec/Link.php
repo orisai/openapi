@@ -7,6 +7,8 @@ use ReflectionProperty;
 final class Link implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public ?string $operationRef = null;
 
 	public ?string $operationId = null;
@@ -54,6 +56,8 @@ final class Link implements SpecObject
 		if ($this->server !== null) {
 			$data['server'] = $this->server->toArray();
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

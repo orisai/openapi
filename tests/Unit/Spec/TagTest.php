@@ -22,6 +22,7 @@ final class TagTest extends TestCase
 		$t2 = new Tag('name');
 		$t2->description = 'description';
 		$t2->externalDocs = new ExternalDocumentation('https://example.com');
+		$t2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'name' => 'name',
@@ -29,6 +30,7 @@ final class TagTest extends TestCase
 				'externalDocs' => [
 					'url' => 'https://example.com',
 				],
+				'x-a' => null,
 			],
 			$t2->toArray(),
 		);

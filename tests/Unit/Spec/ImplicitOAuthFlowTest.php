@@ -30,6 +30,7 @@ final class ImplicitOAuthFlowTest extends TestCase
 			'https://example.com/api/oauth/dialog',
 		);
 		$f2->refreshUrl = 'https://example.com/api/oauth/refresh';
+		$f2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'scopes' => [
@@ -38,6 +39,7 @@ final class ImplicitOAuthFlowTest extends TestCase
 				],
 				'refreshUrl' => 'https://example.com/api/oauth/refresh',
 				'authorizationUrl' => 'https://example.com/api/oauth/dialog',
+				'x-a' => null,
 			],
 			$f2->toArray(),
 		);

@@ -19,6 +19,7 @@ final class XMLTest extends TestCase
 		$x2->prefix = 'prefix';
 		$x2->attribute = true;
 		$x2->wrapped = true;
+		$x2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'name' => 'name',
@@ -26,6 +27,7 @@ final class XMLTest extends TestCase
 				'prefix' => 'prefix',
 				'attribute' => true,
 				'wrapped' => true,
+				'x-a' => null,
 			],
 			$x2->toArray(),
 		);

@@ -7,6 +7,8 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class Encoding implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public ?string $contentType = null;
 
 	/** @var array<string, Header|Reference> */
@@ -41,6 +43,8 @@ final class Encoding implements SpecObject
 		if ($this->allowReserved) {
 			$data['allowReserved'] = $this->allowReserved;
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

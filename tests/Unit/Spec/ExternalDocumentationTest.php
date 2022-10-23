@@ -20,10 +20,12 @@ final class ExternalDocumentationTest extends TestCase
 
 		$d2 = new ExternalDocumentation('https://example.com');
 		$d2->description = 'description';
+		$d2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'url' => 'https://example.com',
 				'description' => 'description',
+				'x-a' => null,
 			],
 			$d2->toArray(),
 		);

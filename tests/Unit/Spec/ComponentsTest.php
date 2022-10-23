@@ -58,6 +58,8 @@ final class ComponentsTest extends TestCase
 		$c2->pathItems['a'] = $c2pi1 = new PathItem();
 		$c2->pathItems['b'] = $c2pi2 = new Reference('pi2');
 
+		$c2->addExtension('x-a', null);
+
 		self::assertSame(
 			[
 				'schemas' => [
@@ -100,6 +102,7 @@ final class ComponentsTest extends TestCase
 					'a' => $c2pi1->toArray(),
 					'b' => $c2pi2->toArray(),
 				],
+				'x-a' => null,
 			],
 			$c2->toArray(),
 		);

@@ -5,6 +5,8 @@ namespace Orisai\OpenAPI\Spec;
 final class Discriminator implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public string $propertyName;
 
 	/** @var array<string, string> */
@@ -24,6 +26,8 @@ final class Discriminator implements SpecObject
 		if ($this->mapping !== []) {
 			$data['mapping'] = $this->mapping;
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

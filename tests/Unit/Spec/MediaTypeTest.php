@@ -31,6 +31,8 @@ final class MediaTypeTest extends TestCase
 		$h2en1->style = 'style';
 		$mt2->encoding['bar'] = $h2en2 = new Reference('ref');
 
+		$mt2->addExtension('x-a', null);
+
 		self::assertSame(
 			[
 				'schema' => $mt2s->toArray(),
@@ -43,6 +45,7 @@ final class MediaTypeTest extends TestCase
 					'foo' => $h2en1->toArray(),
 					'bar' => $h2en2->toArray(),
 				],
+				'x-a' => null,
 			],
 			$mt2->toArray(),
 		);

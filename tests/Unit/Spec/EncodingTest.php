@@ -25,6 +25,7 @@ final class EncodingTest extends TestCase
 		$e2->style = 'style';
 		$e2->explode = true;
 		$e2->allowReserved = true;
+		$e2->addExtension('x-a', null);
 
 		self::assertSame(
 			[
@@ -36,6 +37,7 @@ final class EncodingTest extends TestCase
 				'style' => 'style',
 				'explode' => true,
 				'allowReserved' => true,
+				'x-a' => null,
 			],
 			$e2->toArray(),
 		);

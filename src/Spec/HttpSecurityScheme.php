@@ -7,6 +7,8 @@ use Orisai\OpenAPI\Enum\SecuritySchemeType;
 final class HttpSecurityScheme extends SecurityScheme
 {
 
+	use SupportsSpecExtensions;
+
 	public string $scheme;
 
 	public ?string $bearerFormat = null;
@@ -25,6 +27,8 @@ final class HttpSecurityScheme extends SecurityScheme
 		if ($this->bearerFormat !== null) {
 			$data['bearerFormat'] = $this->bearerFormat;
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

@@ -32,6 +32,7 @@ final class RequestBodyTest extends TestCase
 		]);
 		$rb2->description = 'description';
 		$rb2->required = true;
+		$rb2->addExtension('x-a', null);
 
 		self::assertSame(
 			[
@@ -41,6 +42,7 @@ final class RequestBodyTest extends TestCase
 				],
 				'description' => 'description',
 				'required' => true,
+				'x-a' => null,
 			],
 			$rb2->toArray(),
 		);

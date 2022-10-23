@@ -24,10 +24,13 @@ final class CallbackTest extends TestCase
 		$cb2pi2 = new Reference('ref');
 		$cb2->expressions['/bar'] = $cb2pi2;
 
+		$cb2->addExtension('x-a', null);
+
 		self::assertSame(
 			[
 				'/foo' => $cb2pi1->toArray(),
 				'/bar' => $cb2pi2->toArray(),
+				'x-a' => null,
 			],
 			$cb2->toArray(),
 		);

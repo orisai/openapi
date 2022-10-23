@@ -5,6 +5,8 @@ namespace Orisai\OpenAPI\Spec;
 final class Contact implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public ?string $name = null;
 
 	public ?string $url = null;
@@ -26,6 +28,8 @@ final class Contact implements SpecObject
 		if ($this->email !== null) {
 			$data['email'] = $this->email;
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

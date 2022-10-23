@@ -8,6 +8,8 @@ use ReflectionProperty;
 final class MediaType implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public Schema $schema;
 
 	/** @var mixed */
@@ -46,6 +48,8 @@ final class MediaType implements SpecObject
 		if ($this->encoding !== []) {
 			$data['encoding'] = SpecUtils::specsToArray($this->encoding);
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

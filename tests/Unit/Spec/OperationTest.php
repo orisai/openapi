@@ -50,6 +50,8 @@ final class OperationTest extends TestCase
 		$op2->servers[] = $op2s1 = new Server('https://example.com');
 		$op2->servers[] = $op2s2 = new Server('https://example2.com');
 
+		$op2->addExtension('x-a', null);
+
 		self::assertSame(
 			[
 				'tags' => ['foo', 'bar'],
@@ -76,6 +78,7 @@ final class OperationTest extends TestCase
 					$op2s1->toArray(),
 					$op2s2->toArray(),
 				],
+				'x-a' => null,
 			],
 			$op2->toArray(),
 		);

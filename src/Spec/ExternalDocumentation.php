@@ -5,6 +5,8 @@ namespace Orisai\OpenAPI\Spec;
 final class ExternalDocumentation implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public ?string $description = null;
 
 	public string $url;
@@ -23,6 +25,8 @@ final class ExternalDocumentation implements SpecObject
 		if ($this->description !== null) {
 			$data['description'] = $this->description;
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

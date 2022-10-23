@@ -5,6 +5,8 @@ namespace Orisai\OpenAPI\Spec;
 final class OAuthFlows implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public ?ImplicitOAuthFlow $implicit = null;
 
 	public ?PasswordOAuthFlow $password = null;
@@ -32,6 +34,8 @@ final class OAuthFlows implements SpecObject
 		if ($this->authorizationCode !== null) {
 			$data['authorizationCode'] = $this->authorizationCode->toArray();
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

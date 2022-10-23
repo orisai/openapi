@@ -7,6 +7,8 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class PathItem implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public ?string $ref = null;
 
 	public ?string $summary = null;
@@ -90,6 +92,8 @@ final class PathItem implements SpecObject
 		if ($this->parameters !== []) {
 			$data['parameters'] = SpecUtils::specsToArray($this->parameters);
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

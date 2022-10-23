@@ -8,6 +8,8 @@ use Orisai\OpenAPI\Enum\SecuritySchemeType;
 final class ApiKeySecurityScheme extends SecurityScheme
 {
 
+	use SupportsSpecExtensions;
+
 	public string $name;
 
 	public SecuritySchemeIn $in;
@@ -24,6 +26,7 @@ final class ApiKeySecurityScheme extends SecurityScheme
 		$data = parent::toArray();
 		$data['name'] = $this->name;
 		$data['in'] = $this->in->value;
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

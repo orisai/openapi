@@ -29,11 +29,13 @@ final class OAuthSecuritySchemeTest extends TestCase
 		);
 		$s2 = new OAuthSecurityScheme($f2);
 		$s2->description = 'description';
+		$s2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'type' => 'oauth2',
 				'description' => 'description',
 				'flows' => $f2->toArray(),
+				'x-a' => null,
 			],
 			$s2->toArray(),
 		);

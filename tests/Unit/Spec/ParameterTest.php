@@ -52,6 +52,8 @@ final class ParameterTest extends TestCase
 		$p3c1->example = 'example';
 		$p3->content['application/xml'] = $p3c2 = new MediaType();
 
+		$p3->addExtension('x-a', null);
+
 		self::assertSame(
 			[
 				'name' => 'p3',
@@ -73,6 +75,7 @@ final class ParameterTest extends TestCase
 					'application/json' => $p3c1->toArray(),
 					'application/xml' => $p3c2->toArray(),
 				],
+				'x-a' => null,
 			],
 			$p3->toArray(),
 		);

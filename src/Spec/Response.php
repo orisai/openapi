@@ -7,6 +7,8 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class Response implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public string $description;
 
 	/** @var array<string, Header|Reference> */
@@ -40,6 +42,8 @@ final class Response implements SpecObject
 		if ($this->links !== []) {
 			$data['links'] = SpecUtils::specsToArray($this->links);
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

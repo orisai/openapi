@@ -20,12 +20,14 @@ final class DiscriminatorTest extends TestCase
 
 		$d2 = new Discriminator('property');
 		$d2->mapping['foo'] = 'bar';
+		$d2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'propertyName' => 'property',
 				'mapping' => [
 					'foo' => 'bar',
 				],
+				'x-a' => null,
 			],
 			$d2->toArray(),
 		);

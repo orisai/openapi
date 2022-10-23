@@ -7,6 +7,8 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class Server implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public string $url;
 
 	public ?string $description = null;
@@ -32,6 +34,8 @@ final class Server implements SpecObject
 		if ($this->variables !== []) {
 			$data['variables'] = SpecUtils::specsToArray($this->variables);
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

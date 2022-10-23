@@ -35,12 +35,14 @@ final class OAuthFlowsTest extends TestCase
 			[],
 			'https://example.com/api/oauth/token',
 		);
+		$f2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'implicit' => $f2i->toArray(),
 				'password' => $f2p->toArray(),
 				'clientCredentials' => $f2cc->toArray(),
 				'authorizationCode' => $f2ac->toArray(),
+				'x-a' => null,
 			],
 			$f2->toArray(),
 		);

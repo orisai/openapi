@@ -5,6 +5,8 @@ namespace Orisai\OpenAPI\Spec;
 final class AuthorizationCodeOAuthFlow extends OAuthFlow
 {
 
+	use SupportsSpecExtensions;
+
 	public string $authorizationUrl;
 
 	public string $tokenUrl;
@@ -21,6 +23,7 @@ final class AuthorizationCodeOAuthFlow extends OAuthFlow
 		$data = parent::toArray();
 		$data['authorizationUrl'] = $this->authorizationUrl;
 		$data['tokenUrl'] = $this->tokenUrl;
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

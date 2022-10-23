@@ -7,6 +7,8 @@ use Orisai\OpenAPI\Enum\SecuritySchemeType;
 final class OAuthSecurityScheme extends SecurityScheme
 {
 
+	use SupportsSpecExtensions;
+
 	public OAuthFlows $flows;
 
 	public function __construct(OAuthFlows $flows)
@@ -19,6 +21,8 @@ final class OAuthSecurityScheme extends SecurityScheme
 	{
 		$data = parent::toArray();
 		$data['flows'] = $this->flows->toArray();
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

@@ -7,6 +7,8 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class OpenAPI implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	/** @readonly */
 	public string $openapi;
 
@@ -80,6 +82,8 @@ final class OpenAPI implements SpecObject
 		if ($this->externalDocs !== null) {
 			$data['externalDocs'] = $this->externalDocs->toArray();
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

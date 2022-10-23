@@ -7,6 +7,8 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class RequestBody implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public ?string $description = null;
 
 	/** @var array<string, MediaType> */
@@ -35,6 +37,8 @@ final class RequestBody implements SpecObject
 		if ($this->required) {
 			$data['required'] = $this->required;
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

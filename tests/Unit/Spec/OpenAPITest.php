@@ -50,6 +50,7 @@ final class OpenAPITest extends TestCase
 		$oa2->tags[] = $oa2t2 = new Tag('t2');
 
 		$oa2->externalDocs = $oa2ed = new ExternalDocumentation('https://example.com');
+		$oa2->addExtension('x-a', null);
 
 		self::assertSame(
 			[
@@ -75,6 +76,7 @@ final class OpenAPITest extends TestCase
 					$oa2t2->toArray(),
 				],
 				'externalDocs' => $oa2ed->toArray(),
+				'x-a' => null,
 			],
 			$oa2->toArray(),
 		);

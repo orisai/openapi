@@ -20,10 +20,12 @@ final class MutualTLSSecuritySchemeTest extends TestCase
 
 		$s2 = new MutualTLSSecurityScheme();
 		$s2->description = 'description';
+		$s2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'type' => 'mutualTLS',
 				'description' => 'description',
+				'x-a' => null,
 			],
 			$s2->toArray(),
 		);

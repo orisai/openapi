@@ -53,6 +53,8 @@ final class PathItemTest extends TestCase
 		$pi2->parameters[] = $pi2p1 = new Parameter('p1', ParameterIn::path());
 		$pi2->parameters[] = $pi2p2 = new Reference('p2');
 
+		$pi2->addExtension('x-a', null);
+
 		self::assertSame(
 			[
 				'$ref' => 'ref',
@@ -74,6 +76,7 @@ final class PathItemTest extends TestCase
 					$pi2p1->toArray(),
 					$pi2p2->toArray(),
 				],
+				'x-a' => null,
 			],
 			$pi2->toArray(),
 		);

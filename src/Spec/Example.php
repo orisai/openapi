@@ -7,6 +7,8 @@ use ReflectionProperty;
 final class Example implements SpecObject
 {
 
+	use SupportsSpecExtensions;
+
 	public ?string $summary = null;
 
 	public ?string $description = null;
@@ -41,6 +43,8 @@ final class Example implements SpecObject
 		if ($this->externalValue !== null) {
 			$data['externalValue'] = $this->externalValue;
 		}
+
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

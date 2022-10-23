@@ -5,6 +5,8 @@ namespace Orisai\OpenAPI\Spec;
 final class ImplicitOAuthFlow extends OAuthFlow
 {
 
+	use SupportsSpecExtensions;
+
 	public string $authorizationUrl;
 
 	public function __construct(array $scopes, string $authorizationUrl)
@@ -17,6 +19,7 @@ final class ImplicitOAuthFlow extends OAuthFlow
 	{
 		$data = parent::toArray();
 		$data['authorizationUrl'] = $this->authorizationUrl;
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}

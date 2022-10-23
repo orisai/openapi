@@ -27,6 +27,7 @@ final class InfoTest extends TestCase
 		$i2->termsOfService = 'terms';
 		$i2->contact = new Contact();
 		$i2->license = new License('MPL-2.0');
+		$i2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'title' => 't',
@@ -38,6 +39,7 @@ final class InfoTest extends TestCase
 				'license' => [
 					'name' => 'MPL-2.0',
 				],
+				'x-a' => null,
 			],
 			$i2->toArray(),
 		);

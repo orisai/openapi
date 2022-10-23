@@ -47,6 +47,8 @@ final class ResponseTest extends TestCase
 		$r2l2->description = 'l2';
 		$r2->links['l2'] = $r2l2;
 
+		$r2->addExtension('x-a', null);
+
 		self::assertSame(
 			[
 				'description' => 'description',
@@ -62,6 +64,7 @@ final class ResponseTest extends TestCase
 					'l1' => $r2l1->toArray(),
 					'l2' => $r2l2->toArray(),
 				],
+				'x-a' => null,
 			],
 			$r2->toArray(),
 		);
