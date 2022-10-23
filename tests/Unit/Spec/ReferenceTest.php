@@ -31,4 +31,70 @@ final class ReferenceTest extends TestCase
 		);
 	}
 
+	public function testConstructors(): void
+	{
+		self::assertSame(
+			[
+				'$ref' => '#/components/callbacks/name',
+			],
+			Reference::ofCallback('name')->toArray(),
+		);
+
+		self::assertSame(
+			[
+				'$ref' => '#/components/examples/name',
+			],
+			Reference::ofExample('name')->toArray(),
+		);
+
+		self::assertSame(
+			[
+				'$ref' => '#/components/headers/name',
+			],
+			Reference::ofHeader('name')->toArray(),
+		);
+
+		self::assertSame(
+			[
+				'$ref' => '#/components/links/name',
+			],
+			Reference::ofLink('name')->toArray(),
+		);
+
+		self::assertSame(
+			[
+				'$ref' => '#/components/parameters/name',
+			],
+			Reference::ofParameter('name')->toArray(),
+		);
+
+		self::assertSame(
+			[
+				'$ref' => '#/components/responses/name',
+			],
+			Reference::ofResponse('name')->toArray(),
+		);
+
+		self::assertSame(
+			[
+				'$ref' => '#/components/requestBodies/name',
+			],
+			Reference::ofRequestBody('name')->toArray(),
+		);
+
+		self::assertSame(
+			[
+				'$ref' => '#/components/securitySchemes/name',
+			],
+			Reference::ofSecurityScheme('name')->toArray(),
+		);
+
+		self::assertSame(
+			[
+				'$ref' => '#/components/schemas/name',
+			],
+			Reference::ofSchema('name')->toArray(),
+		);
+	}
+
 }
