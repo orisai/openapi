@@ -2,7 +2,6 @@
 
 namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
-use Orisai\OpenAPI\Spec\Contact;
 use Orisai\OpenAPI\Spec\Info;
 use Orisai\OpenAPI\Spec\License;
 use PHPUnit\Framework\TestCase;
@@ -25,8 +24,8 @@ final class InfoTest extends TestCase
 		$i2->summary = 'summary';
 		$i2->description = 'description';
 		$i2->termsOfService = 'terms';
-		$i2->contact = new Contact();
-		$i2->license = new License('MPL-2.0');
+		$i2->contact->name = 'name';
+		$i2->license = $i2l = new License('MPL-2.0');
 		$i2->addExtension('x-a', null);
 		self::assertSame(
 			[
@@ -35,10 +34,8 @@ final class InfoTest extends TestCase
 				'summary' => 'summary',
 				'description' => 'description',
 				'termsOfService' => 'terms',
-				'contact' => [],
-				'license' => [
-					'name' => 'MPL-2.0',
-				],
+				'contact' => $i2->contact->toArray(),
+				'license' => $i2l->toArray(),
 				'x-a' => null,
 			],
 			$i2->toArray(),

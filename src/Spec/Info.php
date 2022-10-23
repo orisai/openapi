@@ -15,7 +15,7 @@ final class Info implements SpecObject
 
 	public ?string $termsOfService = null;
 
-	public ?Contact $contact = null;
+	public Contact $contact;
 
 	public ?License $license = null;
 
@@ -25,6 +25,7 @@ final class Info implements SpecObject
 	{
 		$this->title = $title;
 		$this->version = $version;
+		$this->contact = new Contact();
 	}
 
 	public function toArray(): array
@@ -46,8 +47,9 @@ final class Info implements SpecObject
 			$data['termsOfService'] = $this->termsOfService;
 		}
 
-		if ($this->contact !== null) {
-			$data['contact'] = $this->contact->toArray();
+		$contactData = $this->contact->toArray();
+		if ($contactData !== []) {
+			$data['contact'] = $contactData;
 		}
 
 		if ($this->license !== null) {
