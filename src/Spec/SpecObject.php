@@ -2,6 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+/**
+ * @internal
+ */
 interface SpecObject
 {
 
