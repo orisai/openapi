@@ -20,13 +20,7 @@ final class Encoding implements SpecObject
 
 	public function toArray(): array
 	{
-		$data = [
-			'contentType' => $this->contentType,
-			'headers' => SpecUtils::specsToArray($this->headers),
-			'style' => $this->style,
-			'explode' => $this->explode,
-			'allowReserved' => $this->allowReserved,
-		];
+		$data = [];
 
 		if ($this->contentType !== null) {
 			$data['contentType'] = $this->contentType;

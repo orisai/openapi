@@ -49,7 +49,7 @@ final class Info implements SpecObject
 		}
 
 		if ($this->license !== null) {
-			$data['licence'] = $this->license->toArray();
+			$data['license'] = $this->license->toArray();
 		}
 
 		return $data;

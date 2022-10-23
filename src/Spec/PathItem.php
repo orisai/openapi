@@ -47,6 +47,10 @@ final class PathItem implements SpecObject
 			$data['summary'] = $this->summary;
 		}
 
+		if ($this->description !== null) {
+			$data['description'] = $this->description;
+		}
+
 		if ($this->get !== null) {
 			$data['get'] = $this->get->toArray();
 		}

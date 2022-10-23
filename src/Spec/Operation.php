@@ -55,7 +55,7 @@ final class Operation implements SpecObject
 		}
 
 		if ($this->description !== null) {
-			$data['description'] = null;
+			$data['description'] = $this->description;
 		}
 
 		if ($this->externalDocs !== null) {
