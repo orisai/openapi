@@ -3,6 +3,8 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\OpenAPI\Utils\SpecUtils;
+use function array_values;
+use function spl_object_id;
 
 final class OpenAPI implements SpecObject
 {
@@ -17,23 +19,23 @@ final class OpenAPI implements SpecObject
 
 	public ?string $jsonSchemaDialect = null;
 
-	/** @var list<Server> */
-	public array $servers = [];
+	/** @var array<int, Server> */
+	private array $servers = [];
 
 	/** @readonly */
 	public Paths $paths;
 
 	/** @var array<string, PathItem|Reference> */
-	public array $webhooks = [];
+	private array $webhooks = [];
 
 	/** @readonly */
 	public Components $components;
 
-	/** @var list<SecurityRequirement> */
-	public array $security = [];
+	/** @var array<int, SecurityRequirement> */
+	private array $security = [];
 
-	/** @var list<Tag> */
-	public array $tags = [];
+	/** @var array<int, Tag> */
+	private array $tags = [];
 
 	public ?ExternalDocumentation $externalDocs = null;
 
@@ -43,6 +45,29 @@ final class OpenAPI implements SpecObject
 		$this->info = $info;
 		$this->components = new Components();
 		$this->paths = new Paths();
+	}
+
+	public function addServer(Server $server): void
+	{
+		$this->servers[spl_object_id($server)] = $server;
+	}
+
+	/**
+	 * @param PathItem|Reference $webhook
+	 */
+	public function addWebhook(string $key, $webhook): void
+	{
+		$this->webhooks[$key] = $webhook;
+	}
+
+	public function addSecurityRequirement(SecurityRequirement $requirement): void
+	{
+		$this->security[spl_object_id($requirement)] = $requirement;
+	}
+
+	public function addTag(Tag $tag): void
+	{
+		$this->tags[spl_object_id($tag)] = $tag;
 	}
 
 	public function toArray(): array
@@ -59,7 +84,7 @@ final class OpenAPI implements SpecObject
 		$servers = $this->servers === []
 			? [new Server('/')]
 			: $this->servers;
-		$data['servers'] = SpecUtils::specsToArray($servers);
+		$data['servers'] = SpecUtils::specsToArray(array_values($servers));
 
 		$pathsData = $this->paths->toArray();
 		if ($pathsData !== []) {
@@ -76,12 +101,11 @@ final class OpenAPI implements SpecObject
 		}
 
 		if ($this->security !== []) {
-			$data['security'] = SpecUtils::specsToArray($this->security);
+			$data['security'] = SpecUtils::specsToArray(array_values($this->security));
 		}
 
-		//TODO - každý tag musí být unikátní
 		if ($this->tags !== []) {
-			$data['tags'] = SpecUtils::specsToArray($this->tags);
+			$data['tags'] = SpecUtils::specsToArray(array_values($this->tags));
 		}
 
 		if ($this->externalDocs !== null) {

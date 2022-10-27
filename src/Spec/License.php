@@ -7,15 +7,20 @@ final class License implements SpecObject
 
 	use SupportsSpecExtensions;
 
+	/** @readonly */
 	public string $name;
 
-	public ?string $identifier = null;
+	/** @readonly */
+	public ?string $identifier;
 
-	public ?string $url = null;
+	/** @readonly */
+	public ?string $url;
 
-	public function __construct(string $name)
+	public function __construct(string $name, ?string $identifier = null, ?string $url = null)
 	{
 		$this->name = $name;
+		$this->identifier = $identifier;
+		$this->url = $url;
 	}
 
 	public function toArray(): array

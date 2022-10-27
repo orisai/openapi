@@ -35,22 +35,25 @@ final class OpenAPITest extends TestCase
 		$oa2 = new OpenAPI($i2);
 		$oa2->jsonSchemaDialect = 'dialect';
 
-		$oa2->servers[] = $op2s1 = new Server('https://example.com');
-		$oa2->servers[] = $op2s2 = new Server('https://example2.com');
+		$oa2->addServer($op2s1 = new Server('https://example.com'));
+		$oa2->addServer($op2s1);
+		$oa2->addServer($op2s2 = new Server('https://example2.com'));
 
 		$oa2->paths->paths['/foo'] = new PathItem();
 
-		$oa2->webhooks['foo'] = $oa2wh1 = new PathItem();
-		$oa2->webhooks['bar'] = $oa2wh2 = new Reference('bar');
+		$oa2->addWebhook('foo', $oa2wh1 = new PathItem());
+		$oa2->addWebhook('bar', $oa2wh2 = new Reference('bar'));
 
 		$oa2->components->addRequestBody('foo', new RequestBody([]));
 
-		$oa2->security[] = $oa2sr1 = new SecurityRequirement();
-		$oa2->security[] = $oa2sr2 = new SecurityRequirement();
+		$oa2->addSecurityRequirement($oa2sr1 = new SecurityRequirement());
+		$oa2->addSecurityRequirement($oa2sr1);
+		$oa2->addSecurityRequirement($oa2sr2 = new SecurityRequirement());
 		$oa2sr2->requirements['api_key'] = [];
 
-		$oa2->tags[] = $oa2t1 = new Tag('t1');
-		$oa2->tags[] = $oa2t2 = new Tag('t2');
+		$oa2->addTag($oa2t1 = new Tag('t1'));
+		$oa2->addTag($oa2t1);
+		$oa2->addTag($oa2t2 = new Tag('t2'));
 
 		$oa2->externalDocs = $oa2ed = new ExternalDocumentation('https://example.com');
 		$oa2->addExtension('x-a', null);
