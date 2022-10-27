@@ -26,6 +26,9 @@ final class RequestBody implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - klíč je media type / media type range - validovat
+		//TODO - řadit media types - abecedně, * je poslední
+		//TODO - je required - má být tedy alespoň jeden??
 		$data = [
 			'content' => SpecUtils::specsToArray($this->content),
 		];

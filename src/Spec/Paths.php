@@ -14,6 +14,9 @@ final class Paths implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - path musí začínat /
+		//TODO - validovat templates {param}
+		//TODO - validovat kolize
 		$data = SpecUtils::specsToArray($this->paths);
 		$this->addExtensionsToData($data);
 

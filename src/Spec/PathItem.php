@@ -41,6 +41,22 @@ final class PathItem implements SpecObject
 	{
 		$data = [];
 
+		//TODO - PathItem může být empty, v závislosti na ACL - https://spec.openapis.org/oas/v3.1.0#securityFiltering
+
+		//TODO - tam kde se cesta používá (OpenApi, Callbacks, Paths)
+		//			by se mělo validovat, že jsou dostupné všechny templated parametry
+		//		- brát v úvahu parametry z operace
+		//		- a že jsou v cestě (query?)
+		//		- dovoluje openapi query?
+		//		- ve specifikaci toto není?
+
+		//TODO - jak resolvnout reference?
+		//	- změna summary a description je ok, přidání serverů asi taky, změna operací a parametrů je problém
+		//	- https://github.com/cebe/php-openapi/blob/master/src/spec/PathItem.php#L153
+		//	- https://github.com/OAI/OpenAPI-Specification/issues/1038
+
+		//TODO - parametry nesmí být duplicitní (kombinace name a location)
+		//		- musí brát v úvahu reference
 		if ($this->ref !== null) {
 			$data['$ref'] = $this->ref;
 		}

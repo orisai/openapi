@@ -17,6 +17,12 @@ final class Responses implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - warning, když chybí úspěšná response >= 200 < 300
+		//TODO - validní jsou 100-599, 1XX, 2XX, 3XX, 4XX, 5XX a default
+		//TODO - ve výsledném json/yaml musí být klíč v uvozovkách
+		//		- php z nich ale dělá automaticky int
+		//		- json automaticky dělá string, co yaml?
+		//TODO - řadit je podle specificity (becase why not) 100-199, 1XX, 200-299, ..., default
 		$data = SpecUtils::specsToArray($this->responses);
 
 		if ($this->default !== null) {

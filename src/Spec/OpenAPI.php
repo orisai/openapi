@@ -53,6 +53,7 @@ final class OpenAPI implements SpecObject
 			$data['jsonSchemaDialect'] = $this->jsonSchemaDialect;
 		}
 
+		//TODO - prázdné servery vrátí Server('/')
 		if ($this->servers !== []) {
 			$data['servers'] = SpecUtils::specsToArray($this->servers);
 		}
@@ -75,6 +76,7 @@ final class OpenAPI implements SpecObject
 			$data['security'] = SpecUtils::specsToArray($this->security);
 		}
 
+		//TODO - každý tag musí být unikátní
 		if ($this->tags !== []) {
 			$data['tags'] = SpecUtils::specsToArray($this->tags);
 		}

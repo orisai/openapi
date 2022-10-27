@@ -41,6 +41,7 @@ final class Header implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - stejná logika jako u Parameter + omezení, která existují pro Header (např. pro style)
 		$data = [];
 
 		if ($this->description !== null) {

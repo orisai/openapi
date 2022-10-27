@@ -14,6 +14,8 @@ final class Callback implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - validovat expressions?
+		// https://spec.openapis.org/oas/v3.1.0#callback-object
 		$data = SpecUtils::specsToArray($this->expressions);
 		$this->addExtensionsToData($data);
 

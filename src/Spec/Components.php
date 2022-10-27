@@ -43,6 +43,11 @@ final class Components implements SpecObject
 	{
 		$data = [];
 
+		//TODO - všechny klíče musí odpovídat tomuhle regexu
+		//if (!preg_match('~^[a-zA-Z0-9\.\-_]+$~', $k)) {
+		//	$this->addError("Invalid key '$k' used in Components Object for attribute '$attribute', does not match ^[a-zA-Z0-9\.\-_]+\$.");
+		//}
+
 		if ($this->schemas !== []) {
 			$data['schemas'] = SpecUtils::specsToArray($this->schemas);
 		}

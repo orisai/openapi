@@ -29,6 +29,7 @@ final class MediaType implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - https://spec.openapis.org/oas/v3.1.0#considerations-for-file-uploads (a vše podtím)
 		$data = [];
 
 		$schemaData = $this->schema->toArray();
@@ -36,15 +37,23 @@ final class MediaType implements SpecObject
 			$data['schema'] = $schemaData;
 		}
 
+		//TODO - pokud existuje examples, tak nesmí existovat example a naopak
+		//TODO - musí matchnout media type (který zná nadřazený objekt)
+		//TODO - musí matchnout schema, pokud je definované
 		$valueRef = new ReflectionProperty($this, 'example');
 		if ($valueRef->isInitialized($this)) {
 			$data['example'] = $this->example;
 		}
 
+		//TODO - musí matchnout media type (který zná nadřazený objekt)
+		//TODO - musí matchnout schema, pokud je definované
 		if ($this->examples !== []) {
 			$data['examples'] = SpecUtils::specsToArray($this->examples);
 		}
 
+		//TODO - pouze pro RequestBody s typem multipart nebo application/x-www-form-urlencoded
+		//		- při použití jinde a s jiným encodingem není platný
+		//TODO - klíč je název property a musí existovat ve Schema
 		if ($this->encoding !== []) {
 			$data['encoding'] = SpecUtils::specsToArray($this->encoding);
 		}

@@ -19,6 +19,7 @@ final class Discriminator implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO
 		$data = [
 			'propertyName' => $this->propertyName,
 		];

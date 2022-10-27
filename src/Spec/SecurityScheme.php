@@ -21,6 +21,7 @@ abstract class SecurityScheme implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - this + overrides
 		$data = [
 			'type' => $this->type->value,
 		];

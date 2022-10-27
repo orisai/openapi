@@ -23,6 +23,7 @@ final class Server implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - validovat že všechny example/.com/{param} jsou definované ve variables
 		$data = [
 			'url' => $this->url,
 		];

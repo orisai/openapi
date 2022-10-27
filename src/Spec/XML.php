@@ -19,6 +19,7 @@ final class XML implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO
 		$data = [];
 
 		if ($this->name !== null) {

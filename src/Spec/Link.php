@@ -32,18 +32,25 @@ final class Link implements SpecObject
 	{
 		$data = [];
 
+		//TODO - reference nebo id, nikdy obojí
+		//		- musí však být alespoň jedna
+		//TODO - reference může a nemusí existovat
 		if ($this->operationRef !== null) {
 			$data['operationRef'] = $this->operationRef;
 		}
 
+		//TODO - resolvnout - název operace
 		if ($this->operationId !== null) {
 			$data['operationId'] = $this->operationId;
 		}
 
+		//TODO - klíč je název parametru - asi z OpenAPI?
+		//TODO - hodnota je raw nebo expression - jak je rozpoznat?
 		if ($this->parameters !== []) {
 			$data['parameters'] = $this->parameters;
 		}
 
+		//TODO - hodnota je raw nebo expression - jak je rozpoznat?
 		$valueRef = new ReflectionProperty($this, 'requestBody');
 		if ($valueRef->isInitialized($this)) {
 			$data['requestBody'] = $this->requestBody;

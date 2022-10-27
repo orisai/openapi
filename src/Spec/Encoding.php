@@ -22,6 +22,7 @@ final class Encoding implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - https://spec.openapis.org/oas/v3.1.0#encoding-object
 		$data = [];
 
 		if ($this->contentType !== null) {

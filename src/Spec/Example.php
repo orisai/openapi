@@ -25,6 +25,7 @@ final class Example implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - value má být kompatibilní se schema
 		$data = [];
 
 		if ($this->summary !== null) {
@@ -35,6 +36,8 @@ final class Example implements SpecObject
 			$data['description'] = $this->description;
 		}
 
+		//TODO - value nebo external value, nikdy obojí
+		//		- musí však být alespoň jedna?? specifikaci nezmiňuje, narozdíl od Link
 		$valueRef = new ReflectionProperty($this, 'value');
 		if ($valueRef->isInitialized($this)) {
 			$data['value'] = $this->value;

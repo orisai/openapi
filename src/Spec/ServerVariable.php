@@ -21,6 +21,8 @@ final class ServerVariable implements SpecObject
 
 	public function toArray(): array
 	{
+		// TODO - i když je defaultní, tak musí být zaslána
+		// TODO - pokud je nastaven enum, tak musí být default obsažen
 		$data = [
 			'default' => $this->default,
 		];

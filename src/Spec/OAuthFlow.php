@@ -23,6 +23,7 @@ abstract class OAuthFlow implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - this + overrides
 		$data = [
 			'scopes' => $this->scopes,
 		];

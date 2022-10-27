@@ -48,6 +48,7 @@ final class Operation implements SpecObject
 	{
 		$data = [];
 
+		//TODO - unikátní (není ve specifikaci)
 		if ($this->tags !== []) {
 			$data['tags'] = $this->tags;
 		}
@@ -68,6 +69,10 @@ final class Operation implements SpecObject
 			$data['operationId'] = $this->operationId;
 		}
 
+		//TODO - parametry nesmí být duplicitní (kombinace name a location)
+		//		- musí brát v úvahu reference
+
+		//TODO - přepisuje parametry z cesty
 		if ($this->parameters !== []) {
 			$data['parameters'] = SpecUtils::specsToArray($this->parameters);
 		}
@@ -89,6 +94,7 @@ final class Operation implements SpecObject
 			$data['deprecated'] = $this->deprecated;
 		}
 
+		//TODO - má dovolovat prázdné pole pro OpenAPI security (téhož se ale dá docílit i prázdným security objektem)
 		if ($this->security !== []) {
 			$data['security'] = SpecUtils::specsToArray($this->security);
 		}

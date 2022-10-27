@@ -72,10 +72,12 @@ final class Reference implements SpecObject
 			'$ref' => $this->ref,
 		];
 
+		//TODO - přepisuje popis odkazovaného objektu a pokud objekt popis nedovoluje, tak nemá žádný efekt
 		if ($this->summary !== null) {
 			$data['summary'] = $this->summary;
 		}
 
+		//TODO - přepisuje popis odkazovaného objektu a pokud objekt popis nedovoluje, tak nemá žádný efekt
 		if ($this->description !== null) {
 			$data['description'] = $this->description;
 		}
