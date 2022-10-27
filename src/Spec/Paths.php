@@ -2,7 +2,10 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\Exceptions\Logic\InvalidArgument;
+use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Utils\SpecUtils;
+use function str_starts_with;
 
 final class Paths implements SpecObject
 {
@@ -10,13 +13,25 @@ final class Paths implements SpecObject
 	use SupportsSpecExtensions;
 
 	/** @var array<string, PathItem> */
-	public array $paths = [];
+	private array $paths = [];
+
+	public function addPath(string $path, PathItem $item): void
+	{
+		//TODO - otestovat
+		if (!str_starts_with($path, '/')) {
+			$message = Message::create()
+				->withContext("Adding path '$path'.")
+				->withProblem("Path musts start with '/'.");
+
+			throw InvalidArgument::create()
+				->withMessage($message);
+		}
+
+		$this->paths[$path] = $item;
+	}
 
 	public function toArray(): array
 	{
-		//TODO - path musí začínat /
-		//TODO - validovat templates {param}
-		//TODO - validovat kolize
 		$data = SpecUtils::specsToArray($this->paths);
 		$this->addExtensionsToData($data);
 

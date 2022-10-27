@@ -3,6 +3,8 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\OpenAPI\Utils\SpecUtils;
+use function array_values;
+use function spl_object_id;
 
 final class PathItem implements SpecObject
 {
@@ -31,32 +33,29 @@ final class PathItem implements SpecObject
 
 	public ?Operation $trace = null;
 
-	/** @var list<Server> */
-	public array $servers = [];
+	/** @var array<int, Server> */
+	private array $servers = [];
 
-	/** @var list<Parameter|Reference> */
-	public array $parameters = [];
+	/** @var array<int, Parameter|Reference> */
+	private array $parameters = [];
+
+	public function addServer(Server $server): void
+	{
+		$this->servers[spl_object_id($server)] = $server;
+	}
+
+	/**
+	 * @param Parameter|Reference $parameter
+	 */
+	public function addParameter($parameter): void
+	{
+		$this->parameters[spl_object_id($parameter)] = $parameter;
+	}
 
 	public function toArray(): array
 	{
 		$data = [];
 
-		//TODO - PathItem může být empty, v závislosti na ACL - https://spec.openapis.org/oas/v3.1.0#securityFiltering
-
-		//TODO - tam kde se cesta používá (OpenApi, Callbacks, Paths)
-		//			by se mělo validovat, že jsou dostupné všechny templated parametry
-		//		- brát v úvahu parametry z operace
-		//		- a že jsou v cestě (query?)
-		//		- dovoluje openapi query?
-		//		- ve specifikaci toto není?
-
-		//TODO - jak resolvnout reference?
-		//	- změna summary a description je ok, přidání serverů asi taky, změna operací a parametrů je problém
-		//	- https://github.com/cebe/php-openapi/blob/master/src/spec/PathItem.php#L153
-		//	- https://github.com/OAI/OpenAPI-Specification/issues/1038
-
-		//TODO - parametry nesmí být duplicitní (kombinace name a location)
-		//		- musí brát v úvahu reference
 		if ($this->ref !== null) {
 			$data['$ref'] = $this->ref;
 		}
@@ -102,11 +101,11 @@ final class PathItem implements SpecObject
 		}
 
 		if ($this->servers !== []) {
-			$data['servers'] = SpecUtils::specsToArray($this->servers);
+			$data['servers'] = SpecUtils::specsToArray(array_values($this->servers));
 		}
 
 		if ($this->parameters !== []) {
-			$data['parameters'] = SpecUtils::specsToArray($this->parameters);
+			$data['parameters'] = SpecUtils::specsToArray(array_values($this->parameters));
 		}
 
 		$this->addExtensionsToData($data);

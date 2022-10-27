@@ -39,7 +39,7 @@ final class OpenAPITest extends TestCase
 		$oa2->addServer($op2s1);
 		$oa2->addServer($op2s2 = new Server('https://example2.com'));
 
-		$oa2->paths->paths['/foo'] = new PathItem();
+		$oa2->paths->addPath('/foo', new PathItem());
 
 		$oa2->addWebhook('foo', $oa2wh1 = new PathItem());
 		$oa2->addWebhook('bar', $oa2wh2 = new Reference('bar'));

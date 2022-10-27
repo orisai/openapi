@@ -18,10 +18,10 @@ final class PathsTest extends TestCase
 
 		$ps2p1 = new PathItem();
 		$ps2p1->description = 'description';
-		$ps2->paths['/foo'] = $ps2p1;
+		$ps2->addPath('/foo', $ps2p1);
 
 		$ps2p2 = new PathItem();
-		$ps2->paths['/bar'] = $ps2p2;
+		$ps2->addPath('/bar', $ps2p2);
 
 		$ps2->addExtension('x-a', null);
 

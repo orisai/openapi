@@ -47,11 +47,13 @@ final class PathItemTest extends TestCase
 		$pi2->trace = $trace = new Operation();
 		$trace->summary = 'trace';
 
-		$pi2->servers[] = $pi2s1 = new Server('https://example.com');
-		$pi2->servers[] = $pi2s2 = new Server('https://example2.com');
+		$pi2->addServer($pi2s1 = new Server('https://example.com'));
+		$pi2->addServer($pi2s1);
+		$pi2->addServer($pi2s2 = new Server('https://example2.com'));
 
-		$pi2->parameters[] = $pi2p1 = new Parameter('p1', ParameterIn::path());
-		$pi2->parameters[] = $pi2p2 = new Reference('p2');
+		$pi2->addParameter($pi2p1 = new Parameter('p1', ParameterIn::path()));
+		$pi2->addParameter($pi2p1);
+		$pi2->addParameter($pi2p2 = new Reference('p2'));
 
 		$pi2->addExtension('x-a', null);
 
