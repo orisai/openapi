@@ -35,7 +35,7 @@ final class OperationTest extends TestCase
 		$op2->parameters[] = $op2p2 = new Reference('p2');
 
 		$op2->requestBody = $op2rb = new RequestBody([]);
-		$op2->responses->responses[204] = new Response('no content');
+		$op2->responses->addResponse(204, new Response('no content'));
 
 		$op2->callbacks['foo'] = $op2cb1 = new Callback();
 		$op2->callbacks['bar'] = $op2cb2 = new Callback();

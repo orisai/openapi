@@ -17,13 +17,13 @@ final class ResponsesTest extends TestCase
 		$rs2 = new Responses();
 
 		$rs1rsd = new Response('default');
-		$rs2->default = $rs1rsd;
+		$rs2->addResponse('default', $rs1rsd);
 
 		$rs2r1 = new Response('deleted');
-		$rs2->responses[204] = $rs2r1;
+		$rs2->addResponse(204, $rs2r1);
 
 		$rs2r2 = new Response('not found');
-		$rs2->responses[404] = $rs2r2;
+		$rs2->addResponse(404, $rs2r2);
 
 		$rs2->addExtension('x-a', null);
 
