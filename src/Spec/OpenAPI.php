@@ -12,6 +12,7 @@ final class OpenAPI implements SpecObject
 	/** @readonly */
 	public string $openapi;
 
+	/** @readonly */
 	public Info $info;
 
 	public ?string $jsonSchemaDialect = null;
@@ -19,11 +20,13 @@ final class OpenAPI implements SpecObject
 	/** @var list<Server> */
 	public array $servers = [];
 
+	/** @readonly */
 	public Paths $paths;
 
 	/** @var array<string, PathItem|Reference> */
 	public array $webhooks = [];
 
+	/** @readonly */
 	public Components $components;
 
 	/** @var list<SecurityRequirement> */
@@ -53,10 +56,10 @@ final class OpenAPI implements SpecObject
 			$data['jsonSchemaDialect'] = $this->jsonSchemaDialect;
 		}
 
-		//TODO - prázdné servery vrátí Server('/')
-		if ($this->servers !== []) {
-			$data['servers'] = SpecUtils::specsToArray($this->servers);
-		}
+		$servers = $this->servers === []
+			? [new Server('/')]
+			: $this->servers;
+		$data['servers'] = SpecUtils::specsToArray($servers);
 
 		$pathsData = $this->paths->toArray();
 		if ($pathsData !== []) {

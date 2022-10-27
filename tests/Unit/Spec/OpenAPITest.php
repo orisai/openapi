@@ -24,6 +24,9 @@ final class OpenAPITest extends TestCase
 			[
 				'openapi' => '3.1.0',
 				'info' => $i1->toArray(),
+				'servers' => [
+					(new Server('/'))->toArray(),
+				],
 			],
 			$oa1->toArray(),
 		);
@@ -40,7 +43,7 @@ final class OpenAPITest extends TestCase
 		$oa2->webhooks['foo'] = $oa2wh1 = new PathItem();
 		$oa2->webhooks['bar'] = $oa2wh2 = new Reference('bar');
 
-		$oa2->components->requestBodies['foo'] = new RequestBody([]);
+		$oa2->components->addRequestBody('foo', new RequestBody([]));
 
 		$oa2->security[] = $oa2sr1 = new SecurityRequirement();
 		$oa2->security[] = $oa2sr2 = new SecurityRequirement();

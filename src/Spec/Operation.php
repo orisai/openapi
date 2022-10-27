@@ -26,6 +26,7 @@ final class Operation implements SpecObject
 	/** @var RequestBody|Reference|null */
 	public $requestBody;
 
+	/** @readonly */
 	public Responses $responses;
 
 	/** @var array<string, Callback|Reference> */
