@@ -11,9 +11,8 @@ final class AuthorizationCodeOAuthFlow extends OAuthFlow
 
 	public string $tokenUrl;
 
-	public function __construct(array $scopes, string $authorizationUrl, string $tokenUrl)
+	public function __construct(string $authorizationUrl, string $tokenUrl)
 	{
-		parent::__construct($scopes);
 		$this->authorizationUrl = $authorizationUrl;
 		$this->tokenUrl = $tokenUrl;
 	}

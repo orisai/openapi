@@ -11,7 +11,6 @@ final class AuthorizationCodeOAuthFlowTest extends TestCase
 	public function test(): void
 	{
 		$f1 = new AuthorizationCodeOAuthFlow(
-			[],
 			'https://example.com/api/oauth/dialog',
 			'https://example.com/api/oauth/token',
 		);
@@ -25,13 +24,11 @@ final class AuthorizationCodeOAuthFlowTest extends TestCase
 		);
 
 		$f2 = new AuthorizationCodeOAuthFlow(
-			[
-				'write:pets' => 'modify pets in your account',
-				'read:pets' => 'read your pets',
-			],
 			'https://example.com/api/oauth/dialog',
 			'https://example.com/api/oauth/token',
 		);
+		$f2->addScope('write:pets', 'modify pets in your account');
+		$f2->addScope('read:pets', 'read your pets');
 		$f2->refreshUrl = 'https://example.com/api/oauth/refresh';
 		$f2->addExtension('x-a', null);
 		self::assertSame(

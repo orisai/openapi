@@ -24,7 +24,6 @@ final class OAuthSecuritySchemeTest extends TestCase
 
 		$f2 = new OAuthFlows();
 		$f2->password = new PasswordOAuthFlow(
-			[],
 			'https://example.com/api/oauth/token',
 		);
 		$s2 = new OAuthSecurityScheme($f2);

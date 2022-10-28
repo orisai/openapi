@@ -9,9 +9,8 @@ final class PasswordOAuthFlow extends OAuthFlow
 
 	public string $tokenUrl;
 
-	public function __construct(array $scopes, string $tokenUrl)
+	public function __construct(string $tokenUrl)
 	{
-		parent::__construct($scopes);
 		$this->tokenUrl = $tokenUrl;
 	}
 

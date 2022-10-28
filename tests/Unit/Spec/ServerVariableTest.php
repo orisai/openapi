@@ -18,8 +18,7 @@ final class ServerVariableTest extends TestCase
 			$v1->toArray(),
 		);
 
-		$v2 = new ServerVariable('a');
-		$v2->enum = ['a', 'b', 'c'];
+		$v2 = new ServerVariable('a', ['a', 'b', 'c']);
 		$v2->description = 'description';
 		$v2->addExtension('x-a', null);
 		self::assertSame(

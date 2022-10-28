@@ -7,6 +7,7 @@ final class Tag implements SpecObject
 
 	use SupportsSpecExtensions;
 
+	/** @readonly */
 	public string $name;
 
 	public ?string $description = null;

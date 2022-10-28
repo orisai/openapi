@@ -2,23 +2,47 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\Exceptions\Logic\InvalidArgument;
+use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Utils\SpecUtils;
+use function in_array;
+use function is_int;
 
 final class Responses implements SpecObject
 {
 
 	use SupportsSpecExtensions;
 
-	/** @var array<int<100, 599>|'1XX'|'2XX'|'3XX'|'4XX'|'default', Response|Reference> */
+	/**
+	 * @var array<int<100, 599>|string, Response|Reference>
+	 * @phpstan-var array<int<100, 599>|'1XX'|'2XX'|'3XX'|'4XX'|'default', Response|Reference>
+	 */
 	private array $responses = [];
 
 	/**
-	 * @param int<100, 599>|'1XX'|'2XX'|'3XX'|'4XX'|'default' $code
+	 * @param int<100, 599>|string $code
 	 * @param Response|Reference $response
+	 * @phpstan-param int<100, 599>|'1XX'|'2XX'|'3XX'|'4XX'|'default' $code
 	 */
 	public function addResponse($code, $response): void
 	{
-		// TODO - validovat kódy
+		if (
+			/* @phpstan-ignore-next-line Intentional check of allowed */
+			(is_int($code) && ($code < 100 || $code > 599))
+			/* @phpstan-ignore-next-line Intentional check of allowed */
+			&& !in_array($code, ['1XX', '2XX', '3XX', '4XX', '5XX', 'default'], true)
+		) {
+			// TODO - testy
+			$message = Message::create()
+				->withContext("Adding response with code '$code'.")
+				->withProblem(
+					"Only codes in range 100-599, '1XX', '2XX', '3XX', '4XX', '5XX' and 'default' are allowed.",
+				);
+
+			throw InvalidArgument::create()
+				->withMessage($message);
+		}
+
 		$this->responses[$code] = $response;
 	}
 
@@ -36,6 +60,7 @@ final class Responses implements SpecObject
 
 	/**
 	 * @return array<int|string, Response|Reference>
+	 * @phpstan-return array<int<100, 599>|'1XX'|'2XX'|'3XX'|'4XX'|'default', Response|Reference>
 	 */
 	private function getSortedResponses(): array
 	{
