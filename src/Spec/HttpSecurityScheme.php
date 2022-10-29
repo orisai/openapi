@@ -5,6 +5,7 @@ namespace Orisai\OpenAPI\Spec;
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Enum\SecuritySchemeType;
+use function strtolower;
 
 final class HttpSecurityScheme extends SecurityScheme
 {
@@ -24,13 +25,10 @@ final class HttpSecurityScheme extends SecurityScheme
 
 	public function setBearerFormat(string $format): void
 	{
-		//TODO - tests
-		//TODO - schema má být case unsensitive
-		$bearerScheme = 'Bearer';
-		if ($this->scheme !== $bearerScheme) {
+		if (strtolower($this->scheme) !== 'bearer') {
 			$message = Message::create()
 				->withContext("Setting a bearer format for security scheme '$this->scheme'.")
-				->withProblem("Bearer format is supported only by scheme '$bearerScheme'.");
+				->withProblem("Bearer format is supported only by scheme 'Bearer'.");
 
 			throw InvalidArgument::create()
 				->withMessage($message);

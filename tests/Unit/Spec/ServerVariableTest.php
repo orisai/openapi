@@ -2,6 +2,7 @@
 
 namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
+use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\OpenAPI\Spec\ServerVariable;
 use PHPUnit\Framework\TestCase;
 
@@ -30,6 +31,18 @@ final class ServerVariableTest extends TestCase
 			],
 			$v2->toArray(),
 		);
+	}
+
+	public function testDefaultNotInEnum(): void
+	{
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(<<<'MSG'
+Context: Creating a ServerVariable with default value 'default'.
+Problem: Default variable is not listed in given enum cases 'a', 'b', 'c'.
+Solution: Add default to enum or don't use enum.
+MSG);
+
+		new ServerVariable('default', ['a', 'b', 'c']);
 	}
 
 }

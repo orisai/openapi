@@ -2,9 +2,12 @@
 
 namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
+use Generator;
+use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\OpenAPI\Spec\Response;
 use Orisai\OpenAPI\Spec\Responses;
 use PHPUnit\Framework\TestCase;
+use function array_keys;
 
 final class ResponsesTest extends TestCase
 {
@@ -35,6 +38,61 @@ final class ResponsesTest extends TestCase
 				'x-a' => null,
 			],
 			$rs2->toArray(),
+		);
+	}
+
+	/**
+	 * @param int|string $code
+	 *
+	 * @dataProvider provideInvalidCode
+	 */
+	public function testInvalidCode($code): void
+	{
+		$rs = new Responses();
+
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(<<<MSG
+Context: Adding response with code '$code'.
+Problem: Only codes in range 100-599, '1XX', '2XX', '3XX', '4XX', '5XX' and
+         'default' are allowed.
+MSG);
+
+		$rs->addResponse($code, new Response('description'));
+	}
+
+	public function provideInvalidCode(): Generator
+	{
+		yield [99];
+		yield [600];
+		yield ['6XX'];
+		yield ['5xx'];
+		yield ['defaultt'];
+	}
+
+	public function testResponsesOrder(): void
+	{
+		$rs = new Responses();
+
+		$rs->addResponse('default', new Response('default'));
+		$rs->addResponse('5XX', new Response('5XX'));
+		$rs->addResponse(599, new Response('599'));
+		$rs->addResponse(500, new Response('500'));
+		$rs->addResponse('4XX', new Response('4XX'));
+		$rs->addResponse(499, new Response('499'));
+		$rs->addResponse(400, new Response('400'));
+		$rs->addResponse('3XX', new Response('3XX'));
+		$rs->addResponse(399, new Response('399'));
+		$rs->addResponse(300, new Response('300'));
+		$rs->addResponse('2XX', new Response('2XX'));
+		$rs->addResponse(299, new Response('299'));
+		$rs->addResponse(200, new Response('200'));
+		$rs->addResponse('1XX', new Response('1XX'));
+		$rs->addResponse(199, new Response('199'));
+		$rs->addResponse(100, new Response('100'));
+
+		self::assertSame(
+			[100, 199, '1XX', 200, 299, '2XX', 300, 399, '3XX', 400, 499, '4XX', 500, 599, '5XX', 'default'],
+			array_keys($rs->toArray()),
 		);
 	}
 

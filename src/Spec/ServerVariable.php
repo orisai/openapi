@@ -31,11 +31,10 @@ final class ServerVariable implements SpecObject
 		$this->default = $default;
 		$this->enum = $enum;
 
-		//TODO - tests
 		if ($enum !== null && !in_array($default, $enum, true)) {
-			$casesInline = implode(', ', $enum);
+			$casesInline = implode("', '", $enum);
 			$message = Message::create()
-				->withContext("Creating a ServerVariable with default value, '$default'.")
+				->withContext("Creating a ServerVariable with default value '$default'.")
 				->withProblem("Default variable is not listed in given enum cases '$casesInline'.")
 				->withSolution('Add default to enum or don\'t use enum.');
 

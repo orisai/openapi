@@ -7,6 +7,7 @@ use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function in_array;
 use function is_int;
+use function ksort;
 
 final class Responses implements SpecObject
 {
@@ -29,10 +30,8 @@ final class Responses implements SpecObject
 		if (
 			/* @phpstan-ignore-next-line Intentional check of allowed */
 			(is_int($code) && ($code < 100 || $code > 599))
-			/* @phpstan-ignore-next-line Intentional check of allowed */
-			&& !in_array($code, ['1XX', '2XX', '3XX', '4XX', '5XX', 'default'], true)
+			|| (!is_int($code) && !in_array($code, ['1XX', '2XX', '3XX', '4XX', '5XX', 'default'], true))
 		) {
-			// TODO - testy
 			$message = Message::create()
 				->withContext("Adding response with code '$code'.")
 				->withProblem(
@@ -78,7 +77,6 @@ final class Responses implements SpecObject
 			'default' => [],
 		];
 
-		//TODO - tests
 		foreach ($this->responses as $code => $response) {
 			if (isset($grouped[$code])) {
 				$grouped[$code][$code] = $response;
@@ -97,6 +95,7 @@ final class Responses implements SpecObject
 
 		$responses = [];
 		foreach ($grouped as $group) {
+			ksort($group);
 			foreach ($group as $code => $response) {
 				$responses[$code] = $response;
 			}
