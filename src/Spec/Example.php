@@ -2,7 +2,13 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\Exceptions\Logic\InvalidArgument;
+use Orisai\Exceptions\Message;
 use ReflectionProperty;
+use function get_debug_type;
+use function is_array;
+use function is_object;
+use function is_resource;
 
 final class Example implements SpecObject
 {
@@ -14,18 +20,61 @@ final class Example implements SpecObject
 	public ?string $description = null;
 
 	/** @var mixed */
-	public $value;
+	private $value;
 
-	public ?string $externalValue = null;
+	private ?string $externalValue = null;
 
 	public function __construct()
 	{
 		unset($this->value);
 	}
 
+	/**
+	 * @param mixed $value
+	 */
+	public function setValue($value): void
+	{
+		$this->checkValue($value);
+		$this->externalValue = null;
+		$this->value = $value;
+	}
+
+	/**
+	 * @param mixed $content
+	 */
+	private function checkValue($content): void
+	{
+		if (is_object($content) || is_resource($content)) {
+			$type = get_debug_type($content);
+			$message = Message::create()
+				->withContext('Setting an example.')
+				->withProblem("Value contains type '$type', which is not allowed.")
+				->withSolution('Change type to one of supported - scalar, null or array.');
+
+			throw InvalidArgument::create()
+				->withMessage($message);
+		}
+
+		if (is_array($content)) {
+			foreach ($content as $value) {
+				$this->checkValue($value);
+			}
+		}
+	}
+
+	private function hasValue(): bool
+	{
+		return (new ReflectionProperty($this, 'value'))->isInitialized($this);
+	}
+
+	public function setExternalValue(string $externalValue): void
+	{
+		unset($this->value);
+		$this->externalValue = $externalValue;
+	}
+
 	public function toArray(): array
 	{
-		//TODO - value má být kompatibilní se schema
 		$data = [];
 
 		if ($this->summary !== null) {
@@ -36,10 +85,7 @@ final class Example implements SpecObject
 			$data['description'] = $this->description;
 		}
 
-		//TODO - value nebo external value, nikdy obojí
-		//		- musí však být alespoň jedna?? specifikaci nezmiňuje, narozdíl od Link
-		$valueRef = new ReflectionProperty($this, 'value');
-		if ($valueRef->isInitialized($this)) {
+		if ($this->hasValue()) {
 			$data['value'] = $this->value;
 		}
 

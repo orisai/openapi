@@ -25,6 +25,7 @@ final class HttpSecurityScheme extends SecurityScheme
 	public function setBearerFormat(string $format): void
 	{
 		//TODO - tests
+		//TODO - schema má být case unsensitive
 		$bearerScheme = 'Bearer';
 		if ($this->scheme !== $bearerScheme) {
 			$message = Message::create()

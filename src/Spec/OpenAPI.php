@@ -41,6 +41,7 @@ final class OpenAPI implements SpecObject
 
 	public function __construct(Info $info)
 	{
+		//TODO - support whole 3.1 range - ^3\\.1\\.\\d+(-.+)?$
 		$this->openapi = '3.1.0';
 		$this->info = $info;
 		$this->components = new Components();
