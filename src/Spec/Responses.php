@@ -8,6 +8,7 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 use function in_array;
 use function is_int;
 use function ksort;
+use const SORT_STRING;
 
 final class Responses implements SpecObject
 {
@@ -63,45 +64,9 @@ final class Responses implements SpecObject
 	 */
 	private function getSortedResponses(): array
 	{
-		$grouped = [
-			1 => [],
-			'1XX' => [],
-			2 => [],
-			'2XX' => [],
-			3 => [],
-			'3XX' => [],
-			4 => [],
-			'4XX' => [],
-			5 => [],
-			'5XX' => [],
-			'default' => [],
-		];
+		ksort($this->responses, SORT_STRING);
 
-		foreach ($this->responses as $code => $response) {
-			if (isset($grouped[$code])) {
-				$grouped[$code][$code] = $response;
-			} elseif ($code <= 199) {
-				$grouped[1][$code] = $response;
-			} elseif ($code <= 299) {
-				$grouped[2][$code] = $response;
-			} elseif ($code <= 399) {
-				$grouped[3][$code] = $response;
-			} elseif ($code <= 499) {
-				$grouped[4][$code] = $response;
-			} else {
-				$grouped[5][$code] = $response;
-			}
-		}
-
-		$responses = [];
-		foreach ($grouped as $group) {
-			ksort($group);
-			foreach ($group as $code => $response) {
-				$responses[$code] = $response;
-			}
-		}
-
-		return $responses;
+		return $this->responses;
 	}
 
 }
