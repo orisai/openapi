@@ -12,9 +12,9 @@ final class SecuritySchemeIn
 		Query = 'query';
 
 	private const ValuesAndNames = [
-		self::Cookie => 'cookie',
-		self::Header => 'header',
-		self::Query => 'query',
+		self::Cookie => 'Cookie',
+		self::Header => 'Header',
+		self::Query => 'Query',
 	];
 
 	/** @readonly */

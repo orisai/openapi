@@ -4,21 +4,25 @@ namespace Orisai\OpenAPI\Enum;
 
 use ValueError;
 
-final class SecuritySchemeType
+final class ParameterStyle
 {
 
-	private const ApiKey = 'apiKey',
-		Http = 'http',
-		MutualTLS = 'mutualTLS',
-		OAuth2 = 'oauth2',
-		OpenIdConnect = 'openIdConnect';
+	private const DeepObject = 'deepObject',
+		Form = 'form',
+		Label = 'label',
+		Matrix = 'matrix',
+		PipeDelimited = 'pipeDelimited',
+		Simple = 'simple',
+		SpaceDelimited = 'spaceDelimited';
 
 	private const ValuesAndNames = [
-		self::ApiKey => 'ApiKey',
-		self::Http => 'Http',
-		self::MutualTLS => 'MutualTLS',
-		self::OAuth2 => 'OAuth2',
-		self::OpenIdConnect => 'OpenIdConnect',
+		self::DeepObject => 'DeepObject',
+		self::Form => 'Form',
+		self::Label => 'Label',
+		self::Matrix => 'Matrix',
+		self::PipeDelimited => 'PipeDelimited',
+		self::Simple => 'Simple',
+		self::SpaceDelimited => 'SpaceDelimited',
 	];
 
 	/** @readonly */
@@ -36,29 +40,39 @@ final class SecuritySchemeType
 		$this->value = $value;
 	}
 
-	public static function apiKey(): self
+	public static function deepObject(): self
 	{
-		return self::from(self::ApiKey);
+		return self::from(self::DeepObject);
 	}
 
-	public static function http(): self
+	public static function form(): self
 	{
-		return self::from(self::Http);
+		return self::from(self::Form);
 	}
 
-	public static function mutualTLS(): self
+	public static function label(): self
 	{
-		return self::from(self::MutualTLS);
+		return self::from(self::Label);
 	}
 
-	public static function oAuth2(): self
+	public static function matrix(): self
 	{
-		return self::from(self::OAuth2);
+		return self::from(self::Matrix);
 	}
 
-	public static function openIdConnect(): self
+	public static function pipeDelimited(): self
 	{
-		return self::from(self::OpenIdConnect);
+		return self::from(self::PipeDelimited);
+	}
+
+	public static function simple(): self
+	{
+		return self::from(self::Simple);
+	}
+
+	public static function spaceDelimited(): self
+	{
+		return self::from(self::SpaceDelimited);
 	}
 
 	public static function tryFrom(string $value): ?self

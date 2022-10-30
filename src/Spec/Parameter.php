@@ -2,32 +2,40 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\Exceptions\Logic\InvalidArgument;
+use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Enum\ParameterIn;
+use Orisai\OpenAPI\Enum\ParameterStyle;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use ReflectionProperty;
+use function array_map;
+use function implode;
+use function in_array;
 
 final class Parameter implements SpecObject
 {
 
 	use SupportsSpecExtensions;
 
+	/** @readonly */
 	public string $name;
 
+	/** @readonly */
 	public ParameterIn $in;
 
 	public ?string $description = null;
 
-	public bool $required = false;
+	private bool $required;
 
 	public bool $deprecated = false;
 
-	public bool $allowEmptyValue = false;
+	private bool $allowEmptyValue = false;
 
-	public ?string $style = null;
+	private ParameterStyle $style;
 
 	public bool $explode = false;
 
-	public bool $allowReserved = false;
+	private bool $allowReserved = false;
 
 	public Schema $schema;
 
@@ -44,12 +52,83 @@ final class Parameter implements SpecObject
 	{
 		$this->name = $name;
 		$this->in = $in;
+		$this->required = $in === ParameterIn::path();
+		$this->style = $this->in->getDefaultStyle();
+		//TODO - zapisovat default? jiné defaults do output nezapisuju
+		//TODO - když nastavím jiný style, má se změnit explode?
+		//		změna na form by měla nastavit explode na true, pokud není nastaven explicitně
+		//		- možná společný setter pro obě hodnoty, kdy explode = null bude auto?
+		$this->explode = $this->style === ParameterStyle::form();
 		$this->schema = new Schema();
 		unset($this->example);
+	}
 
-		if ($in === ParameterIn::path()) {
-			$this->required = true;
+	public function setRequired(bool $required = true): void
+	{
+		if (!$required && $this->in === ParameterIn::path()) {
+			$message = Message::create()
+				->withContext('Setting Parameter required to false.')
+				->withProblem('Parameter is in path and as such must be required.');
+
+			throw InvalidArgument::create()
+				->withMessage($message);
 		}
+
+		$this->required = $required;
+	}
+
+	public function setStyle(ParameterStyle $style): void
+	{
+		$allowed = $this->in->getAllowedStyles();
+
+		if (!in_array($style, $allowed, true)) {
+			$allowedInline = implode(
+				"', '",
+				array_map(static fn (ParameterStyle $style): string => $style->value, $allowed),
+			);
+
+			$message = Message::create()
+				->withContext("Setting Parameter style to '$style->value'.")
+				->withProblem("Allowed styles for parameter in '{$this->in->value}' are '$allowedInline'.");
+
+			throw InvalidArgument::create()
+				->withMessage($message);
+		}
+
+		$this->style = $style;
+	}
+
+	public function getStyle(): ParameterStyle
+	{
+		return $this->style;
+	}
+
+	public function setAllowReserved(bool $allow = true): void
+	{
+		if ($this->in !== ParameterIn::query()) {
+			$message = Message::create()
+				->withContext('Setting Parameter allowReserved.')
+				->withProblem('Parameter is not in query and only query parameters can have allowReserved.');
+
+			throw InvalidArgument::create()
+				->withMessage($message);
+		}
+
+		$this->allowReserved = $allow;
+	}
+
+	public function setAllowEmptyValue(bool $allow = true): void
+	{
+		if ($this->in !== ParameterIn::query()) {
+			$message = Message::create()
+				->withContext('Setting Parameter allowEmptyValue.')
+				->withProblem('Parameter is not in query and only query parameters can have allowEmptyValue.');
+
+			throw InvalidArgument::create()
+				->withMessage($message);
+		}
+
+		$this->allowEmptyValue = $allow;
 	}
 
 	public function toArray(): array
@@ -66,7 +145,6 @@ final class Parameter implements SpecObject
 			$data['description'] = $this->description;
 		}
 
-		//TODO - required nesmí být false, pokud jde o path
 		if ($this->required) {
 			$data['required'] = $this->required;
 		}
@@ -75,27 +153,20 @@ final class Parameter implements SpecObject
 			$data['deprecated'] = $this->deprecated;
 		}
 
-		//TODO - pouze pro query
 		//TODO - If style is used, and if behavior is n/a (cannot be serialized),
 		//			the value of allowEmptyValue SHALL be ignored ??
 		if ($this->allowEmptyValue) {
 			$data['allowEmptyValue'] = $this->allowEmptyValue;
 		}
 
-		//TODO - Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.
-		//TODO - předdefinované styly (závislé na in)
-		if ($this->style !== null) {
-			$data['style'] = $this->style;
+		if ($this->style !== $this->in->getDefaultStyle()) {
+			$data['style'] = $this->style->value;
 		}
 
-		//TODO - pro style=form je default true (ale může se změnit??)
-		//TODO - něco s array a object, pro jiné typy parametrů žádný efekt
 		if ($this->explode) {
 			$data['explode'] = $this->explode;
 		}
 
-		//TODO - nějaká validace hodnot, když je false
-		//TODO - pouze pro in=query
 		if ($this->allowReserved) {
 			$data['allowReserved'] = $this->allowReserved;
 		}
@@ -120,6 +191,7 @@ final class Parameter implements SpecObject
 		}
 
 		//TODO - parametr musí obsahovat schema nebo content, ale ne obojí
+		//TODO - alespoň jeden content type? zkontrolovat specifikaci
 		//TODO - example a examples example musí následovat serializační strategii parametru
 		if ($this->content !== []) {
 			$data['content'] = SpecUtils::specsToArray($this->content);
