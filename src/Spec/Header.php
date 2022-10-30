@@ -60,6 +60,7 @@ final class Header implements SpecObject
 			$data['allowEmptyValue'] = $this->allowEmptyValue;
 		}
 
+		//TODO - dává vůbec smysl, když může být jen simple?
 		if ($this->style !== null) {
 			$data['style'] = $this->style;
 		}

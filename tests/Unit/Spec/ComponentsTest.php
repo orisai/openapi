@@ -2,6 +2,9 @@
 
 namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
+use Closure;
+use Generator;
+use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\OpenAPI\Enum\ParameterIn;
 use Orisai\OpenAPI\Enum\SecuritySchemeIn;
 use Orisai\OpenAPI\Spec\ApiKeySecurityScheme;
@@ -106,6 +109,100 @@ final class ComponentsTest extends TestCase
 			],
 			$c2->toArray(),
 		);
+	}
+
+	public function testValidName(): void
+	{
+		$c = new Components();
+		$key = 'azAZ09.-';
+		$ref = new Reference('ref');
+
+		$c->addSchema($key, $ref);
+		$c->addResponse($key, $ref);
+		$c->addParameter($key, $ref);
+		$c->addExample($key, $ref);
+		$c->addRequestBody($key, $ref);
+		$c->addHeader($key, $ref);
+		$c->addSecurityScheme($key, $ref);
+		$c->addLink($key, $ref);
+		$c->addCallback($key, $ref);
+		$c->addPathItem($key, $ref);
+
+		self::assertCount(10, $c->toArray());
+	}
+
+	/**
+	 * @param Closure(Components, Reference): void $add
+	 *
+	 * @dataProvider provideInvalidName
+	 */
+	public function testInvalidName(string $specType, Closure $add): void
+	{
+		$c = new Components();
+		$ref = new Reference('ref');
+
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(<<<MSG
+Context: Assigning a spec object '$specType' with key 'áž'.
+Problem: Key must match regular expression '^[a-zA-Z0-9\.\-_]+$'.
+MSG);
+
+		$add($c, $ref);
+	}
+
+	public function provideInvalidName(): Generator
+	{
+		$key = 'áž';
+
+		yield [
+			'Schema',
+			static fn (Components $c, Reference $ref) => $c->addSchema($key, $ref),
+		];
+
+		yield [
+			'Response',
+			static fn (Components $c, Reference $ref) => $c->addResponse($key, $ref),
+		];
+
+		yield [
+			'Parameter',
+			static fn (Components $c, Reference $ref) => $c->addParameter($key, $ref),
+		];
+
+		yield [
+			'Example',
+			static fn (Components $c, Reference $ref) => $c->addExample($key, $ref),
+		];
+
+		yield [
+			'Request Body',
+			static fn (Components $c, Reference $ref) => $c->addRequestBody($key, $ref),
+		];
+
+		yield [
+			'Header',
+			static fn (Components $c, Reference $ref) => $c->addHeader($key, $ref),
+		];
+
+		yield [
+			'Security Scheme',
+			static fn (Components $c, Reference $ref) => $c->addSecurityScheme($key, $ref),
+		];
+
+		yield [
+			'Link',
+			static fn (Components $c, Reference $ref) => $c->addLink($key, $ref),
+		];
+
+		yield [
+			'Callback',
+			static fn (Components $c, Reference $ref) => $c->addCallback($key, $ref),
+		];
+
+		yield [
+			'Path Item',
+			static fn (Components $c, Reference $ref) => $c->addPathItem($key, $ref),
+		];
 	}
 
 }

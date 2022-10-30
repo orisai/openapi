@@ -83,7 +83,7 @@ final class Components implements SpecObject
 	 */
 	public function addRequestBody(string $key, $requestBody): void
 	{
-		$this->checkName($key, 'RequestBody');
+		$this->checkName($key, 'Request Body');
 		$this->requestBodies[$key] = $requestBody;
 	}
 
@@ -101,7 +101,7 @@ final class Components implements SpecObject
 	 */
 	public function addSecurityScheme(string $key, $securityScheme): void
 	{
-		$this->checkName($key, 'SecurityScheme');
+		$this->checkName($key, 'Security Scheme');
 		$this->securitySchemes[$key] = $securityScheme;
 	}
 
@@ -128,13 +128,12 @@ final class Components implements SpecObject
 	 */
 	public function addPathItem(string $key, $pathItem): void
 	{
-		$this->checkName($key, 'PathItem');
+		$this->checkName($key, 'Path Item');
 		$this->pathItems[$key] = $pathItem;
 	}
 
 	private function checkName(string $key, string $specType): void
 	{
-		//TODO - otestovat validace
 		if (preg_match('~^[a-zA-Z0-9\.\-_]+$~', $key) === 1) {
 			return;
 		}

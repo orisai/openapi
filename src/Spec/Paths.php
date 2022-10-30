@@ -17,7 +17,6 @@ final class Paths implements SpecObject
 
 	public function addPath(string $path, PathItem $item): void
 	{
-		//TODO - otestovat
 		if (!str_starts_with($path, '/')) {
 			$message = Message::create()
 				->withContext("Adding path '$path'.")
