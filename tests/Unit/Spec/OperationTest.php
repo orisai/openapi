@@ -39,7 +39,7 @@ final class OperationTest extends TestCase
 
 		$op2->callbacks['foo'] = $op2cb1 = new Callback();
 		$op2->callbacks['bar'] = $op2cb2 = new Callback();
-		$op2cb2->expressions['a'] = new PathItem();
+		$op2cb2->addExpression('a', new PathItem());
 
 		$op2->deprecated = true;
 

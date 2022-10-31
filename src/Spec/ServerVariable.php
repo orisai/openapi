@@ -16,10 +16,10 @@ final class ServerVariable implements SpecObject
 	 * @var non-empty-array<string>|null
 	 * @readonly
 	 */
-	public ?array $enum;
+	private ?array $enum;
 
 	/** @readonly */
-	public string $default;
+	private string $default;
 
 	public ?string $description = null;
 
@@ -41,6 +41,19 @@ final class ServerVariable implements SpecObject
 			throw InvalidArgument::create()
 				->withMessage($message);
 		}
+	}
+
+	public function getDefault(): string
+	{
+		return $this->default;
+	}
+
+	/**
+	 * @return non-empty-array<string>|null
+	 */
+	public function getEnum(): ?array
+	{
+		return $this->enum;
 	}
 
 	public function toArray(): array

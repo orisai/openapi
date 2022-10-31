@@ -27,39 +27,119 @@ final class ComponentsTest extends TestCase
 	public function test(): void
 	{
 		$c1 = new Components();
+		self::assertSame([], $c1->getSchemas());
+		self::assertSame([], $c1->getResponses());
+		self::assertSame([], $c1->getParameters());
+		self::assertSame([], $c1->getExamples());
+		self::assertSame([], $c1->getRequestBodies());
+		self::assertSame([], $c1->getHeaders());
+		self::assertSame([], $c1->getSecuritySchemes());
+		self::assertSame([], $c1->getLinks());
+		self::assertSame([], $c1->getCallbacks());
+		self::assertSame([], $c1->getPathItems());
 		self::assertSame([], $c1->toArray());
 
 		$c2 = new Components();
 
 		$c2->addSchema('a', $c2s1 = new Schema());
 		$c2->addSchema('b', $c2s2 = new Reference('s1'));
+		self::assertSame(
+			[
+				'a' => $c2s1,
+				'b' => $c2s2,
+			],
+			$c2->getSchemas(),
+		);
 
 		$c2->addResponse('a', $c2r1 = new Response('r1'));
 		$c2->addResponse('b', $c2r2 = new Reference('r2'));
+		self::assertSame(
+			[
+				'a' => $c2r1,
+				'b' => $c2r2,
+			],
+			$c2->getResponses(),
+		);
 
 		$c2->addParameter('a', $c2p1 = new Parameter('p1', ParameterIn::path()));
 		$c2->addParameter('b', $c2p2 = new Reference('p2'));
+		self::assertSame(
+			[
+				'a' => $c2p1,
+				'b' => $c2p2,
+			],
+			$c2->getParameters(),
+		);
 
 		$c2->addExample('a', $c2e1 = new Example());
 		$c2->addExample('b', $c2e2 = new Reference('e2'));
+		self::assertSame(
+			[
+				'a' => $c2e1,
+				'b' => $c2e2,
+			],
+			$c2->getExamples(),
+		);
 
 		$c2->addRequestBody('a', $c2rb1 = new RequestBody([]));
 		$c2->addRequestBody('b', $c2rb2 = new Reference('rb2'));
+		self::assertSame(
+			[
+				'a' => $c2rb1,
+				'b' => $c2rb2,
+			],
+			$c2->getRequestBodies(),
+		);
 
 		$c2->addHeader('a', $c2h1 = new Header());
 		$c2->addHeader('b', $c2h2 = new Reference('h2'));
+		self::assertSame(
+			[
+				'a' => $c2h1,
+				'b' => $c2h2,
+			],
+			$c2->getHeaders(),
+		);
 
 		$c2->addSecurityScheme('a', $c2ss1 = new ApiKeySecurityScheme('key', SecuritySchemeIn::cookie()));
 		$c2->addSecurityScheme('b', $c2ss2 = new Reference('ss2'));
+		self::assertSame(
+			[
+				'a' => $c2ss1,
+				'b' => $c2ss2,
+			],
+			$c2->getSecuritySchemes(),
+		);
 
 		$c2->addLink('a', $c2l1 = new Link());
 		$c2->addLink('b', $c2l2 = new Reference('l2'));
+		self::assertSame(
+			[
+				'a' => $c2l1,
+				'b' => $c2l2,
+			],
+			$c2->getLinks(),
+		);
 
 		$c2->addCallback('a', $c2cb1 = new Callback());
 		$c2->addCallback('b', $c2cb2 = new Reference('cb2'));
+		self::assertSame(
+			[
+				'a' => $c2cb1,
+				'b' => $c2cb2,
+			],
+			$c2->getCallbacks(),
+		);
 
 		$c2->addPathItem('a', $c2pi1 = new PathItem());
 		$c2->addPathItem('b', $c2pi2 = new Reference('pi2'));
+		self::assertSame(
+			[
+				'a' => $c2pi1,
+				'b' => $c2pi2,
+			],
+			$c2->getPathItems(),
+		);
 
 		$c2->addExtension('x-a', null);
 

@@ -54,6 +54,14 @@ final class OpenAPI implements SpecObject
 	}
 
 	/**
+	 * @return list<Server>
+	 */
+	public function getServers(): array
+	{
+		return array_values($this->servers);
+	}
+
+	/**
 	 * @param PathItem|Reference $webhook
 	 */
 	public function addWebhook(string $key, $webhook): void
@@ -61,14 +69,38 @@ final class OpenAPI implements SpecObject
 		$this->webhooks[$key] = $webhook;
 	}
 
+	/**
+	 * @return array<string, PathItem|Reference>
+	 */
+	public function getWebhooks(): array
+	{
+		return $this->webhooks;
+	}
+
 	public function addSecurityRequirement(SecurityRequirement $requirement): void
 	{
 		$this->security[spl_object_id($requirement)] = $requirement;
 	}
 
+	/**
+	 * @return list<SecurityRequirement>
+	 */
+	public function getSecurityRequirements(): array
+	{
+		return array_values($this->security);
+	}
+
 	public function addTag(Tag $tag): void
 	{
 		$this->tags[spl_object_id($tag)] = $tag;
+	}
+
+	/**
+	 * @return list<Tag>
+	 */
+	public function getTags(): array
+	{
+		return array_values($this->tags);
 	}
 
 	public function toArray(): array
@@ -82,10 +114,11 @@ final class OpenAPI implements SpecObject
 			$data['jsonSchemaDialect'] = $this->jsonSchemaDialect;
 		}
 
+		//TODO - nevkládat? neukládáme defaults
 		$servers = $this->servers === []
 			? [new Server('/')]
-			: $this->servers;
-		$data['servers'] = SpecUtils::specsToArray(array_values($servers));
+			: array_values($this->servers);
+		$data['servers'] = SpecUtils::specsToArray($servers);
 
 		$pathsData = $this->paths->toArray();
 		if ($pathsData !== []) {

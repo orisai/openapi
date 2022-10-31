@@ -3,6 +3,7 @@
 namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
 use Orisai\OpenAPI\Enum\SecuritySchemeIn;
+use Orisai\OpenAPI\Enum\SecuritySchemeType;
 use Orisai\OpenAPI\Spec\ApiKeySecurityScheme;
 use PHPUnit\Framework\TestCase;
 
@@ -12,6 +13,7 @@ final class ApiKeySecuritySchemeTest extends TestCase
 	public function test(): void
 	{
 		$s1 = new ApiKeySecurityScheme('api_key', SecuritySchemeIn::header());
+		self::assertSame(SecuritySchemeType::apiKey(), $s1->getType());
 		self::assertSame(
 			[
 				'type' => 'apiKey',

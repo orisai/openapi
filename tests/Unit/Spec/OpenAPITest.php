@@ -35,14 +35,25 @@ final class OpenAPITest extends TestCase
 		$oa2 = new OpenAPI($i2);
 		$oa2->jsonSchemaDialect = 'dialect';
 
-		$oa2->addServer($op2s1 = new Server('https://example.com'));
-		$oa2->addServer($op2s1);
-		$oa2->addServer($op2s2 = new Server('https://example2.com'));
+		$oa2->addServer($oa2s1 = new Server('https://example.com'));
+		$oa2->addServer($oa2s1);
+		$oa2->addServer($oa2s2 = new Server('https://example2.com'));
+		self::assertSame(
+			[$oa2s1, $oa2s2],
+			$oa2->getServers(),
+		);
 
 		$oa2->paths->addPath('/foo', new PathItem());
 
 		$oa2->addWebhook('foo', $oa2wh1 = new PathItem());
 		$oa2->addWebhook('bar', $oa2wh2 = new Reference('bar'));
+		self::assertSame(
+			[
+				'foo' => $oa2wh1,
+				'bar' => $oa2wh2,
+			],
+			$oa2->getWebhooks(),
+		);
 
 		$oa2->components->addRequestBody('foo', new RequestBody([]));
 
@@ -50,10 +61,18 @@ final class OpenAPITest extends TestCase
 		$oa2->addSecurityRequirement($oa2sr1);
 		$oa2->addSecurityRequirement($oa2sr2 = new SecurityRequirement());
 		$oa2sr2->requirements['api_key'] = [];
+		self::assertSame(
+			[$oa2sr1, $oa2sr2],
+			$oa2->getSecurityRequirements(),
+		);
 
 		$oa2->addTag($oa2t1 = new Tag('t1'));
 		$oa2->addTag($oa2t1);
 		$oa2->addTag($oa2t2 = new Tag('t2'));
+		self::assertSame(
+			[$oa2t1, $oa2t2],
+			$oa2->getTags(),
+		);
 
 		$oa2->externalDocs = $oa2ed = new ExternalDocumentation('https://example.com');
 		$oa2->addExtension('x-a', null);
@@ -64,8 +83,8 @@ final class OpenAPITest extends TestCase
 				'info' => $i2->toArray(),
 				'jsonSchemaDialect' => 'dialect',
 				'servers' => [
-					$op2s1->toArray(),
-					$op2s2->toArray(),
+					$oa2s1->toArray(),
+					$oa2s2->toArray(),
 				],
 				'paths' => $oa2->paths->toArray(),
 				'webhooks' => [

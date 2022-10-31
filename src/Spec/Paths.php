@@ -29,6 +29,14 @@ final class Paths implements SpecObject
 		$this->paths[$path] = $item;
 	}
 
+	/**
+	 * @return array<string, PathItem>
+	 */
+	public function getPaths(): array
+	{
+		return $this->paths;
+	}
+
 	public function toArray(): array
 	{
 		$data = SpecUtils::specsToArray($this->paths);

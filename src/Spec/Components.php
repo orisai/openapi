@@ -52,12 +52,28 @@ final class Components implements SpecObject
 	}
 
 	/**
+	 * @return array<string, Schema|Reference>
+	 */
+	public function getSchemas(): array
+	{
+		return $this->schemas;
+	}
+
+	/**
 	 * @param Response|Reference $response
 	 */
 	public function addResponse(string $key, $response): void
 	{
 		$this->checkName($key, 'Response');
 		$this->responses[$key] = $response;
+	}
+
+	/**
+	 * @return array<string, Response|Reference>
+	 */
+	public function getResponses(): array
+	{
+		return $this->responses;
 	}
 
 	/**
@@ -70,12 +86,28 @@ final class Components implements SpecObject
 	}
 
 	/**
+	 * @return array<string, Parameter|Reference>
+	 */
+	public function getParameters(): array
+	{
+		return $this->parameters;
+	}
+
+	/**
 	 * @param Example|Reference $example
 	 */
 	public function addExample(string $key, $example): void
 	{
 		$this->checkName($key, 'Example');
 		$this->examples[$key] = $example;
+	}
+
+	/**
+	 * @return array<string, Example|Reference>
+	 */
+	public function getExamples(): array
+	{
+		return $this->examples;
 	}
 
 	/**
@@ -88,12 +120,28 @@ final class Components implements SpecObject
 	}
 
 	/**
+	 * @return array<string, RequestBody|Reference>
+	 */
+	public function getRequestBodies(): array
+	{
+		return $this->requestBodies;
+	}
+
+	/**
 	 * @param Header|Reference $header
 	 */
 	public function addHeader(string $key, $header): void
 	{
 		$this->checkName($key, 'Header');
 		$this->headers[$key] = $header;
+	}
+
+	/**
+	 * @return array<string, Header|Reference>
+	 */
+	public function getHeaders(): array
+	{
+		return $this->headers;
 	}
 
 	/**
@@ -106,12 +154,28 @@ final class Components implements SpecObject
 	}
 
 	/**
+	 * @return array<string, SecurityScheme|Reference>
+	 */
+	public function getSecuritySchemes(): array
+	{
+		return $this->securitySchemes;
+	}
+
+	/**
 	 * @param Link|Reference $link
 	 */
 	public function addLink(string $key, $link): void
 	{
 		$this->checkName($key, 'Link');
 		$this->links[$key] = $link;
+	}
+
+	/**
+	 * @return array<string, Link|Reference>
+	 */
+	public function getLinks(): array
+	{
+		return $this->links;
 	}
 
 	/**
@@ -124,12 +188,28 @@ final class Components implements SpecObject
 	}
 
 	/**
+	 * @return array<string, Callback|Reference>
+	 */
+	public function getCallbacks(): array
+	{
+		return $this->callbacks;
+	}
+
+	/**
 	 * @param PathItem|Reference $pathItem
 	 */
 	public function addPathItem(string $key, $pathItem): void
 	{
 		$this->checkName($key, 'Path Item');
 		$this->pathItems[$key] = $pathItem;
+	}
+
+	/**
+	 * @return array<string, PathItem|Reference>
+	 */
+	public function getPathItems(): array
+	{
+		return $this->pathItems;
 	}
 
 	private function checkName(string $key, string $specType): void

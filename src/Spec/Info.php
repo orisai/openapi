@@ -15,7 +15,6 @@ final class Info implements SpecObject
 
 	public ?string $termsOfService = null;
 
-	/** @readonly */
 	public Contact $contact;
 
 	public ?License $license = null;

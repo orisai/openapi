@@ -12,6 +12,7 @@ final class TagTest extends TestCase
 	public function test(): void
 	{
 		$t1 = new Tag('name');
+		self::assertSame('name', $t1->getName());
 		self::assertSame(
 			[
 				'name' => 'name',
@@ -23,6 +24,7 @@ final class TagTest extends TestCase
 		$t2->description = 'description';
 		$t2->externalDocs = new ExternalDocumentation('https://example.com');
 		$t2->addExtension('x-a', null);
+		self::assertSame('name', $t2->getName());
 		self::assertSame(
 			[
 				'name' => 'name',

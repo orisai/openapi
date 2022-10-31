@@ -14,6 +14,7 @@ final class AuthorizationCodeOAuthFlowTest extends TestCase
 			'https://example.com/api/oauth/dialog',
 			'https://example.com/api/oauth/token',
 		);
+		self::assertSame([], $f1->getScopes());
 		self::assertSame(
 			[
 				'scopes' => [],
@@ -31,6 +32,13 @@ final class AuthorizationCodeOAuthFlowTest extends TestCase
 		$f2->addScope('read:pets', 'read your pets');
 		$f2->refreshUrl = 'https://example.com/api/oauth/refresh';
 		$f2->addExtension('x-a', null);
+		self::assertSame(
+			[
+				'write:pets' => 'modify pets in your account',
+				'read:pets' => 'read your pets',
+			],
+			$f2->getScopes(),
+		);
 		self::assertSame(
 			[
 				'scopes' => [

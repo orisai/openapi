@@ -8,7 +8,7 @@ final class Tag implements SpecObject
 	use SupportsSpecExtensions;
 
 	/** @readonly */
-	public string $name;
+	private string $name;
 
 	public ?string $description = null;
 
@@ -17,6 +17,11 @@ final class Tag implements SpecObject
 	public function __construct(string $name)
 	{
 		$this->name = $name;
+	}
+
+	public function getName(): string
+	{
+		return $this->name;
 	}
 
 	public function toArray(): array

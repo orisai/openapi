@@ -18,6 +18,14 @@ abstract class OAuthFlow implements SpecObject
 		$this->scopes[$name] = $description;
 	}
 
+	/**
+	 * @return array<string, string>
+	 */
+	public function getScopes(): array
+	{
+		return $this->scopes;
+	}
+
 	public function toArray(): array
 	{
 		$data = [

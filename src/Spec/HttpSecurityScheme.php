@@ -13,7 +13,7 @@ final class HttpSecurityScheme extends SecurityScheme
 	use SupportsSpecExtensions;
 
 	/** @readonly */
-	public string $scheme;
+	private string $scheme;
 
 	private ?string $bearerFormat = null;
 
@@ -21,6 +21,11 @@ final class HttpSecurityScheme extends SecurityScheme
 	{
 		parent::__construct(SecuritySchemeType::http());
 		$this->scheme = $scheme;
+	}
+
+	public function getScheme(): string
+	{
+		return $this->scheme;
 	}
 
 	public function setBearerFormat(string $format): void

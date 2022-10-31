@@ -19,8 +19,8 @@ final class ResponsesTest extends TestCase
 
 		$rs2 = new Responses();
 
-		$rs1rsd = new Response('default');
-		$rs2->addResponse('default', $rs1rsd);
+		$rs2rsd = new Response('default');
+		$rs2->addResponse('default', $rs2rsd);
 
 		$rs2r1 = new Response('deleted');
 		$rs2->addResponse(204, $rs2r1);
@@ -32,9 +32,17 @@ final class ResponsesTest extends TestCase
 
 		self::assertSame(
 			[
+				204 => $rs2r1,
+				404 => $rs2r2,
+				'default' => $rs2rsd,
+			],
+			$rs2->getResponses(),
+		);
+		self::assertSame(
+			[
 				204 => $rs2r1->toArray(),
 				404 => $rs2r2->toArray(),
-				'default' => $rs1rsd->toArray(),
+				'default' => $rs2rsd->toArray(),
 				'x-a' => null,
 			],
 			$rs2->toArray(),

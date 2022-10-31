@@ -2,6 +2,7 @@
 
 namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
+use Orisai\OpenAPI\Enum\EncodingStyle;
 use Orisai\OpenAPI\Spec\Encoding;
 use Orisai\OpenAPI\Spec\Example;
 use Orisai\OpenAPI\Spec\MediaType;
@@ -28,7 +29,7 @@ final class MediaTypeTest extends TestCase
 		$mt2->examples['bar'] = $h2ex2 = new Reference('ref');
 
 		$mt2->encoding['foo'] = $h2en1 = new Encoding();
-		$h2en1->style = 'style';
+		$h2en1->style = EncodingStyle::form();
 		$mt2->encoding['bar'] = $h2en2 = new Reference('ref');
 
 		$mt2->addExtension('x-a', null);

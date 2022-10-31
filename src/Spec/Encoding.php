@@ -2,6 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\OpenAPI\Enum\EncodingStyle;
 use Orisai\OpenAPI\Utils\SpecUtils;
 
 final class Encoding implements SpecObject
@@ -14,7 +15,7 @@ final class Encoding implements SpecObject
 	/** @var array<string, Header|Reference> */
 	public array $headers = [];
 
-	public ?string $style = null;
+	public ?EncodingStyle $style = null;
 
 	public bool $explode = false;
 
@@ -34,7 +35,7 @@ final class Encoding implements SpecObject
 		}
 
 		if ($this->style !== null) {
-			$data['style'] = $this->style;
+			$data['style'] = $this->style->value;
 		}
 
 		if ($this->explode) {

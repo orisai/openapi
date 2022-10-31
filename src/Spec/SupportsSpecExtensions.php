@@ -33,7 +33,7 @@ trait SupportsSpecExtensions
 				->withMessage($message);
 		}
 
-		$this->checkContent($name, $content);
+		$this->checkExtensionContent($name, $content);
 
 		$this->extensions[$name] = $content;
 	}
@@ -41,7 +41,7 @@ trait SupportsSpecExtensions
 	/**
 	 * @param mixed $content
 	 */
-	private function checkContent(string $name, $content): void
+	private function checkExtensionContent(string $name, $content): void
 	{
 		if (is_object($content) || is_resource($content)) {
 			$type = get_debug_type($content);
@@ -56,7 +56,7 @@ trait SupportsSpecExtensions
 
 		if (is_array($content)) {
 			foreach ($content as $value) {
-				$this->checkContent($name, $value);
+				$this->checkExtensionContent($name, $value);
 			}
 		}
 	}

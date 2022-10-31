@@ -3,6 +3,7 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
+use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
 use ReflectionProperty;
 use function get_debug_type;
@@ -62,15 +63,38 @@ final class Example implements SpecObject
 		}
 	}
 
-	private function hasValue(): bool
+	public function hasValue(): bool
 	{
 		return (new ReflectionProperty($this, 'value'))->isInitialized($this);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		if (!$this->hasValue()) {
+			$message = Message::create()
+				->withContext('Getting the example value.')
+				->withProblem('Example value is not set and so cannot be get.')
+				->withSolution('Check with hasValue().');
+
+			throw InvalidState::create()
+				->withMessage($message);
+		}
+
+		return $this->value;
 	}
 
 	public function setExternalValue(string $externalValue): void
 	{
 		unset($this->value);
 		$this->externalValue = $externalValue;
+	}
+
+	public function getExternalValue(): ?string
+	{
+		return $this->externalValue;
 	}
 
 	public function toArray(): array

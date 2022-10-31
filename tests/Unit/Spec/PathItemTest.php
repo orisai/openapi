@@ -50,10 +50,18 @@ final class PathItemTest extends TestCase
 		$pi2->addServer($pi2s1 = new Server('https://example.com'));
 		$pi2->addServer($pi2s1);
 		$pi2->addServer($pi2s2 = new Server('https://example2.com'));
+		self::assertSame(
+			[$pi2s1, $pi2s2],
+			$pi2->getServers(),
+		);
 
 		$pi2->addParameter($pi2p1 = new Parameter('p1', ParameterIn::path()));
 		$pi2->addParameter($pi2p1);
 		$pi2->addParameter($pi2p2 = new Reference('p2'));
+		self::assertSame(
+			[$pi2p1, $pi2p2],
+			$pi2->getParameters(),
+		);
 
 		$pi2->addExtension('x-a', null);
 

@@ -17,7 +17,6 @@ final class OAuthFlows implements SpecObject
 
 	public function toArray(): array
 	{
-		//TODO
 		$data = [];
 
 		if ($this->implicit !== null) {

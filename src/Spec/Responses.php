@@ -46,27 +46,27 @@ final class Responses implements SpecObject
 		$this->responses[$code] = $response;
 	}
 
+	/**
+	 * @return array<int|string, Response|Reference>
+	 * @phpstan-return array<int<100, 599>|'1XX'|'2XX'|'3XX'|'4XX'|'default', Response|Reference>
+	 */
+	public function getResponses(): array
+	{
+		ksort($this->responses, SORT_STRING);
+
+		return $this->responses;
+	}
+
 	public function toArray(): array
 	{
 		//TODO - ve výsledném json/yaml musí být klíč v uvozovkách
 		//		- php z nich ale dělá automaticky int
 		//		- json automaticky dělá string, co yaml?
-		$data = SpecUtils::specsToArray($this->getSortedResponses());
+		$data = SpecUtils::specsToArray($this->getResponses());
 
 		$this->addExtensionsToData($data);
 
 		return $data;
-	}
-
-	/**
-	 * @return array<int|string, Response|Reference>
-	 * @phpstan-return array<int<100, 599>|'1XX'|'2XX'|'3XX'|'4XX'|'default', Response|Reference>
-	 */
-	private function getSortedResponses(): array
-	{
-		ksort($this->responses, SORT_STRING);
-
-		return $this->responses;
 	}
 
 }

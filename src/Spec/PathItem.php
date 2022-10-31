@@ -45,11 +45,27 @@ final class PathItem implements SpecObject
 	}
 
 	/**
+	 * @return list<Server>
+	 */
+	public function getServers(): array
+	{
+		return array_values($this->servers);
+	}
+
+	/**
 	 * @param Parameter|Reference $parameter
 	 */
 	public function addParameter($parameter): void
 	{
 		$this->parameters[spl_object_id($parameter)] = $parameter;
+	}
+
+	/**
+	 * @return list<Parameter|Reference>
+	 */
+	public function getParameters(): array
+	{
+		return array_values($this->parameters);
 	}
 
 	public function toArray(): array

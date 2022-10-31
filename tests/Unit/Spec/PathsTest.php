@@ -24,6 +24,14 @@ final class PathsTest extends TestCase
 		$ps2p2 = new PathItem();
 		$ps2->addPath('/bar', $ps2p2);
 
+		self::assertSame(
+			[
+				'/foo' => $ps2p1,
+				'/bar' => $ps2p2,
+			],
+			$ps2->getPaths(),
+		);
+
 		$ps2->addExtension('x-a', null);
 
 		self::assertSame(

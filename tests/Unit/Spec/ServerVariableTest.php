@@ -12,6 +12,8 @@ final class ServerVariableTest extends TestCase
 	public function test(): void
 	{
 		$v1 = new ServerVariable('default');
+		self::assertSame('default', $v1->getDefault());
+		self::assertNull($v1->getEnum());
 		self::assertSame(
 			[
 				'default' => 'default',
@@ -22,6 +24,8 @@ final class ServerVariableTest extends TestCase
 		$v2 = new ServerVariable('a', ['a', 'b', 'c']);
 		$v2->description = 'description';
 		$v2->addExtension('x-a', null);
+		self::assertSame('a', $v2->getDefault());
+		self::assertSame(['a', 'b', 'c'], $v2->getEnum());
 		self::assertSame(
 			[
 				'default' => 'a',

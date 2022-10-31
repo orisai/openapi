@@ -4,6 +4,7 @@ namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
 use Generator;
 use Orisai\Exceptions\Logic\InvalidArgument;
+use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Spec\Example;
 use PHPUnit\Framework\TestCase;
@@ -16,6 +17,7 @@ final class ExampleTest extends TestCase
 	public function test(): void
 	{
 		$e1 = new Example();
+		self::assertNull($e1->getExternalValue());
 		self::assertSame([], $e1->toArray());
 
 		$e2 = new Example();
@@ -23,6 +25,8 @@ final class ExampleTest extends TestCase
 		$e2->description = 'description';
 		$e2->setExternalValue('https://example.com/user-example.json');
 		$e2->addExtension('x-a', null);
+		self::assertFalse($e2->hasValue());
+		self::assertSame('https://example.com/user-example.json', $e2->getExternalValue());
 		self::assertSame(
 			[
 				'summary' => 'summary',
@@ -35,6 +39,8 @@ final class ExampleTest extends TestCase
 
 		$e2 = new Example();
 		$e2->setValue(null);
+		self::assertTrue($e2->hasValue());
+		self::assertNull($e2->getValue());
 		self::assertSame(
 			[
 				'value' => null,
@@ -112,6 +118,22 @@ MSG);
 			'resource',
 			'resource (stream)',
 		];
+	}
+
+	public function testGetNoValue(): void
+	{
+		$example = new Example();
+
+		self::assertFalse($example->hasValue());
+
+		$this->expectException(InvalidState::class);
+		$this->expectExceptionMessage(<<<'MSG'
+Context: Getting the example value.
+Problem: Example value is not set and so cannot be get.
+Solution: Check with hasValue().
+MSG);
+
+		$example->getValue();
 	}
 
 }

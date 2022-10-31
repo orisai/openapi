@@ -2,6 +2,7 @@
 
 namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
+use Orisai\OpenAPI\Enum\EncodingStyle;
 use Orisai\OpenAPI\Spec\Encoding;
 use Orisai\OpenAPI\Spec\Header;
 use Orisai\OpenAPI\Spec\Reference;
@@ -22,7 +23,7 @@ final class EncodingTest extends TestCase
 		$e2h1->example = null;
 		$e2->headers['bar'] = $e2h2 = new Reference('ref');
 
-		$e2->style = 'style';
+		$e2->style = EncodingStyle::form();
 		$e2->explode = true;
 		$e2->allowReserved = true;
 		$e2->addExtension('x-a', null);
@@ -34,7 +35,7 @@ final class EncodingTest extends TestCase
 					'foo' => $e2h1->toArray(),
 					'bar' => $e2h2->toArray(),
 				],
-				'style' => 'style',
+				'style' => 'form',
 				'explode' => true,
 				'allowReserved' => true,
 				'x-a' => null,
