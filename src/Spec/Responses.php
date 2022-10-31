@@ -65,9 +65,6 @@ final class Responses implements SpecObject
 
 	public function toArray(): array
 	{
-		//TODO - ve výsledném json/yaml musí být klíč v uvozovkách
-		//		- php z nich ale dělá automaticky int
-		//		- json automaticky dělá string, co yaml?
 		$data = SpecUtils::specsToArray($this->getResponses());
 
 		$this->addExtensionsToData($data);

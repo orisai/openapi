@@ -3,6 +3,7 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\OpenAPI\Utils\SpecUtils;
+use function array_merge;
 
 final class Operation implements SpecObject
 {
@@ -95,9 +96,15 @@ final class Operation implements SpecObject
 			$data['deprecated'] = $this->deprecated;
 		}
 
-		//TODO - má dovolovat prázdné pole pro OpenAPI security (téhož se ale dá docílit i prázdným security objektem)
+		//TODO - má dovolovat prázdné pole pro odstranění security z OpenAPI objektu
+		// 		téhož se ale dá docílit i SecurityRequirement::createOptional()
 		if ($this->security !== []) {
-			$data['security'] = SpecUtils::specsToArray($this->security);
+			$securityByObject = [];
+			foreach ($this->security as $object) {
+				$securityByObject[] = $object->toArray();
+			}
+
+			$data['security'] = array_merge(...$securityByObject);
 		}
 
 		if ($this->servers !== []) {

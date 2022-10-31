@@ -2,22 +2,63 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use stdClass;
+
 final class SecurityRequirement implements SpecObject
 {
 
-	/** @var array<string, list<string>> */
-	public array $requirements = [];
+	/** @readonly */
+	private ?string $name;
+
+	/** @var list<string> */
+	private array $scopes;
+
+	/**
+	 * @param list<string> $scopes
+	 */
+	private function __construct(?string $name, array $scopes)
+	{
+		$this->name = $name;
+		$this->scopes = $scopes;
+	}
+
+	public static function createOptional(): self
+	{
+		return new self(null, []);
+	}
+
+	/**
+	 * @param list<string> $scopes
+	 */
+	public static function create(string $name, array $scopes = []): self
+	{
+		return new self($name, $scopes);
+	}
+
+	public function getName(): ?string
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @return list<string>
+	 */
+	public function getScopes(): array
+	{
+		return $this->scopes;
+	}
 
 	public function toArray(): array
 	{
-		//TODO - prázdné requirements se musí vracet jako stdClass
-		//		- aby se zakódovaly v jsonu jako objekt a ne pole
-		//		- toArray() -> toData()? toRaw()?
+		//TODO - v nadřazené komponentě unikátní název (stejně jako Tag)
 		//TODO - název musí odpovídat SecurityScheme v rámci Components
-		//TODO - pokud obsahuje více schemat, tak musí odpovídat všechny
+		//TODO - pokud obsahuje více scopes, tak musí odpovídat všechny
 		//TODO - pouze jeden SecurityRequirement list (na OpenAPI nebo Operation) musí odpovídat aby uživatel byl autorizován
-		//		- přetěžuje operace OpenAPI?
-		return $this->requirements;
+		if ($this->name === null) {
+			return [new stdClass()];
+		}
+
+		return [$this->name => $this->scopes];
 	}
 
 }

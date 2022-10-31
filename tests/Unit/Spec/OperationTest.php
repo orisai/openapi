@@ -14,6 +14,7 @@ use Orisai\OpenAPI\Spec\Response;
 use Orisai\OpenAPI\Spec\SecurityRequirement;
 use Orisai\OpenAPI\Spec\Server;
 use PHPUnit\Framework\TestCase;
+use function array_merge;
 
 final class OperationTest extends TestCase
 {
@@ -43,9 +44,8 @@ final class OperationTest extends TestCase
 
 		$op2->deprecated = true;
 
-		$op2->security[] = $op2sr1 = new SecurityRequirement();
-		$op2->security[] = $op2sr2 = new SecurityRequirement();
-		$op2sr2->requirements['api_key'] = [];
+		$op2->security[] = $op2sr1 = SecurityRequirement::create('api_key');
+		$op2->security[] = $op2sr2 = SecurityRequirement::create('petstore_auth', ['foo']);
 
 		$op2->servers[] = $op2s1 = new Server('https://example.com');
 		$op2->servers[] = $op2s2 = new Server('https://example2.com');
@@ -70,10 +70,10 @@ final class OperationTest extends TestCase
 					'bar' => $op2cb2->toArray(),
 				],
 				'deprecated' => true,
-				'security' => [
+				'security' => array_merge(
 					$op2sr1->toArray(),
 					$op2sr2->toArray(),
-				],
+				),
 				'servers' => [
 					$op2s1->toArray(),
 					$op2s2->toArray(),

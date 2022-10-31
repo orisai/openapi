@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 use function array_keys;
 use function json_encode;
+use const JSON_PRETTY_PRINT;
 
 final class ResponsesTest extends TestCase
 {
@@ -112,8 +113,14 @@ MSG);
 		$rs->addResponse(200, new Response('200'));
 
 		self::assertSame(
-			'{"200":{"description":"200"}}',
-			json_encode($rs->toArray()),
+			<<<'JSON'
+{
+    "200": {
+        "description": "200"
+    }
+}
+JSON,
+			json_encode($rs->toArray(), JSON_PRETTY_PRINT),
 		);
 
 		// Key is a number instead of string - is it even possible to make it string?

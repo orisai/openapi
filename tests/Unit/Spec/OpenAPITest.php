@@ -12,6 +12,7 @@ use Orisai\OpenAPI\Spec\SecurityRequirement;
 use Orisai\OpenAPI\Spec\Server;
 use Orisai\OpenAPI\Spec\Tag;
 use PHPUnit\Framework\TestCase;
+use function array_merge;
 
 final class OpenAPITest extends TestCase
 {
@@ -57,10 +58,9 @@ final class OpenAPITest extends TestCase
 
 		$oa2->components->addRequestBody('foo', new RequestBody([]));
 
-		$oa2->addSecurityRequirement($oa2sr1 = new SecurityRequirement());
+		$oa2->addSecurityRequirement($oa2sr1 = SecurityRequirement::create('api_key'));
 		$oa2->addSecurityRequirement($oa2sr1);
-		$oa2->addSecurityRequirement($oa2sr2 = new SecurityRequirement());
-		$oa2sr2->requirements['api_key'] = [];
+		$oa2->addSecurityRequirement($oa2sr2 = SecurityRequirement::create('petstore_auth', ['foo']));
 		self::assertSame(
 			[$oa2sr1, $oa2sr2],
 			$oa2->getSecurityRequirements(),
@@ -92,10 +92,10 @@ final class OpenAPITest extends TestCase
 					'bar' => $oa2wh2->toArray(),
 				],
 				'components' => $oa2->components->toArray(),
-				'security' => [
+				'security' => array_merge(
 					$oa2sr1->toArray(),
 					$oa2sr2->toArray(),
-				],
+				),
 				'tags' => [
 					$oa2t1->toArray(),
 					$oa2t2->toArray(),

@@ -3,6 +3,7 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\OpenAPI\Utils\SpecUtils;
+use function array_merge;
 use function array_values;
 use function spl_object_id;
 
@@ -135,7 +136,12 @@ final class OpenAPI implements SpecObject
 		}
 
 		if ($this->security !== []) {
-			$data['security'] = SpecUtils::specsToArray(array_values($this->security));
+			$securityByObject = [];
+			foreach ($this->security as $object) {
+				$securityByObject[] = $object->toArray();
+			}
+
+			$data['security'] = array_merge(...$securityByObject);
 		}
 
 		if ($this->tags !== []) {
