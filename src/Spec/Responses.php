@@ -7,7 +7,9 @@ use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function in_array;
 use function is_int;
+use function is_string;
 use function ksort;
+use function preg_match;
 use const SORT_STRING;
 
 final class Responses implements SpecObject
@@ -28,6 +30,10 @@ final class Responses implements SpecObject
 	 */
 	public function addResponse($code, $response): void
 	{
+		if (is_string($code) && preg_match('#^[+-]?[0-9]+$#D', $code) === 1) {
+			$code = (int) $code;
+		}
+
 		if (
 			/* @phpstan-ignore-next-line Intentional check of allowed */
 			(is_int($code) && ($code < 100 || $code > 599))

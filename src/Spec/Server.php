@@ -14,16 +14,30 @@ final class Server implements SpecObject
 	public ?string $description = null;
 
 	/** @var array<string, ServerVariable> */
-	public array $variables = [];
+	private array $variables = [];
 
 	public function __construct(string $url)
 	{
 		$this->url = $url;
 	}
 
+	public function addVariable(string $name, ServerVariable $variable): void
+	{
+		$this->variables[$name] = $variable;
+	}
+
+	/**
+	 * @return array<string, ServerVariable>
+	 */
+	public function getVariables(): array
+	{
+		return $this->variables;
+	}
+
 	public function toArray(): array
 	{
-		//TODO - validovat že všechny example/.com/{param} jsou definované ve variables (nebo parameters??)
+		//TODO - validovat že všechny example/.com/{param} jsou definované ve variables a všechny variables se používají
+		//		- ve specifikaci není uvedeno
 		$data = [
 			'url' => $this->url,
 		];

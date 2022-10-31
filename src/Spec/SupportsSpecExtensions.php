@@ -39,6 +39,14 @@ trait SupportsSpecExtensions
 	}
 
 	/**
+	 * @return array<string, mixed>
+	 */
+	final public function getExtensions(): array
+	{
+		return $this->extensions;
+	}
+
+	/**
 	 * @param mixed $content
 	 */
 	private function checkExtensionContent(string $name, $content): void

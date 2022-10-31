@@ -23,12 +23,24 @@ final class SupportsSpecExtensionsTest extends TestCase
 
 	public function testExtensionContent(): void
 	{
+		self::assertSame([], $this->object->getExtensions());
+		self::assertSame([], $this->object->toArray());
+
 		$this->object->addExtension('x-a', null);
 		$this->object->addExtension('x-a', '');
 		$this->object->addExtension('x-b', []);
 		$this->object->addExtension('x-c', null);
 		$this->object->addExtension('x-d', 123);
 
+		self::assertSame(
+			[
+				'x-a' => '',
+				'x-b' => [],
+				'x-c' => null,
+				'x-d' => 123,
+			],
+			$this->object->getExtensions(),
+		);
 		self::assertSame(
 			[
 				'x-a' => '',

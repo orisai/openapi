@@ -7,7 +7,9 @@ use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\OpenAPI\Spec\Response;
 use Orisai\OpenAPI\Spec\Responses;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Yaml\Yaml;
 use function array_keys;
+use function json_encode;
 
 final class ResponsesTest extends TestCase
 {
@@ -101,6 +103,38 @@ MSG);
 		self::assertSame(
 			[100, 199, '1XX', 200, 299, '2XX', 300, 399, '3XX', 400, 499, '4XX', 500, 599, '5XX', 'default'],
 			array_keys($rs->toArray()),
+		);
+	}
+
+	public function testKeyIsString(): void
+	{
+		$rs = new Responses();
+		$rs->addResponse(200, new Response('200'));
+
+		self::assertSame(
+			'{"200":{"description":"200"}}',
+			json_encode($rs->toArray()),
+		);
+
+		// Key is a number instead of string - is it even possible to make it string?
+		self::assertSame(
+			<<<'YAML'
+200:
+    description: '200'
+
+YAML,
+			Yaml::dump($rs->toArray()),
+		);
+	}
+
+	public function testNumericStringCode(): void
+	{
+		$rs = new Responses();
+		$rs->addResponse('200', $r = new Response('200'));
+
+		self::assertSame(
+			[200 => $r->toArray()],
+			$rs->toArray(),
 		);
 	}
 
