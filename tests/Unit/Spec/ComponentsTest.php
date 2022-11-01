@@ -122,6 +122,7 @@ final class ComponentsTest extends TestCase
 		);
 
 		$c2->addCallback('a', $c2cb1 = new Callback());
+		$c2cb1->addExpression('a', new PathItem());
 		$c2->addCallback('b', $c2cb2 = new Reference('cb2'));
 		self::assertSame(
 			[

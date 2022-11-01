@@ -10,7 +10,7 @@ use Orisai\OpenAPI\Enum\SecuritySchemeType;
 abstract class SecurityScheme implements SpecObject
 {
 
-	public SecuritySchemeType $type;
+	private SecuritySchemeType $type;
 
 	public ?string $description = null;
 

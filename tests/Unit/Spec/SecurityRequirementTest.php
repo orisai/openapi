@@ -7,7 +7,11 @@ use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Yaml\Yaml;
 use function json_encode;
+use const JSON_PRESERVE_ZERO_FRACTION;
 use const JSON_PRETTY_PRINT;
+use const JSON_THROW_ON_ERROR;
+use const JSON_UNESCAPED_SLASHES;
+use const JSON_UNESCAPED_UNICODE;
 
 final class SecurityRequirementTest extends TestCase
 {
@@ -47,6 +51,14 @@ final class SecurityRequirementTest extends TestCase
 		);
 	}
 
+	public function testOptionalIsSameInstance(): void
+	{
+		self::assertSame(
+			SecurityRequirement::createOptional(),
+			SecurityRequirement::createOptional(),
+		);
+	}
+
 	public function testEncodeEmptyRequirementsAsObject(): void
 	{
 		$sr = SecurityRequirement::createOptional();
@@ -62,7 +74,10 @@ final class SecurityRequirementTest extends TestCase
     {}
 ]
 JSON,
-			json_encode($sr->toArray(), JSON_PRETTY_PRINT),
+			json_encode(
+				$sr->toArray(),
+				JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
+			),
 		);
 
 		self::assertSame(

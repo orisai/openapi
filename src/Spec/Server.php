@@ -9,7 +9,7 @@ final class Server implements SpecObject
 
 	use SupportsSpecExtensions;
 
-	public string $url;
+	private string $url;
 
 	public ?string $description = null;
 
@@ -19,6 +19,11 @@ final class Server implements SpecObject
 	public function __construct(string $url)
 	{
 		$this->url = $url;
+	}
+
+	public function getUrl(): string
+	{
+		return $this->url;
 	}
 
 	public function addVariable(string $name, ServerVariable $variable): void

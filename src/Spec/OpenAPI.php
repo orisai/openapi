@@ -23,7 +23,6 @@ final class OpenAPI implements SpecObject
 	/** @var array<int, Server> */
 	private array $servers = [];
 
-	/** @readonly */
 	public Paths $paths;
 
 	/** @var array<string, PathItem|Reference> */

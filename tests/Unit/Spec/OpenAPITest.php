@@ -107,4 +107,25 @@ final class OpenAPITest extends TestCase
 		);
 	}
 
+	public function testOptionalSecurityRequirementIsNotDuplicated(): void
+	{
+		$i = new Info('title', 'version');
+		$oa = new OpenAPI($i);
+
+		$oa->addSecurityRequirement(SecurityRequirement::createOptional());
+		$oa->addSecurityRequirement(SecurityRequirement::createOptional());
+
+		self::assertEquals(
+			[
+				'openapi' => '3.1.0',
+				'info' => $i->toArray(),
+				'servers' => [
+					(new Server('/'))->toArray(),
+				],
+				'security' => SecurityRequirement::createOptional()->toArray(),
+			],
+			$oa->toArray(),
+		);
+	}
+
 }

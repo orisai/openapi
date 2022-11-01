@@ -12,17 +12,64 @@ final class Response implements SpecObject
 	public string $description;
 
 	/** @var array<string, Header|Reference> */
-	public array $headers = [];
+	private array $headers = [];
 
 	/** @var array<string, MediaType> */
-	public array $content = [];
+	private array $content = [];
 
 	/** @var array<string, Link|Reference> */
-	public array $links = [];
+	private array $links = [];
 
 	public function __construct(string $description)
 	{
 		$this->description = $description;
+	}
+
+	/**
+	 * @param Header|Reference $header
+	 */
+	public function addHeader(string $key, $header): void
+	{
+		//TODO - $this->checkName($key, 'Header');
+		$this->headers[$key] = $header;
+	}
+
+	/**
+	 * @return array<string, Header|Reference>
+	 */
+	public function getHeaders(): array
+	{
+		return $this->headers;
+	}
+
+	public function addContent(string $key, MediaType $mediaType): void
+	{
+		$this->content[$key] = $mediaType;
+	}
+
+	/**
+	 * @return array<string, MediaType>
+	 */
+	public function getContent(): array
+	{
+		return $this->content;
+	}
+
+	/**
+	 * @param Link|Reference $link
+	 */
+	public function addLink(string $key, $link): void
+	{
+		//TODO - $this->checkName($key, 'Link');
+		$this->links[$key] = $link;
+	}
+
+	/**
+	 * @return array<string, Link|Reference>
+	 */
+	public function getLinks(): array
+	{
+		return $this->links;
 	}
 
 	public function toArray(): array

@@ -25,27 +25,50 @@ final class ResponseTest extends TestCase
 
 		$r2h1 = new Header();
 		$r2h1->example = 'h1';
-		$r2->headers['h1'] = $r2h1;
+		$r2->addHeader('h1', $r2h1);
 
 		$r2h2 = new Header();
 		$r2h2->example = 'h2';
-		$r2->headers['h2'] = $r2h2;
+		$r2->addHeader('h2', $r2h2);
+
+		self::assertSame(
+			[
+				'h1' => $r2h1,
+				'h2' => $r2h2,
+			],
+			$r2->getHeaders(),
+		);
 
 		$r2mt1 = new MediaType();
 		$r2mt1->example = 'json';
-		$r2->content['application/json'] = $r2mt1;
+		$r2->addContent('application/json', $r2mt1);
 
 		$r2mt2 = new MediaType();
 		$r2mt2->example = 'xml';
-		$r2->content['application/xml'] = $r2mt2;
+		$r2->addContent('application/xml', $r2mt2);
+
+		self::assertSame(
+			[
+				'application/json' => $r2mt1,
+				'application/xml' => $r2mt2,
+			],
+			$r2->getContent(),
+		);
 
 		$r2l1 = new Link();
-		$r2l1->description = 'l1';
-		$r2->links['l1'] = $r2l1;
+		$r2->addLink('l1', $r2l1);
 
 		$r2l2 = new Link();
 		$r2l2->description = 'l2';
-		$r2->links['l2'] = $r2l2;
+		$r2->addLink('l2', $r2l2);
+
+		self::assertSame(
+			[
+				'l1' => $r2l1,
+				'l2' => $r2l2,
+			],
+			$r2->getLinks(),
+		);
 
 		$r2->addExtension('x-a', null);
 

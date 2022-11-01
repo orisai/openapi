@@ -24,7 +24,13 @@ final class SecurityRequirement implements SpecObject
 
 	public static function createOptional(): self
 	{
-		return new self(null, []);
+		static $inst = null;
+
+		if ($inst === null) {
+			$inst = new self(null, []);
+		}
+
+		return $inst;
 	}
 
 	/**

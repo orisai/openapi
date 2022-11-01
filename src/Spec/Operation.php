@@ -4,6 +4,8 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function array_merge;
+use function array_values;
+use function spl_object_id;
 
 final class Operation implements SpecObject
 {
@@ -21,29 +23,86 @@ final class Operation implements SpecObject
 
 	public ?string $operationId = null;
 
-	/** @var list<Parameter|Reference> */
-	public array $parameters = [];
+	/** @var array<int, Parameter|Reference> */
+	private array $parameters = [];
 
 	/** @var RequestBody|Reference|null */
 	public $requestBody;
 
-	/** @readonly */
 	public Responses $responses;
 
 	/** @var array<string, Callback|Reference> */
-	public array $callbacks = [];
+	private array $callbacks = [];
 
 	public bool $deprecated = false;
 
-	/** @var list<SecurityRequirement> */
-	public array $security = [];
+	/** @var array<int, SecurityRequirement> */
+	private array $security = [];
 
-	/** @var list<Server> */
-	public array $servers = [];
+	/** @var array<int, Server> */
+	private array $servers = [];
 
 	public function __construct()
 	{
 		$this->responses = new Responses();
+	}
+
+	/**
+	 * @param Parameter|Reference $parameter
+	 */
+	public function addParameter($parameter): void
+	{
+		$this->parameters[spl_object_id($parameter)] = $parameter;
+	}
+
+	/**
+	 * @return list<Parameter|Reference>
+	 */
+	public function getParameters(): array
+	{
+		return array_values($this->parameters);
+	}
+
+	/**
+	 * @param Callback|Reference $callback
+	 */
+	public function addCallback(string $key, $callback): void
+	{
+		$this->callbacks[$key] = $callback;
+	}
+
+	/**
+	 * @return array<string, Callback|Reference>
+	 */
+	public function getCallbacks(): array
+	{
+		return $this->callbacks;
+	}
+
+	public function addSecurityRequirement(SecurityRequirement $requirement): void
+	{
+		$this->security[spl_object_id($requirement)] = $requirement;
+	}
+
+	/**
+	 * @return list<SecurityRequirement>
+	 */
+	public function getSecurityRequirements(): array
+	{
+		return array_values($this->security);
+	}
+
+	public function addServer(Server $server): void
+	{
+		$this->servers[spl_object_id($server)] = $server;
+	}
+
+	/**
+	 * @return list<Server>
+	 */
+	public function getServers(): array
+	{
+		return array_values($this->servers);
 	}
 
 	public function toArray(): array
@@ -71,12 +130,8 @@ final class Operation implements SpecObject
 			$data['operationId'] = $this->operationId;
 		}
 
-		//TODO - parametry nesmí být duplicitní (kombinace name a location)
-		//		- musí brát v úvahu reference
-
-		//TODO - přepisuje parametry z cesty
 		if ($this->parameters !== []) {
-			$data['parameters'] = SpecUtils::specsToArray($this->parameters);
+			$data['parameters'] = SpecUtils::specsToArray(array_values($this->parameters));
 		}
 
 		if ($this->requestBody !== null) {
@@ -108,7 +163,7 @@ final class Operation implements SpecObject
 		}
 
 		if ($this->servers !== []) {
-			$data['servers'] = SpecUtils::specsToArray($this->servers);
+			$data['servers'] = SpecUtils::specsToArray(array_values($this->servers));
 		}
 
 		$this->addExtensionsToData($data);

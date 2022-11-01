@@ -10,7 +10,11 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 use function array_keys;
 use function json_encode;
+use const JSON_PRESERVE_ZERO_FRACTION;
 use const JSON_PRETTY_PRINT;
+use const JSON_THROW_ON_ERROR;
+use const JSON_UNESCAPED_SLASHES;
+use const JSON_UNESCAPED_UNICODE;
 
 final class ResponsesTest extends TestCase
 {
@@ -120,7 +124,10 @@ MSG);
     }
 }
 JSON,
-			json_encode($rs->toArray(), JSON_PRETTY_PRINT),
+			json_encode(
+				$rs->toArray(),
+				JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
+			),
 		);
 
 		// Key is a number instead of string - is it even possible to make it string?
