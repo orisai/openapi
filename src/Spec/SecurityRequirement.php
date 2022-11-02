@@ -56,10 +56,9 @@ final class SecurityRequirement implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - měl by být název v rámci nadřazené komponenty unikátní?
+		//		specifikace to nezmiňuje, ale vzhledem k tomu, že má odpovídat unikátnímu názvu SecurityScheme v Components, tak by to dávalo smysl
 		//TODO - v nadřazené komponentě unikátní název (stejně jako Tag)
-		//TODO - název musí odpovídat SecurityScheme v rámci Components
-		//TODO - pokud obsahuje více scopes, tak musí odpovídat všechny
-		//TODO - pouze jeden SecurityRequirement list (na OpenAPI nebo Operation) musí odpovídat aby uživatel byl autorizován
 		if ($this->name === null) {
 			return [new stdClass()];
 		}

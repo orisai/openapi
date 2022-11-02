@@ -215,75 +215,109 @@ final class ComponentsTest extends TestCase
 	/**
 	 * @param Closure(Components, Reference): void $add
 	 *
-	 * @dataProvider provideInvalidName
+	 * @dataProvider provideInvalidNameOfComponents
 	 */
-	public function testInvalidName(string $specType, Closure $add): void
+	public function testInvalidNameOfComponents(string $key, string $specType, Closure $add): void
 	{
 		$c = new Components();
 		$ref = new Reference('ref');
 
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage(<<<MSG
-Context: Assigning a spec object '$specType' with key 'áž'.
+Context: Assigning a spec object '$specType' with key '$key'.
 Problem: Key must match regular expression '^[a-zA-Z0-9\.\-_]+$'.
 MSG);
 
 		$add($c, $ref);
 	}
 
-	public function provideInvalidName(): Generator
+	public function provideInvalidNameOfComponents(): Generator
 	{
 		$key = 'áž';
 
 		yield [
+			$key,
 			'Schema',
 			static fn (Components $c, Reference $ref) => $c->addSchema($key, $ref),
 		];
 
 		yield [
+			$key,
 			'Response',
 			static fn (Components $c, Reference $ref) => $c->addResponse($key, $ref),
 		];
 
 		yield [
+			$key,
 			'Parameter',
 			static fn (Components $c, Reference $ref) => $c->addParameter($key, $ref),
 		];
 
 		yield [
+			$key,
 			'Example',
 			static fn (Components $c, Reference $ref) => $c->addExample($key, $ref),
 		];
 
 		yield [
+			$key,
 			'Request Body',
 			static fn (Components $c, Reference $ref) => $c->addRequestBody($key, $ref),
 		];
 
 		yield [
+			$key,
 			'Header',
 			static fn (Components $c, Reference $ref) => $c->addHeader($key, $ref),
 		];
 
 		yield [
+			$key,
 			'Security Scheme',
 			static fn (Components $c, Reference $ref) => $c->addSecurityScheme($key, $ref),
 		];
 
 		yield [
+			$key,
 			'Link',
 			static fn (Components $c, Reference $ref) => $c->addLink($key, $ref),
 		];
 
 		yield [
+			$key,
 			'Callback',
 			static fn (Components $c, Reference $ref) => $c->addCallback($key, $ref),
 		];
 
 		yield [
+			$key,
 			'Path Item',
 			static fn (Components $c, Reference $ref) => $c->addPathItem($key, $ref),
 		];
+	}
+
+	/**
+	 * @dataProvider provideInvalidNameVariants
+	 */
+	public function testInvalidNameVariants(string $key): void
+	{
+		$c = new Components();
+		$ref = new Reference('ref');
+
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(<<<MSG
+Context: Assigning a spec object 'Schema' with key '$key'.
+Problem: Key must match regular expression '^[a-zA-Z0-9\.\-_]+$'.
+MSG);
+
+		$c->addSchema($key, $ref);
+	}
+
+	public function provideInvalidNameVariants(): Generator
+	{
+		yield ['až'];
+		yield ['azAZ09.-ž'];
+		yield ['žazAZ09.-'];
 	}
 
 }

@@ -82,6 +82,8 @@ MSG);
 		yield ['6XX'];
 		yield ['5xx'];
 		yield ['defaultt'];
+		yield ['500a'];
+		yield ['a500'];
 	}
 
 	public function testResponsesOrder(): void

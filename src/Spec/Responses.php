@@ -30,7 +30,7 @@ final class Responses implements SpecObject
 	 */
 	public function addResponse($code, $response): void
 	{
-		if (is_string($code) && preg_match('#^[+-]?[0-9]+$#D', $code) === 1) {
+		if (is_string($code) && preg_match('#^[+-]?[0-9]+$#', $code) === 1) {
 			$code = (int) $code;
 		}
 

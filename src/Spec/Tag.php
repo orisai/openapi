@@ -26,6 +26,7 @@ final class Tag implements SpecObject
 
 	public function toArray(): array
 	{
+		//TODO - v nadřazené komponentě unikátní (check spec)
 		$data = [
 			'name' => $this->name,
 		];
