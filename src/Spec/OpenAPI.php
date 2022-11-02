@@ -77,7 +77,7 @@ final class OpenAPI implements SpecObject
 		return $this->webhooks;
 	}
 
-	public function addSecurityRequirement(SecurityRequirement $requirement): void
+	public function addSecurity(SecurityRequirement $requirement): void
 	{
 		$this->security[spl_object_id($requirement)] = $requirement;
 	}

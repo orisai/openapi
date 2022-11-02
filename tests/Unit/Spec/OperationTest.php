@@ -53,9 +53,9 @@ final class OperationTest extends TestCase
 
 		$op2->deprecated = true;
 
-		$op2->addSecurityRequirement($op2sr1 = SecurityRequirement::create('api_key'));
-		$op2->addSecurityRequirement($op2sr1);
-		$op2->addSecurityRequirement($op2sr2 = SecurityRequirement::create('petstore_auth', ['foo']));
+		$op2->addSecurity($op2sr1 = SecurityRequirement::create('api_key'));
+		$op2->addSecurity($op2sr1);
+		$op2->addSecurity($op2sr2 = SecurityRequirement::create('petstore_auth', ['foo']));
 		self::assertSame(
 			[$op2sr1, $op2sr2],
 			$op2->getSecurityRequirements(),
@@ -116,8 +116,8 @@ final class OperationTest extends TestCase
 	{
 		$op = new Operation();
 
-		$op->addSecurityRequirement(SecurityRequirement::createOptional());
-		$op->addSecurityRequirement(SecurityRequirement::createOptional());
+		$op->addSecurity(SecurityRequirement::createOptional());
+		$op->addSecurity(SecurityRequirement::createOptional());
 
 		self::assertEquals(
 			[

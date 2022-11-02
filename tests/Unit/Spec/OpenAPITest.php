@@ -58,9 +58,9 @@ final class OpenAPITest extends TestCase
 
 		$oa2->components->addRequestBody('foo', new RequestBody([]));
 
-		$oa2->addSecurityRequirement($oa2sr1 = SecurityRequirement::create('api_key'));
-		$oa2->addSecurityRequirement($oa2sr1);
-		$oa2->addSecurityRequirement($oa2sr2 = SecurityRequirement::create('petstore_auth', ['foo']));
+		$oa2->addSecurity($oa2sr1 = SecurityRequirement::create('api_key'));
+		$oa2->addSecurity($oa2sr1);
+		$oa2->addSecurity($oa2sr2 = SecurityRequirement::create('petstore_auth', ['foo']));
 		self::assertSame(
 			[$oa2sr1, $oa2sr2],
 			$oa2->getSecurityRequirements(),
@@ -112,8 +112,8 @@ final class OpenAPITest extends TestCase
 		$i = new Info('title', 'version');
 		$oa = new OpenAPI($i);
 
-		$oa->addSecurityRequirement(SecurityRequirement::createOptional());
-		$oa->addSecurityRequirement(SecurityRequirement::createOptional());
+		$oa->addSecurity(SecurityRequirement::createOptional());
+		$oa->addSecurity(SecurityRequirement::createOptional());
 
 		self::assertEquals(
 			[

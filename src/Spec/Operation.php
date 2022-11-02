@@ -79,7 +79,7 @@ final class Operation implements SpecObject
 		return $this->callbacks;
 	}
 
-	public function addSecurityRequirement(SecurityRequirement $requirement): void
+	public function addSecurity(SecurityRequirement $requirement): void
 	{
 		$this->security[spl_object_id($requirement)] = $requirement;
 	}
