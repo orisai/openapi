@@ -56,7 +56,7 @@ final class OpenAPITest extends TestCase
 			$oa2->getWebhooks(),
 		);
 
-		$oa2->components->addRequestBody('foo', new RequestBody([]));
+		$oa2->components->addRequestBody('foo', new RequestBody());
 
 		$oa2->addSecurity($oa2sr1 = SecurityRequirement::create('api_key'));
 		$oa2->addSecurity($oa2sr1);

@@ -51,6 +51,7 @@ trait SupportsSpecExtensions
 	 */
 	private function checkExtensionContent(string $name, $content): void
 	{
+		//TODO - stdclass
 		if (is_object($content) || is_resource($content)) {
 			$type = get_debug_type($content);
 			$message = Message::create()

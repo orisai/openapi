@@ -81,7 +81,7 @@ final class ComponentsTest extends TestCase
 			$c2->getExamples(),
 		);
 
-		$c2->addRequestBody('a', $c2rb1 = new RequestBody([]));
+		$c2->addRequestBody('a', $c2rb1 = new RequestBody());
 		$c2->addRequestBody('b', $c2rb2 = new Reference('rb2'));
 		self::assertSame(
 			[

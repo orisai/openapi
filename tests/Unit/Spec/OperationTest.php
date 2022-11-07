@@ -37,7 +37,7 @@ final class OperationTest extends TestCase
 		$op2->addParameter($op2p2 = new Reference('p2'));
 		self::assertSame([$op2p1, $op2p2], $op2->getParameters());
 
-		$op2->requestBody = $op2rb = new RequestBody([]);
+		$op2->requestBody = $op2rb = new RequestBody();
 		$op2->responses->addResponse(204, new Response('no content'));
 
 		$op2->addCallback('a', $op2cb1 = new Callback());
