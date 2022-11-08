@@ -47,4 +47,14 @@ final class ParameterStyleTest extends TestCase
 		ParameterStyle::from('invalid');
 	}
 
+	public function testDefaultExplode(): void
+	{
+		foreach (ParameterStyle::cases() as $case) {
+			self::assertSame(
+				$case === ParameterStyle::form(),
+				$case->getDefaultExplode(),
+			);
+		}
+	}
+
 }

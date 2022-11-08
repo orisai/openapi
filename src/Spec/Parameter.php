@@ -35,7 +35,7 @@ final class Parameter implements SpecObject
 
 	private ParameterStyle $style;
 
-	public bool $explode = false;
+	private bool $explode;
 
 	private bool $allowReserved = false;
 
@@ -56,11 +56,7 @@ final class Parameter implements SpecObject
 		$this->in = $in;
 		$this->required = $in === ParameterIn::path();
 		$this->style = $this->in->getDefaultStyle();
-		//TODO - zapisovat default? jiné defaults do output nezapisuju
-		//TODO - když nastavím jiný style, má se změnit explode?
-		//		změna na form by měla nastavit explode na true, pokud není nastaven explicitně
-		//		- možná společný setter pro obě hodnoty, kdy explode = null bude auto?
-		$this->explode = $this->style === ParameterStyle::form();
+		$this->explode = $this->style->getDefaultExplode();
 		$this->schema = new Schema();
 		unset($this->example);
 	}
@@ -79,7 +75,7 @@ final class Parameter implements SpecObject
 		$this->required = $required;
 	}
 
-	public function setStyle(ParameterStyle $style): void
+	public function setStyle(ParameterStyle $style, ?bool $explode = null): void
 	{
 		$allowed = $this->in->getAllowedStyles();
 
@@ -98,11 +94,17 @@ final class Parameter implements SpecObject
 		}
 
 		$this->style = $style;
+		$this->explode = $explode ?? $style->getDefaultExplode();
 	}
 
 	public function getStyle(): ParameterStyle
 	{
 		return $this->style;
+	}
+
+	public function getExplode(): bool
+	{
+		return $this->explode;
 	}
 
 	public function setAllowReserved(bool $allow = true): void
@@ -167,9 +169,9 @@ final class Parameter implements SpecObject
 
 	public function toArray(): array
 	{
-		//TODO - pro type header a name "Accept", "Content-Type" a "Authorization" má být definice parametru ignorovaná??
-		//			- co to znamená?
-		//TODO - ve specifikaci je, že jsou jména case sensitive, ale hlavičky jsou case unsensitive
+		//TODO - pro type header a name "Accept", "Content-Type" a "Authorization" má být definice parametru ignorovaná
+		//			- v openapi se definují přes media types a security
+		//TODO - case unsensitive header
 		$data = [
 			'name' => $this->name,
 			'in' => $this->in->value,
@@ -197,7 +199,7 @@ final class Parameter implements SpecObject
 			$data['style'] = $this->style->value;
 		}
 
-		if ($this->explode) {
+		if ($this->explode !== $this->style->getDefaultExplode()) {
 			$data['explode'] = $this->explode;
 		}
 

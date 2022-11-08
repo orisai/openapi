@@ -28,7 +28,6 @@ final class ParameterTest extends TestCase
 			[
 				'name' => 'p1',
 				'in' => 'query',
-				'explode' => true,
 			],
 			$p1->toArray(),
 		);
@@ -48,7 +47,6 @@ final class ParameterTest extends TestCase
 			[
 				'name' => 'p3',
 				'in' => 'cookie',
-				'explode' => true,
 			],
 			$p3->toArray(),
 		);
@@ -69,8 +67,7 @@ final class ParameterTest extends TestCase
 		$p->description = 'description';
 		$p->setRequired(true);
 		$p->deprecated = true;
-		$p->setStyle(ParameterStyle::form());
-		$p->explode = true;
+		$p->setStyle(ParameterStyle::form(), false);
 		$p->schema->setExample(null);
 		$p->setExample(null);
 
@@ -91,7 +88,7 @@ final class ParameterTest extends TestCase
 				'description' => 'description',
 				'required' => true,
 				'deprecated' => true,
-				'explode' => true,
+				'explode' => false,
 				'schema' => $p->schema->toArray(),
 				'example' => null,
 				'examples' => [
@@ -156,6 +153,7 @@ MSG);
 		foreach ($styles as $style) {
 			$parameter->setStyle($style);
 			self::assertSame($style, $parameter->getStyle());
+			self::assertSame($style->getDefaultExplode(), $parameter->getExplode());
 
 			if ($style === $parameter->in->getDefaultStyle()) {
 				self::assertNotContains('style', $parameter->toArray());
@@ -229,6 +227,30 @@ MSG,
 		yield [new Parameter('name', ParameterIn::query()), "'form', 'spaceDelimited', 'pipeDelimited', 'deepObject'"];
 	}
 
+	public function testExplode(): void
+	{
+		$parameter = new Parameter('name', ParameterIn::query());
+		self::assertTrue($parameter->getExplode());
+
+		$parameter->setStyle(ParameterStyle::pipeDelimited());
+		self::assertFalse($parameter->getExplode());
+
+		$parameter->setStyle(ParameterStyle::pipeDelimited(), false);
+		self::assertFalse($parameter->getExplode());
+
+		$parameter->setStyle(ParameterStyle::pipeDelimited(), true);
+		self::assertTrue($parameter->getExplode());
+
+		$parameter->setStyle(ParameterStyle::form());
+		self::assertTrue($parameter->getExplode());
+
+		$parameter->setStyle(ParameterStyle::form(), true);
+		self::assertTrue($parameter->getExplode());
+
+		$parameter->setStyle(ParameterStyle::form(), false);
+		self::assertFalse($parameter->getExplode());
+	}
+
 	public function testInQueryReserved(): void
 	{
 		$parameter = new Parameter('name', ParameterIn::query());
@@ -238,7 +260,6 @@ MSG,
 			[
 				'name' => 'name',
 				'in' => 'query',
-				'explode' => true,
 				'allowReserved' => true,
 			],
 			$parameter->toArray(),
@@ -249,7 +270,6 @@ MSG,
 			[
 				'name' => 'name',
 				'in' => 'query',
-				'explode' => true,
 			],
 			$parameter->toArray(),
 		);
@@ -280,7 +300,6 @@ MSG);
 				'name' => 'name',
 				'in' => 'query',
 				'allowEmptyValue' => true,
-				'explode' => true,
 			],
 			$parameter->toArray(),
 		);
@@ -290,7 +309,6 @@ MSG);
 			[
 				'name' => 'name',
 				'in' => 'query',
-				'explode' => true,
 			],
 			$parameter->toArray(),
 		);

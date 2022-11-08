@@ -4,6 +4,7 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
+use Orisai\OpenAPI\Enum\HeaderStyle;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use ReflectionProperty;
 
@@ -20,7 +21,7 @@ final class Header implements SpecObject
 
 	public bool $allowEmptyValue = false;
 
-	public ?string $style = null;
+	private HeaderStyle $style;
 
 	public bool $explode = false;
 
@@ -39,6 +40,7 @@ final class Header implements SpecObject
 
 	public function __construct()
 	{
+		$this->style = HeaderStyle::simple();
 		$this->schema = new Schema();
 		unset($this->example);
 	}
@@ -55,6 +57,11 @@ final class Header implements SpecObject
 	public function hasExample(): bool
 	{
 		return (new ReflectionProperty($this, 'example'))->isInitialized($this);
+	}
+
+	public function getStyle(): HeaderStyle
+	{
+		return $this->style;
 	}
 
 	/**
@@ -96,8 +103,13 @@ final class Header implements SpecObject
 			$data['allowEmptyValue'] = $this->allowEmptyValue;
 		}
 
-		//TODO - dává vůbec smysl, když může být jen simple?
-		if ($this->style !== null) {
+		/**
+		 * Style is always simple
+		 *
+		 * @codeCoverageIgnore
+		 * @infection-ignore-all
+		 */
+		if ($this->style !== HeaderStyle::simple()) {
 			$data['style'] = $this->style;
 		}
 

@@ -4,25 +4,13 @@ namespace Orisai\OpenAPI\Enum;
 
 use ValueError;
 
-final class ParameterStyle
+final class HeaderStyle
 {
 
-	private const DeepObject = 'deepObject',
-		Form = 'form',
-		Label = 'label',
-		Matrix = 'matrix',
-		PipeDelimited = 'pipeDelimited',
-		Simple = 'simple',
-		SpaceDelimited = 'spaceDelimited';
+	private const Simple = 'simple';
 
 	private const ValuesAndNames = [
-		self::DeepObject => 'DeepObject',
-		self::Form => 'Form',
-		self::Label => 'Label',
-		self::Matrix => 'Matrix',
-		self::PipeDelimited => 'PipeDelimited',
 		self::Simple => 'Simple',
-		self::SpaceDelimited => 'SpaceDelimited',
 	];
 
 	/** @readonly */
@@ -40,39 +28,9 @@ final class ParameterStyle
 		$this->value = $value;
 	}
 
-	public static function deepObject(): self
-	{
-		return self::from(self::DeepObject);
-	}
-
-	public static function form(): self
-	{
-		return self::from(self::Form);
-	}
-
-	public static function label(): self
-	{
-		return self::from(self::Label);
-	}
-
-	public static function matrix(): self
-	{
-		return self::from(self::Matrix);
-	}
-
-	public static function pipeDelimited(): self
-	{
-		return self::from(self::PipeDelimited);
-	}
-
 	public static function simple(): self
 	{
 		return self::from(self::Simple);
-	}
-
-	public static function spaceDelimited(): self
-	{
-		return self::from(self::SpaceDelimited);
 	}
 
 	public static function tryFrom(string $value): ?self
@@ -108,11 +66,6 @@ final class ParameterStyle
 		}
 
 		return $cases;
-	}
-
-	public function getDefaultExplode(): bool
-	{
-		return $this === self::form();
 	}
 
 }

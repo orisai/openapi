@@ -6,6 +6,7 @@ use Generator;
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
+use Orisai\OpenAPI\Enum\HeaderStyle;
 use Orisai\OpenAPI\Spec\Example;
 use Orisai\OpenAPI\Spec\Header;
 use Orisai\OpenAPI\Spec\MediaType;
@@ -20,6 +21,7 @@ final class HeaderTest extends TestCase
 	public function test(): void
 	{
 		$h1 = new Header();
+		self::assertSame($h1->getStyle(), HeaderStyle::simple());
 		self::assertSame([], $h1->toArray());
 
 		$h2 = new Header();
@@ -27,7 +29,6 @@ final class HeaderTest extends TestCase
 		$h2->required = true;
 		$h2->deprecated = true;
 		$h2->allowEmptyValue = true;
-		$h2->style = 'style';
 		$h2->explode = true;
 		$h2->allowReserved = true;
 		$h2->setExample(null);
@@ -41,13 +42,13 @@ final class HeaderTest extends TestCase
 		$h2c1->setExample('example');
 		$h2->content['application/xml'] = $h2c2 = new MediaType();
 
+		self::assertSame($h2->getStyle(), HeaderStyle::simple());
 		self::assertSame(
 			[
 				'description' => 'description',
 				'required' => true,
 				'deprecated' => true,
 				'allowEmptyValue' => true,
-				'style' => 'style',
 				'explode' => true,
 				'allowReserved' => true,
 				'schema' => $h2->schema->toArray(),
