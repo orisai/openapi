@@ -28,11 +28,11 @@ final class ResponseTest extends TestCase
 		$r2 = new Response('description');
 
 		$r2h1 = new Header();
-		$r2h1->example = 'h1';
+		$r2h1->setExample('h1');
 		$r2->addHeader('h1', $r2h1);
 
 		$r2h2 = new Header();
-		$r2h2->example = 'h2';
+		$r2h2->setExample('h2');
 		$r2->addHeader('h2', $r2h2);
 
 		self::assertSame(
@@ -44,11 +44,11 @@ final class ResponseTest extends TestCase
 		);
 
 		$r2mt1 = new MediaType();
-		$r2mt1->example = 'json';
+		$r2mt1->setExample('json');
 		$r2->addContent('application/json', $r2mt1);
 
 		$r2mt2 = new MediaType();
-		$r2mt2->example = 'xml';
+		$r2mt2->setExample('xml');
 		$r2->addContent('application/xml', $r2mt2);
 
 		self::assertSame(

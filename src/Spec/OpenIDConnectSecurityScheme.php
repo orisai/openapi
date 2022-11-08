@@ -7,7 +7,7 @@ use Orisai\OpenAPI\Enum\SecuritySchemeType;
 final class OpenIDConnectSecurityScheme extends SecurityScheme
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public string $openIdConnectUrl;
 

@@ -5,7 +5,7 @@ namespace Orisai\OpenAPI\Spec;
 final class XML implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public ?string $name = null;
 

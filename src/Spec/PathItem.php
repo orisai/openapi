@@ -9,7 +9,7 @@ use function spl_object_id;
 final class PathItem implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public ?string $ref = null;
 

@@ -23,10 +23,10 @@ final class RequestBodyTest extends TestCase
 		);
 
 		$rb2mt1 = new MediaType();
-		$rb2mt1->example = 'json';
+		$rb2mt1->setExample('json');
 
 		$rb2mt2 = new MediaType();
-		$rb2mt2->example = 'xml';
+		$rb2mt2->setExample('xml');
 
 		$rb2 = new RequestBody();
 		$rb2->description = 'description';

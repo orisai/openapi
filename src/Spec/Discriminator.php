@@ -5,7 +5,7 @@ namespace Orisai\OpenAPI\Spec;
 final class Discriminator implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public string $propertyName;
 

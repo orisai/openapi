@@ -66,13 +66,16 @@ trait SpecObjectHasContent
 			$bHasExt = strpos($b, '/x-') !== false;
 
 			if ($aHasExt && !$bHasExt) {
+				/** @infection-ignore-all */
 				return 1;
 			}
 
 			if (!$aHasExt && $bHasExt) {
+				/** @infection-ignore-all */
 				return -1;
 			}
 
+			/** @infection-ignore-all */
 			return $a > $b ? 1 : -1;
 		});
 

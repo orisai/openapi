@@ -5,7 +5,7 @@ namespace Orisai\OpenAPI\Spec;
 final class ClientCredentialsOAuthFlow extends OAuthFlow
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public string $tokenUrl;
 

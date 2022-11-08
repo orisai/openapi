@@ -20,7 +20,7 @@ final class EncodingTest extends TestCase
 		$e2->contentType = 'application/json';
 
 		$e2->headers['foo'] = $e2h1 = new Header();
-		$e2h1->example = null;
+		$e2h1->setExample(null);
 		$e2->headers['bar'] = $e2h2 = new Reference('ref');
 
 		$e2->style = EncodingStyle::form();

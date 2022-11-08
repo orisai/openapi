@@ -2,10 +2,14 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\Exceptions\Logic\InvalidState;
+use Orisai\Exceptions\Message;
 use ReflectionProperty;
 
 final class Schema implements SpecObject
 {
+
+	use SpecObjectChecksExampleValue;
 
 	public ?Discriminator $discriminator = null;
 
@@ -14,12 +18,44 @@ final class Schema implements SpecObject
 	public ?ExternalDocumentation $externalDocs = null;
 
 	/** @var mixed */
-	public $example;
+	private $example;
 
 	public function __construct()
 	{
 		$this->xml = new XML();
 		unset($this->example);
+	}
+
+	/**
+	 * @param mixed $example
+	 */
+	public function setExample($example): void
+	{
+		$this->checkExampleValue($example);
+		$this->example = $example;
+	}
+
+	public function hasExample(): bool
+	{
+		return (new ReflectionProperty($this, 'example'))->isInitialized($this);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getExample()
+	{
+		if (!$this->hasExample()) {
+			$message = Message::create()
+				->withContext('Getting the example value.')
+				->withProblem('Example value is not set and so cannot be get.')
+				->withSolution('Check with hasExample().');
+
+			throw InvalidState::create()
+				->withMessage($message);
+		}
+
+		return $this->example;
 	}
 
 	public function toArray(): array
@@ -47,8 +83,7 @@ final class Schema implements SpecObject
 		}
 
 		//TODO - deprecated, json schema používá examples keyword
-		$valueRef = new ReflectionProperty($this, 'example');
-		if ($valueRef->isInitialized($this)) {
+		if ($this->hasExample()) {
 			$data['example'] = $this->example;
 		}
 

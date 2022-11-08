@@ -5,7 +5,7 @@ namespace Orisai\OpenAPI\Spec;
 final class ImplicitOAuthFlow extends OAuthFlow
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public string $authorizationUrl;
 

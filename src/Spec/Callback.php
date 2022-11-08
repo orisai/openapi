@@ -10,7 +10,7 @@ use function str_starts_with;
 final class Callback implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	/** @var array<string, PathItem|Reference> */
 	private array $expressions = [];

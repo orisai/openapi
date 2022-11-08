@@ -10,7 +10,7 @@ use function strtolower;
 final class HttpSecurityScheme extends SecurityScheme
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	/** @readonly */
 	private string $scheme;

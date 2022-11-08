@@ -7,7 +7,7 @@ use ReflectionProperty;
 final class Link implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public ?string $operationRef = null;
 

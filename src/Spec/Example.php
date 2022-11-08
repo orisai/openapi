@@ -2,19 +2,15 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
 use ReflectionProperty;
-use function get_debug_type;
-use function is_array;
-use function is_object;
-use function is_resource;
 
 final class Example implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectChecksExampleValue;
+	use SpecObjectSupportsExtensions;
 
 	public ?string $summary = null;
 
@@ -35,33 +31,9 @@ final class Example implements SpecObject
 	 */
 	public function setValue($value): void
 	{
-		$this->checkValue($value);
+		$this->checkExampleValue($value);
 		$this->externalValue = null;
 		$this->value = $value;
-	}
-
-	/**
-	 * @param mixed $content
-	 */
-	private function checkValue($content): void
-	{
-		//TODO - stdclass
-		if (is_object($content) || is_resource($content)) {
-			$type = get_debug_type($content);
-			$message = Message::create()
-				->withContext('Setting an example.')
-				->withProblem("Value contains type '$type', which is not allowed.")
-				->withSolution('Change type to one of supported - scalar, null or array.');
-
-			throw InvalidArgument::create()
-				->withMessage($message);
-		}
-
-		if (is_array($content)) {
-			foreach ($content as $value) {
-				$this->checkValue($value);
-			}
-		}
 	}
 
 	public function hasValue(): bool

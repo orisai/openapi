@@ -7,7 +7,7 @@ use Orisai\OpenAPI\Enum\SecuritySchemeType;
 final class OAuthSecurityScheme extends SecurityScheme
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public OAuthFlows $flows;
 

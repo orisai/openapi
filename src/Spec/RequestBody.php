@@ -7,7 +7,7 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class RequestBody implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 	use SpecObjectHasContent;
 
 	public ?string $description = null;

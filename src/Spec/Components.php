@@ -10,7 +10,7 @@ use function preg_match;
 final class Components implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	/** @var array<string, Schema|Reference> */
 	private array $schemas = [];

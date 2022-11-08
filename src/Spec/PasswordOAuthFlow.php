@@ -5,7 +5,7 @@ namespace Orisai\OpenAPI\Spec;
 final class PasswordOAuthFlow extends OAuthFlow
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public string $tokenUrl;
 

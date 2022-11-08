@@ -8,7 +8,7 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class Encoding implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public ?string $contentType = null;
 

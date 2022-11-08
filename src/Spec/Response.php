@@ -11,7 +11,7 @@ final class Response implements SpecObject
 {
 
 	use SpecObjectHasContent;
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public string $description;
 

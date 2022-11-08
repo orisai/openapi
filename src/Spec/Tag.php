@@ -5,7 +5,7 @@ namespace Orisai\OpenAPI\Spec;
 final class Tag implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	/** @readonly */
 	private string $name;

@@ -3,6 +3,7 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
+use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Enum\ParameterIn;
 use Orisai\OpenAPI\Enum\ParameterStyle;
@@ -15,7 +16,8 @@ use function in_array;
 final class Parameter implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectChecksExampleValue;
+	use SpecObjectSupportsExtensions;
 
 	/** @readonly */
 	public string $name;
@@ -40,7 +42,7 @@ final class Parameter implements SpecObject
 	public Schema $schema;
 
 	/** @var mixed */
-	public $example;
+	private $example;
 
 	/** @var array<string, Example|Reference> */
 	public array $examples = [];
@@ -131,6 +133,38 @@ final class Parameter implements SpecObject
 		$this->allowEmptyValue = $allow;
 	}
 
+	/**
+	 * @param mixed $example
+	 */
+	public function setExample($example): void
+	{
+		$this->checkExampleValue($example);
+		$this->example = $example;
+	}
+
+	public function hasExample(): bool
+	{
+		return (new ReflectionProperty($this, 'example'))->isInitialized($this);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getExample()
+	{
+		if (!$this->hasExample()) {
+			$message = Message::create()
+				->withContext('Getting the example value.')
+				->withProblem('Example value is not set and so cannot be get.')
+				->withSolution('Check with hasExample().');
+
+			throw InvalidState::create()
+				->withMessage($message);
+		}
+
+		return $this->example;
+	}
+
 	public function toArray(): array
 	{
 		//TODO - pro type header a name "Accept", "Content-Type" a "Authorization" má být definice parametru ignorovaná??
@@ -179,8 +213,7 @@ final class Parameter implements SpecObject
 		//TODO - musí matchnout schema a encoding, pokud jsou nastavené
 		//		- jak se nastavuje encoding?? (asi v media type)
 		//TODO - pokud existuje examples, tak nesmí existovat example a naopak
-		$valueRef = new ReflectionProperty($this, 'example');
-		if ($valueRef->isInitialized($this)) {
+		if ($this->hasExample()) {
 			$data['example'] = $this->example;
 		}
 

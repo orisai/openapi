@@ -4,6 +4,7 @@ namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
 use Generator;
 use Orisai\Exceptions\Logic\InvalidArgument;
+use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Enum\ParameterIn;
 use Orisai\OpenAPI\Enum\ParameterStyle;
@@ -12,7 +13,9 @@ use Orisai\OpenAPI\Spec\MediaType;
 use Orisai\OpenAPI\Spec\Parameter;
 use Orisai\OpenAPI\Spec\Reference;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use function array_filter;
+use function fopen;
 use function in_array;
 
 final class ParameterTest extends TestCase
@@ -68,15 +71,15 @@ final class ParameterTest extends TestCase
 		$p->deprecated = true;
 		$p->setStyle(ParameterStyle::form());
 		$p->explode = true;
-		$p->schema->example = null;
-		$p->example = null;
+		$p->schema->setExample(null);
+		$p->setExample(null);
 
 		$p->examples['foo'] = $pe1 = new Example();
 		$pe1->description = 'desc';
 		$p->examples['bar'] = $pe2 = new Reference('ref');
 
 		$p->content['application/json'] = $pc1 = new MediaType();
-		$pc1->example = 'example';
+		$pc1->setExample(null);
 		$p->content['application/xml'] = $pc2 = new MediaType();
 
 		$p->addExtension('x-a', null);
@@ -313,6 +316,87 @@ MSG);
 		yield [new Parameter('name', ParameterIn::cookie())];
 		yield [new Parameter('name', ParameterIn::header())];
 		yield [new Parameter('name', ParameterIn::path())];
+	}
+
+	public function testSetValue(): void
+	{
+		$parameter = new Parameter('name', ParameterIn::path());
+
+		$parameter->setExample(null);
+		self::assertNull($parameter->getExample());
+
+		$parameter->setExample('string');
+		self::assertSame('string', $parameter->getExample());
+
+		$parameter->setExample($o = new stdClass());
+		self::assertSame($o, $parameter->getExample());
+
+		$parameter->setExample([$o]);
+		self::assertSame([$o], $parameter->getExample());
+	}
+
+	/**
+	 * @param mixed $value
+	 *
+	 * @dataProvider provideUnsupportedValue
+	 * @runInSeparateProcess
+	 */
+	public function testUnsupportedValue($value, string $unsupportedType): void
+	{
+		// Workaround - yielded resource is for some reason cast to 0
+		if ($value === 'resource') {
+			$value = fopen(__FILE__, 'r');
+		}
+
+		$parameter = new Parameter('name', ParameterIn::path());
+
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(<<<MSG
+Context: Setting an example.
+Problem: Value contains type '$unsupportedType', which is not allowed.
+Solution: Change type to one of supported - scalar, null, array or stdClass.
+MSG);
+
+		Message::$lineLength = 150;
+		$parameter->setExample($value);
+	}
+
+	public function provideUnsupportedValue(): Generator
+	{
+		yield [InvalidArgument::create(), InvalidArgument::class];
+
+		yield [
+			[
+				'a' => 'b',
+				'foo' => [
+					'bar' => [
+						InvalidArgument::create(),
+					],
+				],
+			],
+			InvalidArgument::class,
+		];
+
+		yield [
+			'resource',
+			'resource (stream)',
+		];
+	}
+
+	public function testGetNoValue(): void
+	{
+		$parameter = new Parameter('name', ParameterIn::path());
+
+		self::assertFalse($parameter->hasExample());
+
+		$this->expectException(InvalidState::class);
+		$this->expectExceptionMessage(<<<'MSG'
+Context: Getting the example value.
+Problem: Example value is not set and so cannot be get.
+Solution: Check with hasExample().
+MSG);
+
+		$parameter->getExample();
 	}
 
 }

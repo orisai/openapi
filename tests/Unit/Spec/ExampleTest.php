@@ -72,6 +72,23 @@ final class ExampleTest extends TestCase
 		);
 	}
 
+	public function testSetValue(): void
+	{
+		$e = new Example();
+
+		$e->setValue(null);
+		self::assertNull($e->getValue());
+
+		$e->setValue('string');
+		self::assertSame('string', $e->getValue());
+
+		$e->setValue($o = new stdClass());
+		self::assertSame($o, $e->getValue());
+
+		$e->setValue([$o]);
+		self::assertSame([$o], $e->getValue());
+	}
+
 	/**
 	 * @param mixed $value
 	 *
@@ -91,7 +108,7 @@ final class ExampleTest extends TestCase
 		$this->expectExceptionMessage(<<<MSG
 Context: Setting an example.
 Problem: Value contains type '$unsupportedType', which is not allowed.
-Solution: Change type to one of supported - scalar, null or array.
+Solution: Change type to one of supported - scalar, null, array or stdClass.
 MSG);
 
 		Message::$lineLength = 150;
@@ -100,7 +117,7 @@ MSG);
 
 	public function provideUnsupportedValue(): Generator
 	{
-		yield [new stdClass(), stdClass::class];
+		yield [InvalidArgument::create(), InvalidArgument::class];
 
 		yield [
 			[

@@ -10,7 +10,7 @@ use function in_array;
 final class ServerVariable implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	/**
 	 * @var non-empty-array<string>|null

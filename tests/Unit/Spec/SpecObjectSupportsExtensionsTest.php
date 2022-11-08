@@ -10,7 +10,7 @@ use stdClass;
 use Tests\Orisai\OpenAPI\Doubles\ExtendableSpecObject;
 use function fopen;
 
-final class SupportsSpecExtensionsTest extends TestCase
+final class SpecObjectSupportsExtensionsTest extends TestCase
 {
 
 	private ExtendableSpecObject $object;
@@ -31,6 +31,8 @@ final class SupportsSpecExtensionsTest extends TestCase
 		$this->object->addExtension('x-b', []);
 		$this->object->addExtension('x-c', null);
 		$this->object->addExtension('x-d', 123);
+		$this->object->addExtension('x-e', $o = new stdClass());
+		$this->object->addExtension('x-f', [$o]);
 
 		self::assertSame(
 			[
@@ -38,6 +40,8 @@ final class SupportsSpecExtensionsTest extends TestCase
 				'x-b' => [],
 				'x-c' => null,
 				'x-d' => 123,
+				'x-e' => $o,
+				'x-f' => [$o],
 			],
 			$this->object->getExtensions(),
 		);
@@ -47,6 +51,8 @@ final class SupportsSpecExtensionsTest extends TestCase
 				'x-b' => [],
 				'x-c' => null,
 				'x-d' => 123,
+				'x-e' => $o,
+				'x-f' => [$o],
 			],
 			$this->object->toArray(),
 		);
@@ -80,7 +86,7 @@ MSG);
 		$this->expectExceptionMessage(<<<MSG
 Context: Adding a spec extension with name 'x-name'.
 Problem: Extension contains value of type '$unsupportedType', which is not allowed.
-Solution: Change value to one of supported - scalar, null or array.
+Solution: Change value to one of supported - scalar, null, array or stdClass.
 MSG);
 
 		Message::$lineLength = 150;
@@ -89,7 +95,7 @@ MSG);
 
 	public function provideUnsupportedContent(): Generator
 	{
-		yield [new stdClass(), stdClass::class];
+		yield [InvalidArgument::create(), InvalidArgument::class];
 
 		yield [
 			[

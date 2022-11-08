@@ -10,7 +10,7 @@ use function spl_object_id;
 final class OpenAPI implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	/** @readonly */
 	public string $openapi;

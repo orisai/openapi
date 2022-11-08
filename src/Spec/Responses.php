@@ -15,7 +15,7 @@ use const SORT_STRING;
 final class Responses implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	/**
 	 * @var array<int<100, 599>|string, Response|Reference>

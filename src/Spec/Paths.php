@@ -10,7 +10,7 @@ use function str_starts_with;
 final class Paths implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	/** @var array<string, PathItem> */
 	private array $paths = [];

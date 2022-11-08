@@ -10,7 +10,7 @@ use function spl_object_id;
 final class Operation implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	/** @var list<string> */
 	public array $tags = [];

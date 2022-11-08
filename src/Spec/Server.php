@@ -7,7 +7,7 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class Server implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	private string $url;
 
