@@ -24,6 +24,8 @@ final class ParameterTest extends TestCase
 	public function testDefault(): void
 	{
 		$p1 = new Parameter('p1', ParameterIn::query());
+		self::assertSame('p1', $p1->getName());
+		self::assertSame(ParameterIn::query(), $p1->getIn());
 		self::assertSame(
 			[
 				'name' => 'p1',
@@ -33,6 +35,8 @@ final class ParameterTest extends TestCase
 		);
 
 		$p2 = new Parameter('p2', ParameterIn::path());
+		self::assertSame('p2', $p2->getName());
+		self::assertSame(ParameterIn::path(), $p2->getIn());
 		self::assertSame(
 			[
 				'name' => 'p2',
@@ -43,6 +47,8 @@ final class ParameterTest extends TestCase
 		);
 
 		$p3 = new Parameter('p3', ParameterIn::cookie());
+		self::assertSame('p3', $p3->getName());
+		self::assertSame(ParameterIn::cookie(), $p3->getIn());
 		self::assertSame(
 			[
 				'name' => 'p3',
@@ -51,10 +57,12 @@ final class ParameterTest extends TestCase
 			$p3->toArray(),
 		);
 
-		$p4 = new Parameter('p4', ParameterIn::header());
+		$p4 = new Parameter('transfer-encoding', ParameterIn::header());
+		self::assertSame('Transfer-Encoding', $p4->getName());
+		self::assertSame(ParameterIn::header(), $p4->getIn());
 		self::assertSame(
 			[
-				'name' => 'p4',
+				'name' => 'Transfer-Encoding',
 				'in' => 'header',
 			],
 			$p4->toArray(),
@@ -106,6 +114,41 @@ final class ParameterTest extends TestCase
 	}
 
 	/**
+	 * @dataProvider provideInvalidPathParameterName
+	 */
+	public function testInvalidPathParameterName(string $name): void
+	{
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(
+			<<<MSG
+Context: Creating Parameter with name '$name'.
+Problem: Characters '{}/' are not allowed in Parameter in=path.
+MSG,
+		);
+
+		new Parameter($name, ParameterIn::path());
+	}
+
+	public function provideInvalidPathParameterName(): Generator
+	{
+		yield ['a{'];
+		yield ['}a'];
+		yield ['a/a'];
+	}
+
+	public function testNameFormatting(): void
+	{
+		$p = new Parameter('transfer-encoding', ParameterIn::header());
+		self::assertSame('Transfer-Encoding', $p->getName());
+
+		$p = new Parameter('tRaNsFeR-EnCoDiNg', ParameterIn::header());
+		self::assertSame('Transfer-Encoding', $p->getName());
+
+		$p = new Parameter('Transfer-Encoding', ParameterIn::header());
+		self::assertSame('Transfer-Encoding', $p->getName());
+	}
+
+	/**
 	 * @dataProvider provideRequired
 	 */
 	public function testRequired(Parameter $parameter): void
@@ -135,10 +178,12 @@ final class ParameterTest extends TestCase
 		self::assertTrue($p->toArray()['required']);
 
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage(<<<'MSG'
+		$this->expectExceptionMessage(
+			<<<'MSG'
 Context: Setting Parameter required to false.
 Problem: Parameter is in path and as such must be required.
-MSG);
+MSG,
+		);
 
 		$p->setRequired(false);
 	}
@@ -155,7 +200,7 @@ MSG);
 			self::assertSame($style, $parameter->getStyle());
 			self::assertSame($style->getDefaultExplode(), $parameter->getExplode());
 
-			if ($style === $parameter->in->getDefaultStyle()) {
+			if ($style === $parameter->getIn()->getDefaultStyle()) {
 				self::assertNotContains('style', $parameter->toArray());
 			} else {
 				self::assertArrayHasKey('style', $parameter->toArray());
@@ -196,7 +241,7 @@ MSG);
 		Message::$lineLength = 150;
 		$styles = array_filter(
 			ParameterStyle::cases(),
-			static fn (ParameterStyle $style): bool => !in_array($style, $parameter->in->getAllowedStyles(), true),
+			static fn (ParameterStyle $style): bool => !in_array($style, $parameter->getIn()->getAllowedStyles(), true),
 		);
 
 		self::assertNotEmpty($styles);
@@ -212,7 +257,7 @@ MSG);
 			self::assertSame(
 				<<<MSG
 Context: Setting Parameter style to '$style->value'.
-Problem: Allowed styles for parameter in '{$parameter->in->value}' are $allowed.
+Problem: Allowed styles for parameter in '{$parameter->getIn()->value}' are $allowed.
 MSG,
 				$e->getMessage(),
 			);
@@ -281,11 +326,13 @@ MSG,
 	public function testNotInQueryReserved(Parameter $parameter): void
 	{
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage(<<<'MSG'
+		$this->expectExceptionMessage(
+			<<<'MSG'
 Context: Setting Parameter allowReserved.
 Problem: Parameter is not in query and only query parameters can have
          allowReserved.
-MSG);
+MSG,
+		);
 
 		$parameter->setAllowReserved();
 	}
@@ -320,11 +367,13 @@ MSG);
 	public function testNotInQueryEmptyValue(Parameter $parameter): void
 	{
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage(<<<'MSG'
+		$this->expectExceptionMessage(
+			<<<'MSG'
 Context: Setting Parameter allowEmptyValue.
 Problem: Parameter is not in query and only query parameters can have
          allowEmptyValue.
-MSG);
+MSG,
+		);
 
 		$parameter->setAllowEmptyValue();
 	}
@@ -369,11 +418,13 @@ MSG);
 		$parameter = new Parameter('name', ParameterIn::path());
 
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage(<<<MSG
+		$this->expectExceptionMessage(
+			<<<MSG
 Context: Setting an example.
 Problem: Value contains type '$unsupportedType', which is not allowed.
 Solution: Change type to one of supported - scalar, null, array or stdClass.
-MSG);
+MSG,
+		);
 
 		Message::$lineLength = 150;
 		$parameter->setExample($value);
@@ -408,11 +459,13 @@ MSG);
 		self::assertFalse($parameter->hasExample());
 
 		$this->expectException(InvalidState::class);
-		$this->expectExceptionMessage(<<<'MSG'
+		$this->expectExceptionMessage(
+			<<<'MSG'
 Context: Getting the example value.
 Problem: Example value is not set and so cannot be get.
 Solution: Check with hasExample().
-MSG);
+MSG,
+		);
 
 		$parameter->getExample();
 	}

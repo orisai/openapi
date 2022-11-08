@@ -84,7 +84,7 @@ final class Header implements SpecObject
 
 	public function toArray(): array
 	{
-		//TODO - stejná logika jako u Parameter + omezení, která existují pro Header (např. pro style)
+		//TODO - stejná logika jako u Parameter
 		$data = [];
 
 		if ($this->description !== null) {
@@ -103,15 +103,10 @@ final class Header implements SpecObject
 			$data['allowEmptyValue'] = $this->allowEmptyValue;
 		}
 
-		/**
-		 * Style is always simple
-		 *
-		 * @codeCoverageIgnore
-		 * @infection-ignore-all
-		 */
-		if ($this->style !== HeaderStyle::simple()) {
-			$data['style'] = $this->style;
-		}
+		// Style is always simple
+		// if ($this->style !== HeaderStyle::simple()) {
+		// 	$data['style'] = $this->style->value;
+		// }
 
 		if ($this->explode) {
 			$data['explode'] = $this->explode;

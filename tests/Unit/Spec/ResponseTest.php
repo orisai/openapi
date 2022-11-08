@@ -29,16 +29,16 @@ final class ResponseTest extends TestCase
 
 		$r2h1 = new Header();
 		$r2h1->setExample('h1');
-		$r2->addHeader('h1', $r2h1);
+		$r2->addHeader('transfer-encoding', $r2h1);
 
 		$r2h2 = new Header();
 		$r2h2->setExample('h2');
-		$r2->addHeader('h2', $r2h2);
+		$r2->addHeader('trailer', $r2h2);
 
 		self::assertSame(
 			[
-				'h1' => $r2h1,
-				'h2' => $r2h2,
+				'Transfer-Encoding' => $r2h1,
+				'Trailer' => $r2h2,
 			],
 			$r2->getHeaders(),
 		);
@@ -80,8 +80,8 @@ final class ResponseTest extends TestCase
 			[
 				'description' => 'description',
 				'headers' => [
-					'h1' => $r2h1->toArray(),
-					'h2' => $r2h2->toArray(),
+					'Transfer-Encoding' => $r2h1->toArray(),
+					'Trailer' => $r2h2->toArray(),
 				],
 				'content' => [
 					'application/json' => $r2mt1->toArray(),

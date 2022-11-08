@@ -25,9 +25,6 @@ final class OpenAPITest extends TestCase
 			[
 				'openapi' => '3.1.0',
 				'info' => $i1->toArray(),
-				'servers' => [
-					(new Server('/'))->toArray(),
-				],
 			],
 			$oa1->toArray(),
 		);
@@ -119,9 +116,6 @@ final class OpenAPITest extends TestCase
 			[
 				'openapi' => '3.1.0',
 				'info' => $i->toArray(),
-				'servers' => [
-					(new Server('/'))->toArray(),
-				],
 				'security' => SecurityRequirement::createOptional()->toArray(),
 			],
 			$oa->toArray(),

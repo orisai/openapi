@@ -30,6 +30,7 @@ final class Encoding implements SpecObject
 			$data['contentType'] = $this->contentType;
 		}
 
+		//TODO - totéž co v Response?
 		if ($this->headers !== []) {
 			$data['headers'] = SpecUtils::specsToArray($this->headers);
 		}

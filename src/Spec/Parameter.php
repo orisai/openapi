@@ -10,8 +10,12 @@ use Orisai\OpenAPI\Enum\ParameterStyle;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use ReflectionProperty;
 use function array_map;
+use function explode;
 use function implode;
 use function in_array;
+use function preg_match;
+use function strtolower;
+use function ucfirst;
 
 final class Parameter implements SpecObject
 {
@@ -20,10 +24,10 @@ final class Parameter implements SpecObject
 	use SpecObjectSupportsExtensions;
 
 	/** @readonly */
-	public string $name;
+	private string $name;
 
 	/** @readonly */
-	public ParameterIn $in;
+	private ParameterIn $in;
 
 	public ?string $description = null;
 
@@ -52,13 +56,56 @@ final class Parameter implements SpecObject
 
 	public function __construct(string $name, ParameterIn $in)
 	{
-		$this->name = $name;
+		$this->name = $this->processName($name, $in);
 		$this->in = $in;
 		$this->required = $in === ParameterIn::path();
 		$this->style = $this->in->getDefaultStyle();
 		$this->explode = $this->style->getDefaultExplode();
 		$this->schema = new Schema();
 		unset($this->example);
+	}
+
+	private function processName(string $name, ParameterIn $in): string
+	{
+		if ($in === ParameterIn::path() && preg_match('#[{}/]#', $name) === 1) {
+			//TODO - https://spec.openapis.org/oas/v3.1.0#path-templating
+			$message = Message::create()
+				->withContext("Creating Parameter with name '$name'.")
+				->withProblem("Characters '{}/' are not allowed in Parameter in=path.");
+
+			throw InvalidArgument::create()
+				->withMessage($message);
+		}
+
+		//TODO - cookie, header validation (i cookie header)
+		//	- neměla by být header cookie zakázaná?
+
+		return $this->formatName($name, $in);
+	}
+
+	private function formatName(string $name, ParameterIn $in): string
+	{
+		if ($in !== ParameterIn::header()) {
+			return $name;
+		}
+
+		return implode(
+			'-',
+			array_map(
+				static fn (string $word): string => ucfirst($word),
+				explode('-', strtolower($name)),
+			),
+		);
+	}
+
+	public function getName(): string
+	{
+		return $this->name;
+	}
+
+	public function getIn(): ParameterIn
+	{
+		return $this->in;
 	}
 
 	public function setRequired(bool $required = true): void
@@ -169,9 +216,6 @@ final class Parameter implements SpecObject
 
 	public function toArray(): array
 	{
-		//TODO - pro type header a name "Accept", "Content-Type" a "Authorization" má být definice parametru ignorovaná
-		//			- v openapi se definují přes media types a security
-		//TODO - case unsensitive header
 		$data = [
 			'name' => $this->name,
 			'in' => $this->in->value,

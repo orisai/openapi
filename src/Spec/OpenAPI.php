@@ -114,11 +114,9 @@ final class OpenAPI implements SpecObject
 			$data['jsonSchemaDialect'] = $this->jsonSchemaDialect;
 		}
 
-		//TODO - nevkládat? neukládáme defaults
-		$servers = $this->servers === []
-			? [new Server('/')]
-			: array_values($this->servers);
-		$data['servers'] = SpecUtils::specsToArray($servers);
+		if ($this->servers !== []) {
+			$data['servers'] = SpecUtils::specsToArray(array_values($this->servers));
+		}
 
 		$pathsData = $this->paths->toArray();
 		if ($pathsData !== []) {

@@ -65,6 +65,7 @@ final class HeaderStyle
 			$cases[] = self::from($value);
 		}
 
+		/** @infection-ignore-all because we have just one case */
 		return $cases;
 	}
 
