@@ -89,9 +89,11 @@ final class HeaderTest extends TestCase
 
 		$header->setStyle(HeaderStyle::simple(), false);
 		self::assertFalse($header->getExplode());
+		self::assertArrayNotHasKey('explode', $header->toArray());
 
 		$header->setStyle(HeaderStyle::simple(), true);
 		self::assertTrue($header->getExplode());
+		self::assertTrue($header->toArray()['explode']);
 	}
 
 	public function testSetValue(): void

@@ -22,12 +22,17 @@ final class OperationTest extends TestCase
 	public function test(): void
 	{
 		$op1 = new Operation();
+		self::assertSame([], $op1->getTags());
 		self::assertSame([], $op1->getParameters());
 		self::assertSame([], $op1->toArray());
 
 		$op2 = new Operation();
-		$op2->tags[] = 'foo';
-		$op2->tags[] = 'bar';
+
+		$op2->addTag('foo');
+		$op2->addTag('foo');
+		$op2->addTag('bar');
+		self::assertSame(['foo', 'bar'], $op2->getTags());
+
 		$op2->summary = 'summary';
 		$op2->description = 'description';
 		$op2->externalDocs = $op2ed = new ExternalDocumentation('https://example.com');

@@ -80,7 +80,6 @@ final class Parameter implements SpecObject
 	private function processPathName(string $name): string
 	{
 		if (preg_match('#[{}/]#', $name) === 1) {
-			//TODO - https://spec.openapis.org/oas/v3.1.0#path-templating
 			$message = Message::create()
 				->withContext("Creating Parameter with name '$name'.")
 				->withProblem("Characters '{}/' are not allowed in Parameter in=path.");

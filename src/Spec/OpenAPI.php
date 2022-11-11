@@ -13,10 +13,10 @@ final class OpenAPI implements SpecObject
 	use SpecObjectSupportsExtensions;
 
 	/** @readonly */
-	public string $openapi;
+	private string $openapi;
 
 	/** @readonly */
-	public Info $info;
+	private Info $info;
 
 	public ?string $jsonSchemaDialect = null;
 
@@ -34,18 +34,27 @@ final class OpenAPI implements SpecObject
 	/** @var array<int, SecurityRequirement> */
 	private array $security = [];
 
-	/** @var array<int, Tag> */
+	/** @var array<string, Tag> */
 	private array $tags = [];
 
 	public ?ExternalDocumentation $externalDocs = null;
 
 	public function __construct(Info $info)
 	{
-		//TODO - support whole 3.1 range - ^3\\.1\\.\\d+(-.+)?$
 		$this->openapi = '3.1.0';
 		$this->info = $info;
 		$this->components = new Components();
 		$this->paths = new Paths();
+	}
+
+	public function getOpenapiVersion(): string
+	{
+		return $this->openapi;
+	}
+
+	public function getInfo(): Info
+	{
+		return $this->info;
 	}
 
 	public function addServer(Server $server): void
@@ -92,7 +101,7 @@ final class OpenAPI implements SpecObject
 
 	public function addTag(Tag $tag): void
 	{
-		$this->tags[spl_object_id($tag)] = $tag;
+		$this->tags[$tag->getName()] = $tag;
 	}
 
 	/**

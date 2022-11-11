@@ -21,6 +21,8 @@ final class OpenAPITest extends TestCase
 	{
 		$i1 = new Info('api', 'version');
 		$oa1 = new OpenAPI($i1);
+		self::assertSame('3.1.0', $oa1->getOpenapiVersion());
+		self::assertSame($i1, $oa1->getInfo());
 		self::assertSame(
 			[
 				'openapi' => '3.1.0',
@@ -120,6 +122,29 @@ final class OpenAPITest extends TestCase
 			],
 			$oa->toArray(),
 		);
+	}
+
+	public function testTagUniqueness(): void
+	{
+		$i = new Info('title', 'version');
+		$oa = new OpenAPI($i);
+
+		$t1 = new Tag('t1');
+		$t1dup = new Tag('t1');
+
+		$t2 = new Tag('t2');
+
+		self::assertSame([], $oa->getTags());
+
+		$oa->addTag($t1);
+		$oa->addTag($t2);
+		self::assertSame([$t1, $t2], $oa->getTags());
+
+		$oa->addTag($t1);
+		self::assertSame([$t1, $t2], $oa->getTags());
+
+		$oa->addTag($t1dup);
+		self::assertSame([$t1dup, $t2], $oa->getTags());
 	}
 
 }

@@ -3,6 +3,7 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\OpenAPI\Utils\SpecUtils;
+use function array_keys;
 use function array_merge;
 use function array_values;
 use function spl_object_id;
@@ -12,8 +13,8 @@ final class Operation implements SpecObject
 
 	use SpecObjectSupportsExtensions;
 
-	/** @var list<string> */
-	public array $tags = [];
+	/** @var array<string, null> */
+	private array $tags = [];
 
 	public ?string $summary = null;
 
@@ -45,6 +46,19 @@ final class Operation implements SpecObject
 	public function __construct()
 	{
 		$this->responses = new Responses();
+	}
+
+	public function addTag(string $tag): void
+	{
+		$this->tags[$tag] = null;
+	}
+
+	/**
+	 * @return list<string>
+	 */
+	public function getTags(): array
+	{
+		return array_keys($this->tags);
 	}
 
 	/**
@@ -109,9 +123,9 @@ final class Operation implements SpecObject
 	{
 		$data = [];
 
-		//TODO - unikátní (není ve specifikaci)
-		if ($this->tags !== []) {
-			$data['tags'] = $this->tags;
+		$tags = $this->getTags();
+		if ($tags !== []) {
+			$data['tags'] = $tags;
 		}
 
 		if ($this->summary !== null) {

@@ -41,8 +41,6 @@ final class Server implements SpecObject
 
 	public function toArray(): array
 	{
-		//TODO - validovat že všechny example/.com/{param} jsou definované ve variables a všechny variables se používají
-		//		- ve specifikaci není uvedeno
 		$data = [
 			'url' => $this->url,
 		];
