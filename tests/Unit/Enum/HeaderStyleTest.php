@@ -29,4 +29,11 @@ final class HeaderStyleTest extends TestCase
 		HeaderStyle::from('invalid');
 	}
 
+	public function testDefaultExplode(): void
+	{
+		foreach (HeaderStyle::cases() as $case) {
+			self::assertFalse($case->getDefaultExplode());
+		}
+	}
+
 }

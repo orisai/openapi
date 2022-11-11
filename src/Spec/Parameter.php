@@ -11,6 +11,7 @@ use Orisai\OpenAPI\Utils\HeaderValidator;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use ReflectionProperty;
 use function array_map;
+use function count;
 use function implode;
 use function in_array;
 use function preg_match;
@@ -19,6 +20,9 @@ final class Parameter implements SpecObject
 {
 
 	use SpecObjectChecksExampleValue;
+	use SpecObjectHasContent {
+		SpecObjectHasContent::addContent as addContentTrait;
+	}
 	use SpecObjectSupportsExtensions;
 
 	/** @readonly */
@@ -48,9 +52,6 @@ final class Parameter implements SpecObject
 
 	/** @var array<string, Example|Reference> */
 	private array $examples = [];
-
-	/** @var array<string, MediaType> */
-	private array $content = [];
 
 	public function __construct(string $name, ParameterIn $in)
 	{
@@ -241,6 +242,23 @@ final class Parameter implements SpecObject
 		return $this->examples;
 	}
 
+	/**
+	 * @param non-empty-string $name
+	 */
+	public function addContent(string $name, MediaType $mediaType): void
+	{
+		if (!isset($this->content[$name]) && count($this->content) > 0) {
+			$message = Message::create()
+				->withContext("Adding content with media type '$name' to a Parameter.")
+				->withProblem('Parameter content can contain only one entry, given one is second.');
+
+			throw InvalidState::create()
+				->withMessage($message);
+		}
+
+		$this->addContentTrait($name, $mediaType);
+	}
+
 	public function toArray(): array
 	{
 		$data = [
@@ -260,8 +278,6 @@ final class Parameter implements SpecObject
 			$data['deprecated'] = $this->deprecated;
 		}
 
-		//TODO - If style is used, and if behavior is n/a (cannot be serialized),
-		//			the value of allowEmptyValue SHALL be ignored ??
 		if ($this->allowEmptyValue) {
 			$data['allowEmptyValue'] = $this->allowEmptyValue;
 		}
@@ -283,22 +299,14 @@ final class Parameter implements SpecObject
 			$data['schema'] = $schemaData;
 		}
 
-		//TODO - musí matchnout schema a encoding, pokud jsou nastavené
-		//		- jak se nastavuje encoding?? (asi v media type)
-		//TODO - pokud existuje examples, tak nesmí existovat example a naopak
 		if ($this->hasExample()) {
 			$data['example'] = $this->example;
 		}
 
-		//TODO - musí matchnout encoding, pokud je nastavený (schema ne? jiný popisek než example)
-		//		- jak se nastavuje encoding?? (asi v media type)
 		if ($this->examples !== []) {
 			$data['examples'] = SpecUtils::specsToArray($this->examples);
 		}
 
-		//TODO - parametr musí obsahovat schema nebo content, ale ne obojí
-		//TODO - alespoň jeden content type? zkontrolovat specifikaci
-		//TODO - example a examples example musí následovat serializační strategii parametru
 		if ($this->content !== []) {
 			$data['content'] = SpecUtils::specsToArray($this->content);
 		}

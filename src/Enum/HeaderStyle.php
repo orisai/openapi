@@ -69,4 +69,9 @@ final class HeaderStyle
 		return $cases;
 	}
 
+	public function getDefaultExplode(): bool
+	{
+		return false;
+	}
+
 }

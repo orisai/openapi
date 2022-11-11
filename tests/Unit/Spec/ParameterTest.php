@@ -90,9 +90,8 @@ final class ParameterTest extends TestCase
 			$p->getExamples(),
 		);
 
-		$p->content['application/json'] = $pc1 = new MediaType();
+		$p->addContent('application/json', $pc1 = new MediaType());
 		$pc1->setExample(null);
-		$p->content['application/xml'] = $pc2 = new MediaType();
 
 		$p->addExtension('x-a', null);
 
@@ -112,7 +111,6 @@ final class ParameterTest extends TestCase
 				],
 				'content' => [
 					'application/json' => $pc1->toArray(),
-					'application/xml' => $pc2->toArray(),
 				],
 				'x-a' => null,
 			],
@@ -478,6 +476,30 @@ MSG,
 		);
 
 		$parameter->getExample();
+	}
+
+	public function testMultipleContents(): void
+	{
+		$parameter = new Parameter('name', ParameterIn::path());
+		self::assertSame([], $parameter->getContent());
+
+		$mt1 = new MediaType();
+		$mt1->setExample(null);
+		$parameter->addContent('application/json', $mt1);
+
+		// Same media type is okay
+		$mt2 = new MediaType();
+		$parameter->addContent('application/json', $mt2);
+
+		$this->expectException(InvalidState::class);
+		$this->expectExceptionMessage(
+			<<<'MSG'
+Context: Adding content with media type 'application/xml' to a Parameter.
+Problem: Parameter content can contain only one entry, given one is second.
+MSG,
+		);
+
+		$parameter->addContent('application/xml', new MediaType());
 	}
 
 }

@@ -22,35 +22,36 @@ final class HeaderTest extends TestCase
 	{
 		$h1 = new Header();
 		self::assertSame($h1->getStyle(), HeaderStyle::simple());
+		self::assertFalse($h1->getExplode());
 		self::assertSame([], $h1->toArray());
 
 		$h2 = new Header();
 		$h2->description = 'description';
-		$h2->required = true;
 		$h2->deprecated = true;
-		$h2->allowEmptyValue = true;
-		$h2->explode = true;
-		$h2->allowReserved = true;
 		$h2->setExample(null);
 		$h2->schema->setExample('schema');
 
-		$h2->examples['foo'] = $h2e1 = new Example();
+		$h2->addExample('foo', $h2e1 = new Example());
 		$h2e1->description = 'desc';
-		$h2->examples['bar'] = $h2e2 = new Reference('ref');
+		$h2->addExample('bar', $h2e2 = new Reference('ref'));
+		self::assertSame(
+			[
+				'foo' => $h2e1,
+				'bar' => $h2e2,
+			],
+			$h2->getExamples(),
+		);
 
-		$h2->content['application/json'] = $h2c1 = new MediaType();
-		$h2c1->setExample('example');
-		$h2->content['application/xml'] = $h2c2 = new MediaType();
+		$h2->addContent('application/json', $h2c1 = new MediaType());
+		$h2c1->setExample(null);
+
+		$h2->addExtension('x-a', null);
 
 		self::assertSame($h2->getStyle(), HeaderStyle::simple());
 		self::assertSame(
 			[
 				'description' => 'description',
-				'required' => true,
 				'deprecated' => true,
-				'allowEmptyValue' => true,
-				'explode' => true,
-				'allowReserved' => true,
 				'schema' => $h2->schema->toArray(),
 				'example' => null,
 				'examples' => [
@@ -59,11 +60,38 @@ final class HeaderTest extends TestCase
 				],
 				'content' => [
 					'application/json' => $h2c1->toArray(),
-					'application/xml' => $h2c2->toArray(),
 				],
+				'x-a' => null,
 			],
 			$h2->toArray(),
 		);
+	}
+
+	public function testRequired(): void
+	{
+		$header = new Header();
+		self::assertNotContains('required', $header->toArray());
+
+		$header->setRequired();
+		self::assertTrue($header->toArray()['required']);
+
+		$header->setRequired(false);
+		self::assertNotContains('required', $header->toArray());
+	}
+
+	public function testExplode(): void
+	{
+		$header = new Header();
+		self::assertFalse($header->getExplode());
+
+		$header->setStyle(HeaderStyle::simple());
+		self::assertFalse($header->getExplode());
+
+		$header->setStyle(HeaderStyle::simple(), false);
+		self::assertFalse($header->getExplode());
+
+		$header->setStyle(HeaderStyle::simple(), true);
+		self::assertTrue($header->getExplode());
 	}
 
 	public function testSetValue(): void
@@ -145,6 +173,30 @@ Solution: Check with hasExample().
 MSG);
 
 		$header->getExample();
+	}
+
+	public function testMultipleContents(): void
+	{
+		$header = new Header();
+		self::assertSame([], $header->getContent());
+
+		$mt1 = new MediaType();
+		$mt1->setExample(null);
+		$header->addContent('application/json', $mt1);
+
+		// Same media type is okay
+		$mt2 = new MediaType();
+		$header->addContent('application/json', $mt2);
+
+		$this->expectException(InvalidState::class);
+		$this->expectExceptionMessage(
+			<<<'MSG'
+Context: Adding content with media type 'application/xml' to a Header.
+Problem: Header content can contain only one entry, given one is second.
+MSG,
+		);
+
+		$header->addContent('application/xml', new MediaType());
 	}
 
 }
