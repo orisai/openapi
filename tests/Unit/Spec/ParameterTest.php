@@ -136,16 +136,19 @@ MSG,
 		yield ['a/a'];
 	}
 
-	public function testNameFormatting(): void
+	public function testInvalidHeaderName(): void
 	{
-		$p = new Parameter('transfer-encoding', ParameterIn::header());
-		self::assertSame('Transfer-Encoding', $p->getName());
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(
+			<<<'MSG'
+Context: Creating a Parameter with name 'á' in 'header'.
+Problem: Name is not valid HTTP header name.
+Hint: Validation is performed in compliance with
+      https://www.rfc-editor.org/rfc/rfc7230
+MSG,
+		);
 
-		$p = new Parameter('tRaNsFeR-EnCoDiNg', ParameterIn::header());
-		self::assertSame('Transfer-Encoding', $p->getName());
-
-		$p = new Parameter('Transfer-Encoding', ParameterIn::header());
-		self::assertSame('Transfer-Encoding', $p->getName());
+		new Parameter('á', ParameterIn::header());
 	}
 
 	/**

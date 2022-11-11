@@ -4,13 +4,9 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\OpenAPI\Utils\HeaderValidator;
 use Orisai\OpenAPI\Utils\SpecUtils;
-use function array_map;
-use function explode;
-use function implode;
 use function preg_match;
-use function strtolower;
-use function ucfirst;
 
 final class Response implements SpecObject
 {
@@ -36,21 +32,20 @@ final class Response implements SpecObject
 	 */
 	public function addHeader(string $name, $header): void
 	{
-		//TODO - validovat název headeru (i cookie header)
-		//	- neměla by být header cookie zakázaná?
-		$this->headers[$this->formatHeaderName($name)] = $header;
-	}
+		if (!HeaderValidator::isNameValid($name)) {
+			$message = Message::create()
+				->withContext("Adding Response Header with name '$name'.")
+				->withProblem('Name is not valid HTTP header name.')
+				->with(
+					'Hint',
+					'Validation is performed in compliance with https://www.rfc-editor.org/rfc/rfc7230',
+				);
 
-	private function formatHeaderName(string $name): string
-	{
-		//TODO - sjednotit implementaci s formátováním v parametru
-		return implode(
-			'-',
-			array_map(
-				static fn (string $word): string => ucfirst($word),
-				explode('-', strtolower($name)),
-			),
-		);
+			throw InvalidArgument::create()
+				->withMessage($message);
+		}
+
+		$this->headers[HeaderValidator::formatName($name)] = $header;
 	}
 
 	/**

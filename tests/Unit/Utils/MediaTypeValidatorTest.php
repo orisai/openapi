@@ -23,7 +23,7 @@ final class MediaTypeValidatorTest extends TestCase
 
 	public function provideValidTypes(): Generator
 	{
-		foreach (require __DIR__ . '/../../Data/MediaTypes/extensions.php' as $mediaType) {
+		foreach (require __DIR__ . '/../../Data/MediaTypes/custom.php' as $mediaType) {
 			yield [$mediaType];
 		}
 
@@ -61,11 +61,6 @@ final class MediaTypeValidatorTest extends TestCase
 		}
 	}
 
-	public function testCaseNonSensitivity(): void
-	{
-		self::assertTrue(MediaTypeValidator::isValid('APPLICATION/PDF'));
-	}
-
 	/**
 	 * @dataProvider provideInvalidTypes
 	 */
@@ -81,6 +76,11 @@ final class MediaTypeValidatorTest extends TestCase
 			'text/ř',
 			'text/x-ř',
 		];
+	}
+
+	public function testCaseNonSensitivity(): void
+	{
+		self::assertTrue(MediaTypeValidator::isValid('APPLICATION/PDF'));
 	}
 
 }

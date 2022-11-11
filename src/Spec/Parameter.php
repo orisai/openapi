@@ -7,15 +7,13 @@ use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Enum\ParameterIn;
 use Orisai\OpenAPI\Enum\ParameterStyle;
+use Orisai\OpenAPI\Utils\HeaderValidator;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use ReflectionProperty;
 use function array_map;
-use function explode;
 use function implode;
 use function in_array;
 use function preg_match;
-use function strtolower;
-use function ucfirst;
 
 final class Parameter implements SpecObject
 {
@@ -67,7 +65,20 @@ final class Parameter implements SpecObject
 
 	private function processName(string $name, ParameterIn $in): string
 	{
-		if ($in === ParameterIn::path() && preg_match('#[{}/]#', $name) === 1) {
+		if ($in === ParameterIn::path()) {
+			return $this->processPathName($name);
+		}
+
+		if ($in === ParameterIn::header()) {
+			return $this->processHeaderName($name);
+		}
+
+		return $name;
+	}
+
+	private function processPathName(string $name): string
+	{
+		if (preg_match('#[{}/]#', $name) === 1) {
 			//TODO - https://spec.openapis.org/oas/v3.1.0#path-templating
 			$message = Message::create()
 				->withContext("Creating Parameter with name '$name'.")
@@ -77,25 +88,25 @@ final class Parameter implements SpecObject
 				->withMessage($message);
 		}
 
-		//TODO - cookie, header validation (i cookie header)
-		//	- neměla by být header cookie zakázaná?
-
-		return $this->formatName($name, $in);
+		return $name;
 	}
 
-	private function formatName(string $name, ParameterIn $in): string
+	private function processHeaderName(string $name): string
 	{
-		if ($in !== ParameterIn::header()) {
-			return $name;
+		if (!HeaderValidator::isNameValid($name)) {
+			$message = Message::create()
+				->withContext("Creating a Parameter with name '$name' in 'header'.")
+				->withProblem('Name is not valid HTTP header name.')
+				->with(
+					'Hint',
+					'Validation is performed in compliance with https://www.rfc-editor.org/rfc/rfc7230',
+				);
+
+			throw InvalidArgument::create()
+				->withMessage($message);
 		}
 
-		return implode(
-			'-',
-			array_map(
-				static fn (string $word): string => ucfirst($word),
-				explode('-', strtolower($name)),
-			),
-		);
+		return HeaderValidator::formatName($name);
 	}
 
 	public function getName(): string

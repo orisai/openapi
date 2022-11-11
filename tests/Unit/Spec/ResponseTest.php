@@ -97,6 +97,23 @@ final class ResponseTest extends TestCase
 		);
 	}
 
+	public function testInvalidHeaderName(): void
+	{
+		$r = new Response('desc');
+
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(
+			<<<'MSG'
+Context: Adding Response Header with name 'á'.
+Problem: Name is not valid HTTP header name.
+Hint: Validation is performed in compliance with
+      https://www.rfc-editor.org/rfc/rfc7230
+MSG,
+		);
+
+		$r->addHeader('á', new Header());
+	}
+
 	/**
 	 * @dataProvider provideInvalidLinkNameVariants
 	 */
