@@ -79,9 +79,16 @@ final class ParameterTest extends TestCase
 		$p->schema->setExample(null);
 		$p->setExample(null);
 
-		$p->examples['foo'] = $pe1 = new Example();
+		$p->addExample('foo', $pe1 = new Example());
 		$pe1->description = 'desc';
-		$p->examples['bar'] = $pe2 = new Reference('ref');
+		$p->addExample('bar', $pe2 = new Reference('ref'));
+		self::assertSame(
+			[
+				'foo' => $pe1,
+				'bar' => $pe2,
+			],
+			$p->getExamples(),
+		);
 
 		$p->content['application/json'] = $pc1 = new MediaType();
 		$pc1->setExample(null);

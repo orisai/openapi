@@ -47,10 +47,10 @@ final class Parameter implements SpecObject
 	private $example;
 
 	/** @var array<string, Example|Reference> */
-	public array $examples = [];
+	private array $examples = [];
 
 	/** @var array<string, MediaType> */
-	public array $content = [];
+	private array $content = [];
 
 	public function __construct(string $name, ParameterIn $in)
 	{
@@ -223,6 +223,22 @@ final class Parameter implements SpecObject
 		}
 
 		return $this->example;
+	}
+
+	/**
+	 * @param Example|Reference $example
+	 */
+	public function addExample(string $key, $example): void
+	{
+		$this->examples[$key] = $example;
+	}
+
+	/**
+	 * @return array<string, Example|Reference>
+	 */
+	public function getExamples(): array
+	{
+		return $this->examples;
 	}
 
 	public function toArray(): array
