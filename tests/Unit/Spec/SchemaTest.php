@@ -25,7 +25,7 @@ final class SchemaTest extends TestCase
 		$d2 = new Discriminator('property');
 		$s2->discriminator = $d2;
 		$x2 = $s2->xml;
-		$x2->name = 'name';
+		$x2->setName('name');
 
 		$ed2 = new ExternalDocumentation('https://example.com');
 		$s2->externalDocs = $ed2;
