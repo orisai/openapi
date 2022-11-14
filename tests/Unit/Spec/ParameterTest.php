@@ -478,6 +478,25 @@ MSG,
 		$parameter->getExample();
 	}
 
+	/**
+	 * @dataProvider provideContentVariant
+	 */
+	public function testContentVariant(string $name): void
+	{
+		$parameter = new Parameter('name', ParameterIn::path());
+		$mediaType = new MediaType();
+		$parameter->addContent($name, $mediaType);
+
+		self::assertSame([$name => $mediaType], $parameter->getContent());
+	}
+
+	public function provideContentVariant(): Generator
+	{
+		yield ['application/json'];
+		yield ['application/*'];
+		yield ['*/*'];
+	}
+
 	public function testMultipleContents(): void
 	{
 		$parameter = new Parameter('name', ParameterIn::path());

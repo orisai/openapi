@@ -7,7 +7,7 @@ use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Enum\ParameterIn;
 use Orisai\OpenAPI\Enum\ParameterStyle;
-use Orisai\OpenAPI\Utils\HeaderValidator;
+use Orisai\OpenAPI\Utils\Headers;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use ReflectionProperty;
 use function array_map;
@@ -93,7 +93,7 @@ final class Parameter implements SpecObject
 
 	private function processHeaderName(string $name): string
 	{
-		if (!HeaderValidator::isNameValid($name)) {
+		if (!Headers::isNameValid($name)) {
 			$message = Message::create()
 				->withContext("Creating a Parameter with name '$name' in 'header'.")
 				->withProblem('Name is not valid HTTP header name.')
@@ -106,7 +106,7 @@ final class Parameter implements SpecObject
 				->withMessage($message);
 		}
 
-		return HeaderValidator::formatName($name);
+		return Headers::formatName($name);
 	}
 
 	public function getName(): string

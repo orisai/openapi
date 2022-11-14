@@ -4,7 +4,7 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
-use Orisai\OpenAPI\Utils\HeaderValidator;
+use Orisai\OpenAPI\Utils\Headers;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function preg_match;
 
@@ -32,7 +32,7 @@ final class Response implements SpecObject
 	 */
 	public function addHeader(string $name, $header): void
 	{
-		if (!HeaderValidator::isNameValid($name)) {
+		if (!Headers::isNameValid($name)) {
 			$message = Message::create()
 				->withContext("Adding Response Header with name '$name'.")
 				->withProblem('Name is not valid HTTP header name.')
@@ -45,7 +45,7 @@ final class Response implements SpecObject
 				->withMessage($message);
 		}
 
-		$this->headers[HeaderValidator::formatName($name)] = $header;
+		$this->headers[Headers::formatName($name)] = $header;
 	}
 
 	/**

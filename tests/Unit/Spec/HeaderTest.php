@@ -79,19 +79,25 @@ final class HeaderTest extends TestCase
 		self::assertNotContains('required', $header->toArray());
 	}
 
-	public function testExplode(): void
+	public function testStyleAndExplode(): void
 	{
 		$header = new Header();
+		self::assertSame(HeaderStyle::simple(), $header->getStyle());
 		self::assertFalse($header->getExplode());
+		self::assertArrayNotHasKey('explode', $header->toArray());
 
 		$header->setStyle(HeaderStyle::simple());
+		self::assertSame(HeaderStyle::simple(), $header->getStyle());
 		self::assertFalse($header->getExplode());
+		self::assertArrayNotHasKey('explode', $header->toArray());
 
 		$header->setStyle(HeaderStyle::simple(), false);
+		self::assertSame(HeaderStyle::simple(), $header->getStyle());
 		self::assertFalse($header->getExplode());
 		self::assertArrayNotHasKey('explode', $header->toArray());
 
 		$header->setStyle(HeaderStyle::simple(), true);
+		self::assertSame(HeaderStyle::simple(), $header->getStyle());
 		self::assertTrue($header->getExplode());
 		self::assertTrue($header->toArray()['explode']);
 	}
@@ -175,6 +181,25 @@ Solution: Check with hasExample().
 MSG);
 
 		$header->getExample();
+	}
+
+	/**
+	 * @dataProvider provideContentVariant
+	 */
+	public function testContentVariant(string $name): void
+	{
+		$header = new Header();
+		$mediaType = new MediaType();
+		$header->addContent($name, $mediaType);
+
+		self::assertSame([$name => $mediaType], $header->getContent());
+	}
+
+	public function provideContentVariant(): Generator
+	{
+		yield ['application/json'];
+		yield ['application/*'];
+		yield ['*/*'];
 	}
 
 	public function testMultipleContents(): void

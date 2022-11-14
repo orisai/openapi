@@ -38,4 +38,14 @@ final class EncodingStyleTest extends TestCase
 		EncodingStyle::from('invalid');
 	}
 
+	public function testDefaultExplode(): void
+	{
+		foreach (EncodingStyle::cases() as $case) {
+			self::assertSame(
+				$case === EncodingStyle::form(),
+				$case->getDefaultExplode(),
+			);
+		}
+	}
+
 }

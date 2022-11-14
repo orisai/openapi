@@ -3,9 +3,9 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\OpenAPI\Utils\SpecUtils;
-use function array_keys;
 use function array_merge;
 use function array_values;
+use function in_array;
 use function spl_object_id;
 
 final class Operation implements SpecObject
@@ -13,7 +13,7 @@ final class Operation implements SpecObject
 
 	use SpecObjectSupportsExtensions;
 
-	/** @var array<string, null> */
+	/** @var list<string> */
 	private array $tags = [];
 
 	public ?string $summary = null;
@@ -50,7 +50,11 @@ final class Operation implements SpecObject
 
 	public function addTag(string $tag): void
 	{
-		$this->tags[$tag] = null;
+		if (in_array($tag, $this->tags, true)) {
+			return;
+		}
+
+		$this->tags[] = $tag;
 	}
 
 	/**
@@ -58,7 +62,7 @@ final class Operation implements SpecObject
 	 */
 	public function getTags(): array
 	{
-		return array_keys($this->tags);
+		return $this->tags;
 	}
 
 	/**

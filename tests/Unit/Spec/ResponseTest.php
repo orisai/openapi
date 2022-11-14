@@ -31,8 +31,7 @@ final class ResponseTest extends TestCase
 		$r2h1->setExample('h1');
 		$r2->addHeader('transfer-encoding', $r2h1);
 
-		$r2h2 = new Header();
-		$r2h2->setExample('h2');
+		$r2h2 = new Reference('ref');
 		$r2->addHeader('trailer', $r2h2);
 
 		self::assertSame(
@@ -163,19 +162,13 @@ MSG,
 		$r = new Response('d');
 		$mt = new MediaType();
 
+		$r->addContent('*/*', $mt);
 		$r->addContent('text/csv', $mt);
-		$r->addContent('application/x-neon', $mt);
-		$r->addContent('application/xml', $mt);
-		$r->addContent('application/x-yaml', $mt);
-		$r->addContent('application/json', $mt);
 
 		self::assertSame(
 			[
-				'application/json',
-				'application/xml',
-				'application/x-neon',
-				'application/x-yaml',
 				'text/csv',
+				'*/*',
 			],
 			array_keys($r->getContent()),
 		);
@@ -186,25 +179,38 @@ MSG,
 		$r = new Response('d');
 		$mt = new MediaType();
 
+		$r->addContent('*/*', $mt);
 		$r->addContent('text/csv', $mt);
-		$r->addContent('application/x-neon', $mt);
-		$r->addContent('application/xml', $mt);
-		$r->addContent('application/x-yaml', $mt);
-		$r->addContent('application/json', $mt);
 
 		self::assertSame(
 			[
 				'description' => 'd',
 				'content' => [
-					'application/json' => [],
-					'application/xml' => [],
-					'application/x-neon' => [],
-					'application/x-yaml' => [],
 					'text/csv' => [],
+					'*/*' => [],
 				],
 			],
 			$r->toArray(),
 		);
+	}
+
+	/**
+	 * @dataProvider provideContentVariant
+	 */
+	public function testContentVariant(string $name): void
+	{
+		$response = new Response('desc');
+		$mediaType = new MediaType();
+		$response->addContent($name, $mediaType);
+
+		self::assertSame([$name => $mediaType], $response->getContent());
+	}
+
+	public function provideContentVariant(): Generator
+	{
+		yield ['application/json'];
+		yield ['application/*'];
+		yield ['*/*'];
 	}
 
 	public function testInvalidContentType(): void
@@ -214,15 +220,15 @@ MSG,
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage(
 			<<<'MSG'
-Context: Adding a media type 'invalid'.
-Problem: Type is not a valid media type.
+Context: Adding a media type 'invaliD'.
+Problem: Type is not a valid media type or media type range.
 Hint: Validation is performed in compliance with
       https://www.rfc-editor.org/rfc/rfc2045#section-5.1 and
       https://www.rfc-editor.org/rfc/rfc7231#section-3.1.1.1
 MSG,
 		);
 
-		$r->addContent('invalid', new MediaType());
+		$r->addContent('invaliD', new MediaType());
 	}
 
 }

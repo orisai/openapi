@@ -9,8 +9,13 @@ use function preg_match;
 use function strtolower;
 use function ucfirst;
 
-final class HeaderValidator
+final class Headers
 {
+
+	private function __construct()
+	{
+		// Static class
+	}
 
 	public static function formatName(string $name): string
 	{

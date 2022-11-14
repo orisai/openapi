@@ -31,7 +31,8 @@ final class OperationTest extends TestCase
 		$op2->addTag('foo');
 		$op2->addTag('foo');
 		$op2->addTag('bar');
-		self::assertSame(['foo', 'bar'], $op2->getTags());
+		$op2->addTag('123');
+		self::assertSame(['foo', 'bar', '123'], $op2->getTags());
 
 		$op2->summary = 'summary';
 		$op2->description = 'description';
@@ -78,7 +79,7 @@ final class OperationTest extends TestCase
 
 		self::assertSame(
 			[
-				'tags' => ['foo', 'bar'],
+				'tags' => ['foo', 'bar', '123'],
 				'summary' => 'summary',
 				'description' => 'description',
 				'externalDocs' => $op2ed->toArray(),

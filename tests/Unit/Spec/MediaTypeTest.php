@@ -35,7 +35,7 @@ final class MediaTypeTest extends TestCase
 		$mt2->examples['bar'] = $h2ex2 = new Reference('ref');
 
 		$mt2->encoding['foo'] = $h2en1 = new Encoding();
-		$h2en1->style = EncodingStyle::form();
+		$h2en1->setStyle(EncodingStyle::form());
 		$mt2->encoding['bar'] = $h2en2 = new Reference('ref');
 
 		$mt2->addExtension('x-a', null);

@@ -89,4 +89,9 @@ final class EncodingStyle
 		return $cases;
 	}
 
+	public function getDefaultExplode(): bool
+	{
+		return $this === self::form();
+	}
+
 }

@@ -3,13 +3,13 @@
 namespace Tests\Orisai\OpenAPI\Unit\Utils;
 
 use Generator;
-use Orisai\OpenAPI\Utils\HeaderValidator;
+use Orisai\OpenAPI\Utils\Headers;
 use PHPUnit\Framework\TestCase;
 use function fclose;
 use function fgetcsv;
 use function fopen;
 
-final class HeaderValidatorTest extends TestCase
+final class HeadersTest extends TestCase
 {
 
 	/**
@@ -17,7 +17,7 @@ final class HeaderValidatorTest extends TestCase
 	 */
 	public function testNameFormat(string $formatted, string $name): void
 	{
-		self::assertSame($formatted, HeaderValidator::formatName($name));
+		self::assertSame($formatted, Headers::formatName($name));
 	}
 
 	public function provideNameFormat(): Generator
@@ -33,7 +33,7 @@ final class HeaderValidatorTest extends TestCase
 	 */
 	public function testValidNames(string $name): void
 	{
-		self::assertTrue(HeaderValidator::isNameValid($name));
+		self::assertTrue(Headers::isNameValid($name));
 	}
 
 	public function provideValidNames(): Generator
@@ -75,7 +75,7 @@ final class HeaderValidatorTest extends TestCase
 	 */
 	public function testInvalidNames(string $name): void
 	{
-		self::assertFalse(HeaderValidator::isNameValid($name));
+		self::assertFalse(Headers::isNameValid($name));
 	}
 
 	public function provideInvalidNames(): Generator
@@ -88,7 +88,7 @@ final class HeaderValidatorTest extends TestCase
 
 	public function testCaseNonSensitivity(): void
 	{
-		self::assertTrue(HeaderValidator::isNameValid('TRANSFER-ENCODING'));
+		self::assertTrue(Headers::isNameValid('TRANSFER-ENCODING'));
 	}
 
 }
