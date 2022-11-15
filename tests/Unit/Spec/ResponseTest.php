@@ -58,11 +58,10 @@ final class ResponseTest extends TestCase
 			$r2->getContent(),
 		);
 
-		$r2l1 = new Link();
+		$r2l1 = Link::forId('id1');
 		$r2->addLink('l1', $r2l1);
 
-		$r2l2 = new Link();
-		$r2l2->description = 'l2';
+		$r2l2 = Link::forId('id2');
 		$r2->addLink('l2', $r2l2);
 
 		self::assertSame(

@@ -9,7 +9,7 @@ use ReflectionProperty;
 final class Example implements SpecObject
 {
 
-	use SpecObjectChecksExampleValue;
+	use SpecObjectChecksSerializableValue;
 	use SpecObjectSupportsExtensions;
 
 	public ?string $summary = null;
@@ -31,7 +31,7 @@ final class Example implements SpecObject
 	 */
 	public function setValue($value): void
 	{
-		$this->checkExampleValue($value);
+		$this->checkSerializableValue($value, 'Example value');
 		$this->externalValue = null;
 		$this->value = $value;
 	}
@@ -48,8 +48,8 @@ final class Example implements SpecObject
 	{
 		if (!$this->hasValue()) {
 			$message = Message::create()
-				->withContext('Getting the example value.')
-				->withProblem('Example value is not set and so cannot be get.')
+				->withContext('Getting the Example value.')
+				->withProblem('Value is not set and so cannot be get.')
 				->withSolution('Check with hasValue().');
 
 			throw InvalidState::create()

@@ -136,7 +136,7 @@ final class HeaderTest extends TestCase
 
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage(<<<MSG
-Context: Setting an example.
+Context: Setting a Header example.
 Problem: Value contains type '$unsupportedType', which is not allowed.
 Solution: Change type to one of supported - scalar, null, array or stdClass.
 MSG);
@@ -175,8 +175,8 @@ MSG);
 
 		$this->expectException(InvalidState::class);
 		$this->expectExceptionMessage(<<<'MSG'
-Context: Getting the example value.
-Problem: Example value is not set and so cannot be get.
+Context: Getting the Header example.
+Problem: Example is not set and so cannot be get.
 Solution: Check with hasExample().
 MSG);
 

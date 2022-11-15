@@ -10,7 +10,7 @@ use ReflectionProperty;
 final class MediaType implements SpecObject
 {
 
-	use SpecObjectChecksExampleValue;
+	use SpecObjectChecksSerializableValue;
 	use SpecObjectSupportsExtensions;
 
 	public Schema $schema;
@@ -35,7 +35,7 @@ final class MediaType implements SpecObject
 	 */
 	public function setExample($example): void
 	{
-		$this->checkExampleValue($example);
+		$this->checkSerializableValue($example, 'MediaType example');
 		$this->example = $example;
 	}
 
@@ -51,8 +51,8 @@ final class MediaType implements SpecObject
 	{
 		if (!$this->hasExample()) {
 			$message = Message::create()
-				->withContext('Getting the example value.')
-				->withProblem('Example value is not set and so cannot be get.')
+				->withContext('Getting the MediaType example.')
+				->withProblem('Example is not set and so cannot be get.')
 				->withSolution('Check with hasExample().');
 
 			throw InvalidState::create()

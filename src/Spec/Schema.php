@@ -9,7 +9,7 @@ use ReflectionProperty;
 final class Schema implements SpecObject
 {
 
-	use SpecObjectChecksExampleValue;
+	use SpecObjectChecksSerializableValue;
 
 	public ?Discriminator $discriminator = null;
 
@@ -31,7 +31,7 @@ final class Schema implements SpecObject
 	 */
 	public function setExample($example): void
 	{
-		$this->checkExampleValue($example);
+		$this->checkSerializableValue($example, 'Schema example');
 		$this->example = $example;
 	}
 
@@ -47,8 +47,8 @@ final class Schema implements SpecObject
 	{
 		if (!$this->hasExample()) {
 			$message = Message::create()
-				->withContext('Getting the example value.')
-				->withProblem('Example value is not set and so cannot be get.')
+				->withContext('Getting the Schema example.')
+				->withProblem('Example is not set and so cannot be get.')
 				->withSolution('Check with hasExample().');
 
 			throw InvalidState::create()

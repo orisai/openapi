@@ -111,7 +111,7 @@ final class ComponentsTest extends TestCase
 			$c2->getSecuritySchemes(),
 		);
 
-		$c2->addLink('a', $c2l1 = new Link());
+		$c2->addLink('a', $c2l1 = Link::forId('id1'));
 		$c2->addLink('b', $c2l2 = new Reference('l2'));
 		self::assertSame(
 			[

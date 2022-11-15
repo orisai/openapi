@@ -13,13 +13,13 @@ use function is_resource;
 /**
  * @internal
  */
-trait SpecObjectChecksExampleValue
+trait SpecObjectChecksSerializableValue
 {
 
 	/**
 	 * @param mixed $content
 	 */
-	private function checkExampleValue($content): void
+	private function checkSerializableValue($content, string $objectType): void
 	{
 		if (
 			(is_object($content) && !$content instanceof stdClass)
@@ -27,7 +27,7 @@ trait SpecObjectChecksExampleValue
 		) {
 			$type = get_debug_type($content);
 			$message = Message::create()
-				->withContext('Setting an example.')
+				->withContext("Setting a $objectType.")
 				->withProblem("Value contains type '$type', which is not allowed.")
 				->withSolution('Change type to one of supported - scalar, null, array or stdClass.');
 
@@ -37,7 +37,7 @@ trait SpecObjectChecksExampleValue
 
 		if (is_array($content)) {
 			foreach ($content as $value) {
-				$this->checkExampleValue($value);
+				$this->checkSerializableValue($value, $objectType);
 			}
 		}
 	}

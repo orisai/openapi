@@ -19,7 +19,7 @@ use function preg_match;
 final class Parameter implements SpecObject
 {
 
-	use SpecObjectChecksExampleValue;
+	use SpecObjectChecksSerializableValue;
 	use SpecObjectHasContent {
 		SpecObjectHasContent::addContent as addContentTrait;
 	}
@@ -198,7 +198,7 @@ final class Parameter implements SpecObject
 	 */
 	public function setExample($example): void
 	{
-		$this->checkExampleValue($example);
+		$this->checkSerializableValue($example, 'Parameter example');
 		$this->example = $example;
 	}
 
@@ -214,8 +214,8 @@ final class Parameter implements SpecObject
 	{
 		if (!$this->hasExample()) {
 			$message = Message::create()
-				->withContext('Getting the example value.')
-				->withProblem('Example value is not set and so cannot be get.')
+				->withContext('Getting the Parameter example.')
+				->withProblem('Example is not set and so cannot be get.')
 				->withSolution('Check with hasExample().');
 
 			throw InvalidState::create()
