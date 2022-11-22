@@ -169,8 +169,6 @@ final class Operation implements SpecObject
 			$data['deprecated'] = $this->deprecated;
 		}
 
-		//TODO - má dovolovat prázdné pole pro odstranění security z OpenAPI objektu
-		// 		téhož se ale dá docílit i SecurityRequirement::createOptional()
 		if ($this->security !== []) {
 			$securityByObject = [];
 			foreach ($this->security as $object) {

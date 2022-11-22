@@ -10,6 +10,7 @@ use Orisai\OpenAPI\Enum\HeaderStyle;
 use Orisai\OpenAPI\Spec\Example;
 use Orisai\OpenAPI\Spec\Header;
 use Orisai\OpenAPI\Spec\MediaType;
+use Orisai\OpenAPI\Spec\NullSchema;
 use Orisai\OpenAPI\Spec\Reference;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -29,7 +30,8 @@ final class HeaderTest extends TestCase
 		$h2->description = 'description';
 		$h2->deprecated = true;
 		$h2->setExample(null);
-		$h2->schema->setExample('schema');
+		$h2->schema = $h2s = new NullSchema();
+		$h2s->setExample('schema');
 
 		$h2->addExample('foo', $h2e1 = new Example());
 		$h2e1->description = 'desc';

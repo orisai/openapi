@@ -123,12 +123,8 @@ final class Encoding implements SpecObject
 
 	public function toArray(): array
 	{
-		//TODO - https://spec.openapis.org/oas/v3.1.0#encoding-object
-		//TODO - pro style, explode a allowReserved specifikace uvádí změnu chování v případě, že jsou definované explicitně
-		//		- implicitní default se tedy liší od explicitního
 		$data = [];
 
-		//TODO - získávání defaults
 		$contentTypes = $this->getContentTypes();
 		if ($contentTypes !== []) {
 			$data['contentType'] = implode(', ', $contentTypes);

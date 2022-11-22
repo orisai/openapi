@@ -8,7 +8,8 @@ use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Spec\Discriminator;
 use Orisai\OpenAPI\Spec\ExternalDocumentation;
-use Orisai\OpenAPI\Spec\Schema;
+use Orisai\OpenAPI\Spec\NullSchema;
+use Orisai\OpenAPI\Spec\ObjectSchema;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use function fopen;
@@ -18,10 +19,15 @@ final class SchemaTest extends TestCase
 
 	public function test(): void
 	{
-		$s1 = new Schema();
-		self::assertSame([], $s1->toArray());
+		$s1 = new NullSchema();
+		self::assertSame(
+			[
+				'type' => 'null',
+			],
+			$s1->toArray(),
+		);
 
-		$s2 = new Schema();
+		$s2 = new ObjectSchema();
 		$d2 = new Discriminator('property');
 		$s2->discriminator = $d2;
 		$x2 = $s2->xml;
@@ -34,10 +40,11 @@ final class SchemaTest extends TestCase
 
 		self::assertSame(
 			[
-				'discriminator' => $d2->toArray(),
 				'xml' => $x2->toArray(),
 				'externalDocs' => $ed2->toArray(),
 				'example' => null,
+				'type' => 'object',
+				'discriminator' => $d2->toArray(),
 			],
 			$s2->toArray(),
 		);
@@ -45,7 +52,7 @@ final class SchemaTest extends TestCase
 
 	public function testSetValue(): void
 	{
-		$schema = new Schema();
+		$schema = new NullSchema();
 
 		$schema->setExample(null);
 		self::assertNull($schema->getExample());
@@ -73,7 +80,7 @@ final class SchemaTest extends TestCase
 			$value = fopen(__FILE__, 'r');
 		}
 
-		$schema = new Schema();
+		$schema = new NullSchema();
 
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage(<<<MSG
@@ -110,7 +117,7 @@ MSG);
 
 	public function testGetNoValue(): void
 	{
-		$schema = new Schema();
+		$schema = new NullSchema();
 
 		self::assertFalse($schema->hasExample());
 

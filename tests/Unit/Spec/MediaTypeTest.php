@@ -10,6 +10,7 @@ use Orisai\OpenAPI\Enum\EncodingStyle;
 use Orisai\OpenAPI\Spec\Encoding;
 use Orisai\OpenAPI\Spec\Example;
 use Orisai\OpenAPI\Spec\MediaType;
+use Orisai\OpenAPI\Spec\NullSchema;
 use Orisai\OpenAPI\Spec\Reference;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -25,18 +26,31 @@ final class MediaTypeTest extends TestCase
 
 		$mt2 = new MediaType();
 
-		$mt2s = $mt2->schema;
+		$mt2->schema = $mt2s = new NullSchema();
 		$mt2s->setExample(null);
 
 		$mt2->setExample(null);
 
-		$mt2->examples['foo'] = $h2ex1 = new Example();
-		$h2ex1->description = 'desc';
-		$mt2->examples['bar'] = $h2ex2 = new Reference('ref');
+		$mt2->addExample('foo', $h2ex1 = new Example());
+		$mt2->addExample('bar', $h2ex2 = new Reference('ref'));
+		self::assertSame(
+			[
+				'foo' => $h2ex1,
+				'bar' => $h2ex2,
+			],
+			$mt2->getExamples(),
+		);
 
-		$mt2->encoding['foo'] = $h2en1 = new Encoding();
+		$mt2->addEncoding('foo', $h2en1 = new Encoding());
 		$h2en1->setStyle(EncodingStyle::form());
-		$mt2->encoding['bar'] = $h2en2 = new Reference('ref');
+		$mt2->addEncoding('bar', $h2en2 = new Encoding());
+		self::assertSame(
+			[
+				'foo' => $h2en1,
+				'bar' => $h2en2,
+			],
+			$mt2->getEncodings(),
+		);
 
 		$mt2->addExtension('x-a', null);
 

@@ -10,6 +10,7 @@ use Orisai\OpenAPI\Enum\ParameterIn;
 use Orisai\OpenAPI\Enum\ParameterStyle;
 use Orisai\OpenAPI\Spec\Example;
 use Orisai\OpenAPI\Spec\MediaType;
+use Orisai\OpenAPI\Spec\NullSchema;
 use Orisai\OpenAPI\Spec\Parameter;
 use Orisai\OpenAPI\Spec\Reference;
 use PHPUnit\Framework\TestCase;
@@ -76,7 +77,8 @@ final class ParameterTest extends TestCase
 		$p->setRequired(true);
 		$p->deprecated = true;
 		$p->setStyle(ParameterStyle::form(), false);
-		$p->schema->setExample(null);
+		$p->schema = $ps = new NullSchema();
+		$ps->setExample(null);
 		$p->setExample(null);
 
 		$p->addExample('foo', $pe1 = new Example());

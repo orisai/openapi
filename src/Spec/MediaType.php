@@ -13,20 +13,19 @@ final class MediaType implements SpecObject
 	use SpecObjectChecksSerializableValue;
 	use SpecObjectSupportsExtensions;
 
-	public Schema $schema;
+	public ?Schema $schema = null;
 
 	/** @var mixed */
 	private $example;
 
 	/** @var array<string, Example|Reference> */
-	public array $examples = [];
+	private array $examples = [];
 
 	/** @var array<string, Encoding> */
-	public array $encoding = [];
+	private array $encoding = [];
 
 	public function __construct()
 	{
-		$this->schema = new Schema();
 		unset($this->example);
 	}
 
@@ -62,32 +61,51 @@ final class MediaType implements SpecObject
 		return $this->example;
 	}
 
+	/**
+	 * @param Example|Reference $example
+	 */
+	public function addExample(string $key, $example): void
+	{
+		$this->examples[$key] = $example;
+	}
+
+	/**
+	 * @return array<string, Example|Reference>
+	 */
+	public function getExamples(): array
+	{
+		return $this->examples;
+	}
+
+	public function addEncoding(string $key, Encoding $encoding): void
+	{
+		$this->encoding[$key] = $encoding;
+	}
+
+	/**
+	 * @return array<string, Encoding>
+	 */
+	public function getEncodings(): array
+	{
+		return $this->encoding;
+	}
+
 	public function toArray(): array
 	{
-		//TODO - https://spec.openapis.org/oas/v3.1.0#considerations-for-file-uploads (a vše podtím)
 		$data = [];
 
-		$schemaData = $this->schema->toArray();
-		if ($schemaData !== []) {
-			$data['schema'] = $schemaData;
+		if ($this->schema !== null) {
+			$data['schema'] = $this->schema->toArray();
 		}
 
-		//TODO - pokud existuje examples, tak nesmí existovat example a naopak
-		//TODO - musí matchnout media type (který zná nadřazený objekt)
-		//TODO - musí matchnout schema, pokud je definované
 		if ($this->hasExample()) {
 			$data['example'] = $this->example;
 		}
 
-		//TODO - musí matchnout media type (který zná nadřazený objekt)
-		//TODO - musí matchnout schema, pokud je definované
 		if ($this->examples !== []) {
 			$data['examples'] = SpecUtils::specsToArray($this->examples);
 		}
 
-		//TODO - pouze pro RequestBody s typem multipart nebo application/x-www-form-urlencoded
-		//		- při použití jinde a s jiným encodingem není platný
-		//TODO - klíč je název property a musí existovat ve Schema
 		if ($this->encoding !== []) {
 			$data['encoding'] = SpecUtils::specsToArray($this->encoding);
 		}

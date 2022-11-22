@@ -44,16 +44,11 @@ REGEX;
 	 */
 	public static function format(string $mediaType): string
 	{
-		//TODO - spaces and quotes in parameters https://www.rfc-editor.org/rfc/rfc7231#section-3.1.1.1
 		return strtolower($mediaType);
 	}
 
 	public static function isValid(string $mediaType): bool
 	{
-		//TODO - support OWS parameters
-		//		- https://www.rfc-editor.org/rfc/rfc6838.html#section-4.2
-		//		- https://www.rfc-editor.org/rfc/rfc7231#section-5.3.2
-		//		- http://abnf.msweet.org/index.php
 		return preg_match(self::Expression, $mediaType) === 1;
 	}
 

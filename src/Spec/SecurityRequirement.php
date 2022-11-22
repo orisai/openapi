@@ -56,8 +56,6 @@ final class SecurityRequirement implements SpecObject
 
 	public function toArray(): array
 	{
-		//TODO - v nadřazené komponentě unikátní název?
-		//		specifikace to nezmiňuje, ale vzhledem k tomu, že má odpovídat unikátnímu názvu SecurityScheme v Components, tak by to dávalo smysl
 		if ($this->name === null) {
 			return [new stdClass()];
 		}

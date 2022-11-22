@@ -28,7 +28,7 @@ final class Header implements SpecObject
 
 	private bool $explode;
 
-	public Schema $schema;
+	public ?Schema $schema = null;
 
 	/** @var mixed */
 	private $example;
@@ -40,7 +40,6 @@ final class Header implements SpecObject
 	{
 		$this->style = HeaderStyle::simple();
 		$this->explode = $this->style->getDefaultExplode();
-		$this->schema = new Schema();
 		unset($this->example);
 	}
 
@@ -155,9 +154,8 @@ final class Header implements SpecObject
 			$data['explode'] = $this->explode;
 		}
 
-		$schemaData = $this->schema->toArray();
-		if ($schemaData !== []) {
-			$data['schema'] = $schemaData;
+		if ($this->schema !== null) {
+			$data['schema'] = $this->schema->toArray();
 		}
 
 		if ($this->hasExample()) {

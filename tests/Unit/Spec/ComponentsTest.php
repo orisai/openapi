@@ -13,12 +13,12 @@ use Orisai\OpenAPI\Spec\Components;
 use Orisai\OpenAPI\Spec\Example;
 use Orisai\OpenAPI\Spec\Header;
 use Orisai\OpenAPI\Spec\Link;
+use Orisai\OpenAPI\Spec\NullSchema;
 use Orisai\OpenAPI\Spec\Parameter;
 use Orisai\OpenAPI\Spec\PathItem;
 use Orisai\OpenAPI\Spec\Reference;
 use Orisai\OpenAPI\Spec\RequestBody;
 use Orisai\OpenAPI\Spec\Response;
-use Orisai\OpenAPI\Spec\Schema;
 use PHPUnit\Framework\TestCase;
 
 final class ComponentsTest extends TestCase
@@ -41,7 +41,7 @@ final class ComponentsTest extends TestCase
 
 		$c2 = new Components();
 
-		$c2->addSchema('a', $c2s1 = new Schema());
+		$c2->addSchema('a', $c2s1 = new NullSchema());
 		$c2->addSchema('b', $c2s2 = new Reference('s1'));
 		self::assertSame(
 			[

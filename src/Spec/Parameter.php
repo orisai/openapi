@@ -45,7 +45,7 @@ final class Parameter implements SpecObject
 
 	private bool $allowReserved = false;
 
-	public Schema $schema;
+	public ?Schema $schema = null;
 
 	/** @var mixed */
 	private $example;
@@ -60,7 +60,7 @@ final class Parameter implements SpecObject
 		$this->required = $in === ParameterIn::path();
 		$this->style = $this->in->getDefaultStyle();
 		$this->explode = $this->style->getDefaultExplode();
-		$this->schema = new Schema();
+		$this->schema = null;
 		unset($this->example);
 	}
 
@@ -293,9 +293,8 @@ final class Parameter implements SpecObject
 			$data['allowReserved'] = $this->allowReserved;
 		}
 
-		$schemaData = $this->schema->toArray();
-		if ($schemaData !== []) {
-			$data['schema'] = $schemaData;
+		if ($this->schema !== null) {
+			$data['schema'] = $this->schema->toArray();
 		}
 
 		if ($this->hasExample()) {

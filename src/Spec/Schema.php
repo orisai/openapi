@@ -6,24 +6,41 @@ use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
 use ReflectionProperty;
 
-final class Schema implements SpecObject
+abstract class Schema implements SpecObject
 {
 
 	use SpecObjectChecksSerializableValue;
+	use SpecObjectSupportsExtensions;
 
-	public ?Discriminator $discriminator = null;
+	public ?string $title = null;
+
+	public ?string $description = null;
+
+	/** @var list<mixed> */
+	public array $enum = [];
+
+	public string $format;
+
+	/** @var mixed */
+	public $default;
+
+	public bool $readOnly = false;
+
+	public bool $writeOnly = false;
 
 	public XML $xml;
 
 	public ?ExternalDocumentation $externalDocs = null;
 
 	/** @var mixed */
-	private $example;
+	protected $example;
+
+	public bool $deprecated = false;
 
 	public function __construct()
 	{
 		$this->xml = new XML();
-		unset($this->example);
+		unset($this->default, $this->example);
 	}
 
 	/**
@@ -60,19 +77,8 @@ final class Schema implements SpecObject
 
 	public function toArray(): array
 	{
-		//TODO
-		//	 - kompletně chybí format a description
-		//		- převzaty z json schema, ve fieldech je dokumentace nezmiňuje
-		//		- rozšířeny o openapi data formáty a commanmark
-		//	 - i jiné fieldy jsou převzaty z json schema
-		//	 - plus je uvedené, že přes $schema mohou být i custom schemata
 		$data = [];
 
-		if ($this->discriminator !== null) {
-			$data['discriminator'] = $this->discriminator->toArray();
-		}
-
-		//TODO - pouze pro property schema, jinde nemá efekt - asi myslí Parameter?
 		$xmlData = $this->xml->toArray();
 		if ($xmlData !== []) {
 			$data['xml'] = $xmlData;
@@ -82,13 +88,11 @@ final class Schema implements SpecObject
 			$data['externalDocs'] = $this->externalDocs->toArray();
 		}
 
-		//TODO - deprecated, json schema používá examples keyword
 		if ($this->hasExample()) {
 			$data['example'] = $this->example;
 		}
 
-		//TODO - objekt může mít extensions bez x- prefixu
-		//		- jde o extensions z json schema nebo i o jiné?
+		$this->addExtensionsToData($data);
 
 		return $data;
 	}
