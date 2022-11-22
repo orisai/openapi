@@ -5,7 +5,7 @@ namespace Orisai\OpenAPI\Spec;
 final class OAuthFlows implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public ?ImplicitOAuthFlow $implicit = null;
 

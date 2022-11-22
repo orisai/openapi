@@ -19,20 +19,16 @@ final class OAuthFlowsTest extends TestCase
 
 		$f2 = new OAuthFlows();
 		$f2->authorizationCode = $f2ac = new AuthorizationCodeOAuthFlow(
-			[],
 			'https://example.com/api/oauth/dialog',
 			'https://example.com/api/oauth/token',
 		);
 		$f2->clientCredentials = $f2cc = new ClientCredentialsOAuthFlow(
-			[],
 			'https://example.com/api/oauth/token',
 		);
 		$f2->implicit = $f2i = new ImplicitOAuthFlow(
-			[],
 			'https://example.com/api/oauth/dialog',
 		);
 		$f2->password = $f2p = new PasswordOAuthFlow(
-			[],
 			'https://example.com/api/oauth/token',
 		);
 		$f2->addExtension('x-a', null);

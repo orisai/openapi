@@ -5,13 +5,12 @@ namespace Orisai\OpenAPI\Spec;
 final class ClientCredentialsOAuthFlow extends OAuthFlow
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public string $tokenUrl;
 
-	public function __construct(array $scopes, string $tokenUrl)
+	public function __construct(string $tokenUrl)
 	{
-		parent::__construct($scopes);
 		$this->tokenUrl = $tokenUrl;
 	}
 

@@ -4,6 +4,7 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use stdClass;
 use function get_debug_type;
 use function is_array;
 use function is_object;
@@ -13,7 +14,7 @@ use function str_starts_with;
 /**
  * @internal
  */
-trait SupportsSpecExtensions
+trait SpecObjectSupportsExtensions
 {
 
 	/** @var array<string, mixed> */
@@ -33,22 +34,33 @@ trait SupportsSpecExtensions
 				->withMessage($message);
 		}
 
-		$this->checkContent($name, $content);
+		$this->checkExtensionContent($name, $content);
 
 		$this->extensions[$name] = $content;
 	}
 
 	/**
+	 * @return array<string, mixed>
+	 */
+	final public function getExtensions(): array
+	{
+		return $this->extensions;
+	}
+
+	/**
 	 * @param mixed $content
 	 */
-	private function checkContent(string $name, $content): void
+	private function checkExtensionContent(string $name, $content): void
 	{
-		if (is_object($content) || is_resource($content)) {
+		if (
+			(is_object($content) && !$content instanceof stdClass)
+			|| is_resource($content)
+		) {
 			$type = get_debug_type($content);
 			$message = Message::create()
 				->withContext("Adding a spec extension with name '$name'.")
 				->withProblem("Extension contains value of type '$type', which is not allowed.")
-				->withSolution('Change value to one of supported - scalar, null or array.');
+				->withSolution('Change value to one of supported - scalar, null, array or stdClass.');
 
 			throw InvalidArgument::create()
 				->withMessage($message);
@@ -56,7 +68,7 @@ trait SupportsSpecExtensions
 
 		if (is_array($content)) {
 			foreach ($content as $value) {
-				$this->checkContent($name, $value);
+				$this->checkExtensionContent($name, $value);
 			}
 		}
 	}

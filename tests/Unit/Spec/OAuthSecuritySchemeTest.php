@@ -2,6 +2,7 @@
 
 namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
+use Orisai\OpenAPI\Enum\SecuritySchemeType;
 use Orisai\OpenAPI\Spec\OAuthFlows;
 use Orisai\OpenAPI\Spec\OAuthSecurityScheme;
 use Orisai\OpenAPI\Spec\PasswordOAuthFlow;
@@ -14,6 +15,7 @@ final class OAuthSecuritySchemeTest extends TestCase
 	{
 		$f1 = new OAuthFlows();
 		$s1 = new OAuthSecurityScheme($f1);
+		self::assertSame(SecuritySchemeType::oAuth2(), $s1->getType());
 		self::assertSame(
 			[
 				'type' => 'oauth2',
@@ -24,7 +26,6 @@ final class OAuthSecuritySchemeTest extends TestCase
 
 		$f2 = new OAuthFlows();
 		$f2->password = new PasswordOAuthFlow(
-			[],
 			'https://example.com/api/oauth/token',
 		);
 		$s2 = new OAuthSecurityScheme($f2);

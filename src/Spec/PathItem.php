@@ -3,11 +3,13 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\OpenAPI\Utils\SpecUtils;
+use function array_values;
+use function spl_object_id;
 
 final class PathItem implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public ?string $ref = null;
 
@@ -31,11 +33,40 @@ final class PathItem implements SpecObject
 
 	public ?Operation $trace = null;
 
-	/** @var list<Server> */
-	public array $servers = [];
+	/** @var array<int, Server> */
+	private array $servers = [];
 
-	/** @var list<Parameter|Reference> */
-	public array $parameters = [];
+	/** @var array<int, Parameter|Reference> */
+	private array $parameters = [];
+
+	public function addServer(Server $server): void
+	{
+		$this->servers[spl_object_id($server)] = $server;
+	}
+
+	/**
+	 * @return list<Server>
+	 */
+	public function getServers(): array
+	{
+		return array_values($this->servers);
+	}
+
+	/**
+	 * @param Parameter|Reference $parameter
+	 */
+	public function addParameter($parameter): void
+	{
+		$this->parameters[spl_object_id($parameter)] = $parameter;
+	}
+
+	/**
+	 * @return list<Parameter|Reference>
+	 */
+	public function getParameters(): array
+	{
+		return array_values($this->parameters);
+	}
 
 	public function toArray(): array
 	{
@@ -86,11 +117,11 @@ final class PathItem implements SpecObject
 		}
 
 		if ($this->servers !== []) {
-			$data['servers'] = SpecUtils::specsToArray($this->servers);
+			$data['servers'] = SpecUtils::specsToArray(array_values($this->servers));
 		}
 
 		if ($this->parameters !== []) {
-			$data['parameters'] = SpecUtils::specsToArray($this->parameters);
+			$data['parameters'] = SpecUtils::specsToArray(array_values($this->parameters));
 		}
 
 		$this->addExtensionsToData($data);

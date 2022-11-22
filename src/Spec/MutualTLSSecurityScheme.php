@@ -7,7 +7,7 @@ use Orisai\OpenAPI\Enum\SecuritySchemeType;
 final class MutualTLSSecurityScheme extends SecurityScheme
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public function __construct()
 	{

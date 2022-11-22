@@ -10,10 +10,8 @@ final class PasswordOAuthFlowTest extends TestCase
 
 	public function test(): void
 	{
-		$f1 = new PasswordOAuthFlow(
-			[],
-			'https://example.com/api/oauth/token',
-		);
+		$f1 = new PasswordOAuthFlow('https://example.com/api/oauth/token');
+		self::assertSame([], $f1->getScopes());
 		self::assertSame(
 			[
 				'scopes' => [],
@@ -22,15 +20,18 @@ final class PasswordOAuthFlowTest extends TestCase
 			$f1->toArray(),
 		);
 
-		$f2 = new PasswordOAuthFlow(
+		$f2 = new PasswordOAuthFlow('https://example.com/api/oauth/token');
+		$f2->addScope('write:pets', 'modify pets in your account');
+		$f2->addScope('read:pets', 'read your pets');
+		$f2->refreshUrl = 'https://example.com/api/oauth/refresh';
+		$f2->addExtension('x-a', null);
+		self::assertSame(
 			[
 				'write:pets' => 'modify pets in your account',
 				'read:pets' => 'read your pets',
 			],
-			'https://example.com/api/oauth/token',
+			$f2->getScopes(),
 		);
-		$f2->refreshUrl = 'https://example.com/api/oauth/refresh';
-		$f2->addExtension('x-a', null);
 		self::assertSame(
 			[
 				'scopes' => [

@@ -5,7 +5,7 @@ namespace Orisai\OpenAPI\Spec;
 final class Info implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public string $title;
 

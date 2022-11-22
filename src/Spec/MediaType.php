@@ -2,42 +2,103 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\Exceptions\Logic\InvalidState;
+use Orisai\Exceptions\Message;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use ReflectionProperty;
 
 final class MediaType implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectChecksSerializableValue;
+	use SpecObjectSupportsExtensions;
 
-	public Schema $schema;
+	public ?Schema $schema = null;
 
 	/** @var mixed */
-	public $example;
+	private $example;
 
 	/** @var array<string, Example|Reference> */
-	public array $examples = [];
+	private array $examples = [];
 
 	/** @var array<string, Encoding> */
-	public array $encoding = [];
+	private array $encoding = [];
 
 	public function __construct()
 	{
-		$this->schema = new Schema();
 		unset($this->example);
+	}
+
+	/**
+	 * @param mixed $example
+	 */
+	public function setExample($example): void
+	{
+		$this->checkSerializableValue($example, 'MediaType example');
+		$this->example = $example;
+	}
+
+	public function hasExample(): bool
+	{
+		return (new ReflectionProperty($this, 'example'))->isInitialized($this);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getExample()
+	{
+		if (!$this->hasExample()) {
+			$message = Message::create()
+				->withContext('Getting the MediaType example.')
+				->withProblem('Example is not set and so cannot be get.')
+				->withSolution('Check with hasExample().');
+
+			throw InvalidState::create()
+				->withMessage($message);
+		}
+
+		return $this->example;
+	}
+
+	/**
+	 * @param Example|Reference $example
+	 */
+	public function addExample(string $key, $example): void
+	{
+		$this->examples[$key] = $example;
+	}
+
+	/**
+	 * @return array<string, Example|Reference>
+	 */
+	public function getExamples(): array
+	{
+		return $this->examples;
+	}
+
+	public function addEncoding(string $key, Encoding $encoding): void
+	{
+		$this->encoding[$key] = $encoding;
+	}
+
+	/**
+	 * @return array<string, Encoding>
+	 */
+	public function getEncodings(): array
+	{
+		return $this->encoding;
 	}
 
 	public function toArray(): array
 	{
 		$data = [];
 
-		$schemaData = $this->schema->toArray();
-		if ($schemaData !== []) {
-			$data['schema'] = $schemaData;
+		if ($this->schema !== null) {
+			$data['schema'] = $this->schema->toArray();
 		}
 
-		$valueRef = new ReflectionProperty($this, 'example');
-		if ($valueRef->isInitialized($this)) {
+		if ($this->hasExample()) {
 			$data['example'] = $this->example;
 		}
 

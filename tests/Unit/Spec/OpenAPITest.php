@@ -12,6 +12,7 @@ use Orisai\OpenAPI\Spec\SecurityRequirement;
 use Orisai\OpenAPI\Spec\Server;
 use Orisai\OpenAPI\Spec\Tag;
 use PHPUnit\Framework\TestCase;
+use function array_merge;
 
 final class OpenAPITest extends TestCase
 {
@@ -20,6 +21,8 @@ final class OpenAPITest extends TestCase
 	{
 		$i1 = new Info('api', 'version');
 		$oa1 = new OpenAPI($i1);
+		self::assertSame('3.1.0', $oa1->getOpenapiVersion());
+		self::assertSame($i1, $oa1->getInfo());
 		self::assertSame(
 			[
 				'openapi' => '3.1.0',
@@ -32,22 +35,43 @@ final class OpenAPITest extends TestCase
 		$oa2 = new OpenAPI($i2);
 		$oa2->jsonSchemaDialect = 'dialect';
 
-		$oa2->servers[] = $op2s1 = new Server('https://example.com');
-		$oa2->servers[] = $op2s2 = new Server('https://example2.com');
+		$oa2->addServer($oa2s1 = new Server('https://example.com'));
+		$oa2->addServer($oa2s1);
+		$oa2->addServer($oa2s2 = new Server('https://example2.com'));
+		self::assertSame(
+			[$oa2s1, $oa2s2],
+			$oa2->getServers(),
+		);
 
-		$oa2->paths->paths['/foo'] = new PathItem();
+		$oa2->paths->addPath('/foo', new PathItem());
 
-		$oa2->webhooks['foo'] = $oa2wh1 = new PathItem();
-		$oa2->webhooks['bar'] = $oa2wh2 = new Reference('bar');
+		$oa2->addWebhook('foo', $oa2wh1 = new PathItem());
+		$oa2->addWebhook('bar', $oa2wh2 = new Reference('bar'));
+		self::assertSame(
+			[
+				'foo' => $oa2wh1,
+				'bar' => $oa2wh2,
+			],
+			$oa2->getWebhooks(),
+		);
 
-		$oa2->components->requestBodies['foo'] = new RequestBody([]);
+		$oa2->components->addRequestBody('foo', new RequestBody());
 
-		$oa2->security[] = $oa2sr1 = new SecurityRequirement();
-		$oa2->security[] = $oa2sr2 = new SecurityRequirement();
-		$oa2sr2->requirements['api_key'] = [];
+		$oa2->addSecurity($oa2sr1 = SecurityRequirement::create('api_key'));
+		$oa2->addSecurity($oa2sr1);
+		$oa2->addSecurity($oa2sr2 = SecurityRequirement::create('petstore_auth', ['foo']));
+		self::assertSame(
+			[$oa2sr1, $oa2sr2],
+			$oa2->getSecurityRequirements(),
+		);
 
-		$oa2->tags[] = $oa2t1 = new Tag('t1');
-		$oa2->tags[] = $oa2t2 = new Tag('t2');
+		$oa2->addTag($oa2t1 = new Tag('t1'));
+		$oa2->addTag($oa2t1);
+		$oa2->addTag($oa2t2 = new Tag('t2'));
+		self::assertSame(
+			[$oa2t1, $oa2t2],
+			$oa2->getTags(),
+		);
 
 		$oa2->externalDocs = $oa2ed = new ExternalDocumentation('https://example.com');
 		$oa2->addExtension('x-a', null);
@@ -58,8 +82,8 @@ final class OpenAPITest extends TestCase
 				'info' => $i2->toArray(),
 				'jsonSchemaDialect' => 'dialect',
 				'servers' => [
-					$op2s1->toArray(),
-					$op2s2->toArray(),
+					$oa2s1->toArray(),
+					$oa2s2->toArray(),
 				],
 				'paths' => $oa2->paths->toArray(),
 				'webhooks' => [
@@ -67,10 +91,10 @@ final class OpenAPITest extends TestCase
 					'bar' => $oa2wh2->toArray(),
 				],
 				'components' => $oa2->components->toArray(),
-				'security' => [
+				'security' => array_merge(
 					$oa2sr1->toArray(),
 					$oa2sr2->toArray(),
-				],
+				),
 				'tags' => [
 					$oa2t1->toArray(),
 					$oa2t2->toArray(),
@@ -80,6 +104,47 @@ final class OpenAPITest extends TestCase
 			],
 			$oa2->toArray(),
 		);
+	}
+
+	public function testOptionalSecurityRequirementIsNotDuplicated(): void
+	{
+		$i = new Info('title', 'version');
+		$oa = new OpenAPI($i);
+
+		$oa->addSecurity(SecurityRequirement::createOptional());
+		$oa->addSecurity(SecurityRequirement::createOptional());
+
+		self::assertEquals(
+			[
+				'openapi' => '3.1.0',
+				'info' => $i->toArray(),
+				'security' => SecurityRequirement::createOptional()->toArray(),
+			],
+			$oa->toArray(),
+		);
+	}
+
+	public function testTagUniqueness(): void
+	{
+		$i = new Info('title', 'version');
+		$oa = new OpenAPI($i);
+
+		$t1 = new Tag('t1');
+		$t1dup = new Tag('t1');
+
+		$t2 = new Tag('t2');
+
+		self::assertSame([], $oa->getTags());
+
+		$oa->addTag($t1);
+		$oa->addTag($t2);
+		self::assertSame([$t1, $t2], $oa->getTags());
+
+		$oa->addTag($t1);
+		self::assertSame([$t1, $t2], $oa->getTags());
+
+		$oa->addTag($t1dup);
+		self::assertSame([$t1dup, $t2], $oa->getTags());
 	}
 
 }

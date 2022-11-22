@@ -2,6 +2,7 @@
 
 namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
+use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\OpenAPI\Spec\PathItem;
 use Orisai\OpenAPI\Spec\Paths;
 use PHPUnit\Framework\TestCase;
@@ -18,10 +19,18 @@ final class PathsTest extends TestCase
 
 		$ps2p1 = new PathItem();
 		$ps2p1->description = 'description';
-		$ps2->paths['/foo'] = $ps2p1;
+		$ps2->addPath('/foo', $ps2p1);
 
 		$ps2p2 = new PathItem();
-		$ps2->paths['/bar'] = $ps2p2;
+		$ps2->addPath('/bar', $ps2p2);
+
+		self::assertSame(
+			[
+				'/foo' => $ps2p1,
+				'/bar' => $ps2p2,
+			],
+			$ps2->getPaths(),
+		);
 
 		$ps2->addExtension('x-a', null);
 
@@ -33,6 +42,19 @@ final class PathsTest extends TestCase
 			],
 			$ps2->toArray(),
 		);
+	}
+
+	public function testPathWithoutLeadingSlash(): void
+	{
+		$ps = new Paths();
+
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(<<<'MSG'
+Context: Adding path 'foo'.
+Problem: Path musts start with '/'.
+MSG);
+
+		$ps->addPath('foo', new PathItem());
 	}
 
 }

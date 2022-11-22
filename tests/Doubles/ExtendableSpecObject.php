@@ -3,12 +3,12 @@
 namespace Tests\Orisai\OpenAPI\Doubles;
 
 use Orisai\OpenAPI\Spec\SpecObject;
-use Orisai\OpenAPI\Spec\SupportsSpecExtensions;
+use Orisai\OpenAPI\Spec\SpecObjectSupportsExtensions;
 
 final class ExtendableSpecObject implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	public function toArray(): array
 	{

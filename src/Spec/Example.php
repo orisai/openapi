@@ -2,25 +2,72 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\Exceptions\Logic\InvalidState;
+use Orisai\Exceptions\Message;
 use ReflectionProperty;
 
 final class Example implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectChecksSerializableValue;
+	use SpecObjectSupportsExtensions;
 
 	public ?string $summary = null;
 
 	public ?string $description = null;
 
 	/** @var mixed */
-	public $value;
+	private $value;
 
-	public ?string $externalValue = null;
+	private ?string $externalValue = null;
 
 	public function __construct()
 	{
 		unset($this->value);
+	}
+
+	/**
+	 * @param mixed $value
+	 */
+	public function setValue($value): void
+	{
+		$this->checkSerializableValue($value, 'Example value');
+		$this->externalValue = null;
+		$this->value = $value;
+	}
+
+	public function hasValue(): bool
+	{
+		return (new ReflectionProperty($this, 'value'))->isInitialized($this);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		if (!$this->hasValue()) {
+			$message = Message::create()
+				->withContext('Getting the Example value.')
+				->withProblem('Value is not set and so cannot be get.')
+				->withSolution('Check with hasValue().');
+
+			throw InvalidState::create()
+				->withMessage($message);
+		}
+
+		return $this->value;
+	}
+
+	public function setExternalValue(string $externalValue): void
+	{
+		unset($this->value);
+		$this->externalValue = $externalValue;
+	}
+
+	public function getExternalValue(): ?string
+	{
+		return $this->externalValue;
 	}
 
 	public function toArray(): array
@@ -35,8 +82,7 @@ final class Example implements SpecObject
 			$data['description'] = $this->description;
 		}
 
-		$valueRef = new ReflectionProperty($this, 'value');
-		if ($valueRef->isInitialized($this)) {
+		if ($this->hasValue()) {
 			$data['value'] = $this->value;
 		}
 

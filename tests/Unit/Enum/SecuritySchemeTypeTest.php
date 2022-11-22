@@ -12,15 +12,15 @@ final class SecuritySchemeTypeTest extends TestCase
 	public function test(): void
 	{
 		self::assertSame('apiKey', SecuritySchemeType::apiKey()->value);
-		self::assertSame('apiKey', SecuritySchemeType::apiKey()->name);
+		self::assertSame('ApiKey', SecuritySchemeType::apiKey()->name);
 		self::assertSame('http', SecuritySchemeType::http()->value);
-		self::assertSame('http', SecuritySchemeType::http()->name);
+		self::assertSame('Http', SecuritySchemeType::http()->name);
 		self::assertSame('mutualTLS', SecuritySchemeType::mutualTLS()->value);
-		self::assertSame('mutualTLS', SecuritySchemeType::mutualTLS()->name);
+		self::assertSame('MutualTLS', SecuritySchemeType::mutualTLS()->name);
 		self::assertSame('oauth2', SecuritySchemeType::oAuth2()->value);
-		self::assertSame('oauth2', SecuritySchemeType::oAuth2()->name);
+		self::assertSame('OAuth2', SecuritySchemeType::oAuth2()->name);
 		self::assertSame('openIdConnect', SecuritySchemeType::openIdConnect()->value);
-		self::assertSame('openIdConnect', SecuritySchemeType::openIdConnect()->name);
+		self::assertSame('OpenIdConnect', SecuritySchemeType::openIdConnect()->name);
 
 		self::assertSame(
 			[

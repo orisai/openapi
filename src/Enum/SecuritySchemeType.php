@@ -14,11 +14,11 @@ final class SecuritySchemeType
 		OpenIdConnect = 'openIdConnect';
 
 	private const ValuesAndNames = [
-		self::ApiKey => 'apiKey',
-		self::Http => 'http',
-		self::MutualTLS => 'mutualTLS',
-		self::OAuth2 => 'oauth2',
-		self::OpenIdConnect => 'openIdConnect',
+		self::ApiKey => 'ApiKey',
+		self::Http => 'Http',
+		self::MutualTLS => 'MutualTLS',
+		self::OAuth2 => 'OAuth2',
+		self::OpenIdConnect => 'OpenIdConnect',
 	];
 
 	/** @readonly */

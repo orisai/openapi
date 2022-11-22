@@ -12,11 +12,11 @@ final class SecuritySchemeInTest extends TestCase
 	public function test(): void
 	{
 		self::assertSame('cookie', SecuritySchemeIn::cookie()->value);
-		self::assertSame('cookie', SecuritySchemeIn::cookie()->name);
+		self::assertSame('Cookie', SecuritySchemeIn::cookie()->name);
 		self::assertSame('header', SecuritySchemeIn::header()->value);
-		self::assertSame('header', SecuritySchemeIn::header()->name);
+		self::assertSame('Header', SecuritySchemeIn::header()->name);
 		self::assertSame('query', SecuritySchemeIn::query()->value);
-		self::assertSame('query', SecuritySchemeIn::query()->name);
+		self::assertSame('Query', SecuritySchemeIn::query()->name);
 
 		self::assertSame(
 			[

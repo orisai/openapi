@@ -5,7 +5,7 @@ namespace Orisai\OpenAPI\Spec;
 final class Reference implements SpecObject
 {
 
-	public string $ref;
+	private string $ref;
 
 	public ?string $summary = null;
 
@@ -64,6 +64,11 @@ final class Reference implements SpecObject
 	private static function of(string $spec, string $name): self
 	{
 		return new self("#/components/$spec/$name");
+	}
+
+	public function getRef(): string
+	{
+		return $this->ref;
 	}
 
 	public function toArray(): array

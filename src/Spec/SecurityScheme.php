@@ -10,13 +10,18 @@ use Orisai\OpenAPI\Enum\SecuritySchemeType;
 abstract class SecurityScheme implements SpecObject
 {
 
-	public SecuritySchemeType $type;
+	private SecuritySchemeType $type;
 
 	public ?string $description = null;
 
-	public function __construct(SecuritySchemeType $type)
+	protected function __construct(SecuritySchemeType $type)
 	{
 		$this->type = $type;
+	}
+
+	public function getType(): SecuritySchemeType
+	{
+		return $this->type;
 	}
 
 	public function toArray(): array

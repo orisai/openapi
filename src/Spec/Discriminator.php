@@ -5,16 +5,35 @@ namespace Orisai\OpenAPI\Spec;
 final class Discriminator implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
-	public string $propertyName;
+	/** @readonly  */
+	private string $propertyName;
 
 	/** @var array<string, string> */
-	public array $mapping = [];
+	private array $mapping = [];
 
 	public function __construct(string $propertyName)
 	{
 		$this->propertyName = $propertyName;
+	}
+
+	public function getPropertyName(): string
+	{
+		return $this->propertyName;
+	}
+
+	public function addMapping(string $value, string $schema): void
+	{
+		$this->mapping[$value] = $schema;
+	}
+
+	/**
+	 * @return array<string, string>
+	 */
+	public function getMapping(): array
+	{
+		return $this->mapping;
 	}
 
 	public function toArray(): array

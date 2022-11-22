@@ -3,34 +3,39 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\OpenAPI\Utils\SpecUtils;
+use function array_merge;
+use function array_values;
+use function spl_object_id;
 
 final class OpenAPI implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	/** @readonly */
-	public string $openapi;
+	private string $openapi;
 
-	public Info $info;
+	/** @readonly */
+	private Info $info;
 
 	public ?string $jsonSchemaDialect = null;
 
-	/** @var list<Server> */
-	public array $servers = [];
+	/** @var array<int, Server> */
+	private array $servers = [];
 
 	public Paths $paths;
 
 	/** @var array<string, PathItem|Reference> */
-	public array $webhooks = [];
+	private array $webhooks = [];
 
+	/** @readonly */
 	public Components $components;
 
-	/** @var list<SecurityRequirement> */
-	public array $security = [];
+	/** @var array<int, SecurityRequirement> */
+	private array $security = [];
 
-	/** @var list<Tag> */
-	public array $tags = [];
+	/** @var array<string, Tag> */
+	private array $tags = [];
 
 	public ?ExternalDocumentation $externalDocs = null;
 
@@ -40,6 +45,71 @@ final class OpenAPI implements SpecObject
 		$this->info = $info;
 		$this->components = new Components();
 		$this->paths = new Paths();
+	}
+
+	public function getOpenapiVersion(): string
+	{
+		return $this->openapi;
+	}
+
+	public function getInfo(): Info
+	{
+		return $this->info;
+	}
+
+	public function addServer(Server $server): void
+	{
+		$this->servers[spl_object_id($server)] = $server;
+	}
+
+	/**
+	 * @return list<Server>
+	 */
+	public function getServers(): array
+	{
+		return array_values($this->servers);
+	}
+
+	/**
+	 * @param PathItem|Reference $webhook
+	 */
+	public function addWebhook(string $key, $webhook): void
+	{
+		$this->webhooks[$key] = $webhook;
+	}
+
+	/**
+	 * @return array<string, PathItem|Reference>
+	 */
+	public function getWebhooks(): array
+	{
+		return $this->webhooks;
+	}
+
+	public function addSecurity(SecurityRequirement $requirement): void
+	{
+		$this->security[spl_object_id($requirement)] = $requirement;
+	}
+
+	/**
+	 * @return list<SecurityRequirement>
+	 */
+	public function getSecurityRequirements(): array
+	{
+		return array_values($this->security);
+	}
+
+	public function addTag(Tag $tag): void
+	{
+		$this->tags[$tag->getName()] = $tag;
+	}
+
+	/**
+	 * @return list<Tag>
+	 */
+	public function getTags(): array
+	{
+		return array_values($this->tags);
 	}
 
 	public function toArray(): array
@@ -54,7 +124,7 @@ final class OpenAPI implements SpecObject
 		}
 
 		if ($this->servers !== []) {
-			$data['servers'] = SpecUtils::specsToArray($this->servers);
+			$data['servers'] = SpecUtils::specsToArray(array_values($this->servers));
 		}
 
 		$pathsData = $this->paths->toArray();
@@ -72,11 +142,16 @@ final class OpenAPI implements SpecObject
 		}
 
 		if ($this->security !== []) {
-			$data['security'] = SpecUtils::specsToArray($this->security);
+			$securityByObject = [];
+			foreach ($this->security as $object) {
+				$securityByObject[] = $object->toArray();
+			}
+
+			$data['security'] = array_merge(...$securityByObject);
 		}
 
 		if ($this->tags !== []) {
-			$data['tags'] = SpecUtils::specsToArray($this->tags);
+			$data['tags'] = SpecUtils::specsToArray(array_values($this->tags));
 		}
 
 		if ($this->externalDocs !== null) {

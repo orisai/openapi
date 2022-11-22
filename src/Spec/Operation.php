@@ -3,14 +3,18 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\OpenAPI\Utils\SpecUtils;
+use function array_merge;
+use function array_values;
+use function in_array;
+use function spl_object_id;
 
 final class Operation implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
 	/** @var list<string> */
-	public array $tags = [];
+	private array $tags = [];
 
 	public ?string $summary = null;
 
@@ -20,8 +24,8 @@ final class Operation implements SpecObject
 
 	public ?string $operationId = null;
 
-	/** @var list<Parameter|Reference> */
-	public array $parameters = [];
+	/** @var array<int, Parameter|Reference> */
+	private array $parameters = [];
 
 	/** @var RequestBody|Reference|null */
 	public $requestBody;
@@ -29,27 +33,103 @@ final class Operation implements SpecObject
 	public Responses $responses;
 
 	/** @var array<string, Callback|Reference> */
-	public array $callbacks = [];
+	private array $callbacks = [];
 
 	public bool $deprecated = false;
 
-	/** @var list<SecurityRequirement> */
-	public array $security = [];
+	/** @var array<int, SecurityRequirement> */
+	private array $security = [];
 
-	/** @var list<Server> */
-	public array $servers = [];
+	/** @var array<int, Server> */
+	private array $servers = [];
 
 	public function __construct()
 	{
 		$this->responses = new Responses();
 	}
 
+	public function addTag(string $tag): void
+	{
+		if (in_array($tag, $this->tags, true)) {
+			return;
+		}
+
+		$this->tags[] = $tag;
+	}
+
+	/**
+	 * @return list<string>
+	 */
+	public function getTags(): array
+	{
+		return $this->tags;
+	}
+
+	/**
+	 * @param Parameter|Reference $parameter
+	 */
+	public function addParameter($parameter): void
+	{
+		$this->parameters[spl_object_id($parameter)] = $parameter;
+	}
+
+	/**
+	 * @return list<Parameter|Reference>
+	 */
+	public function getParameters(): array
+	{
+		return array_values($this->parameters);
+	}
+
+	/**
+	 * @param Callback|Reference $callback
+	 */
+	public function addCallback(string $key, $callback): void
+	{
+		$this->callbacks[$key] = $callback;
+	}
+
+	/**
+	 * @return array<string, Callback|Reference>
+	 */
+	public function getCallbacks(): array
+	{
+		return $this->callbacks;
+	}
+
+	public function addSecurity(SecurityRequirement $requirement): void
+	{
+		$this->security[spl_object_id($requirement)] = $requirement;
+	}
+
+	/**
+	 * @return list<SecurityRequirement>
+	 */
+	public function getSecurityRequirements(): array
+	{
+		return array_values($this->security);
+	}
+
+	public function addServer(Server $server): void
+	{
+		$this->servers[spl_object_id($server)] = $server;
+	}
+
+	/**
+	 * @return list<Server>
+	 */
+	public function getServers(): array
+	{
+		return array_values($this->servers);
+	}
+
 	public function toArray(): array
 	{
 		$data = [];
 
-		if ($this->tags !== []) {
-			$data['tags'] = $this->tags;
+		$tags = $this->getTags();
+		if ($tags !== []) {
+			$data['tags'] = $tags;
 		}
 
 		if ($this->summary !== null) {
@@ -69,7 +149,7 @@ final class Operation implements SpecObject
 		}
 
 		if ($this->parameters !== []) {
-			$data['parameters'] = SpecUtils::specsToArray($this->parameters);
+			$data['parameters'] = SpecUtils::specsToArray(array_values($this->parameters));
 		}
 
 		if ($this->requestBody !== null) {
@@ -90,11 +170,16 @@ final class Operation implements SpecObject
 		}
 
 		if ($this->security !== []) {
-			$data['security'] = SpecUtils::specsToArray($this->security);
+			$securityByObject = [];
+			foreach ($this->security as $object) {
+				$securityByObject[] = $object->toArray();
+			}
+
+			$data['security'] = array_merge(...$securityByObject);
 		}
 
 		if ($this->servers !== []) {
-			$data['servers'] = SpecUtils::specsToArray($this->servers);
+			$data['servers'] = SpecUtils::specsToArray(array_values($this->servers));
 		}
 
 		$this->addExtensionsToData($data);

@@ -2,6 +2,7 @@
 
 namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
+use Orisai\OpenAPI\Enum\SecuritySchemeType;
 use Orisai\OpenAPI\Spec\MutualTLSSecurityScheme;
 use PHPUnit\Framework\TestCase;
 
@@ -11,6 +12,7 @@ final class MutualTLSSecuritySchemeTest extends TestCase
 	public function test(): void
 	{
 		$s1 = new MutualTLSSecurityScheme();
+		self::assertSame(SecuritySchemeType::mutualTLS(), $s1->getType());
 		self::assertSame(
 			[
 				'type' => 'mutualTLS',

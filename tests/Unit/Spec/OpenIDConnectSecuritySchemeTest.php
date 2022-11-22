@@ -2,6 +2,7 @@
 
 namespace Tests\Orisai\OpenAPI\Unit\Spec;
 
+use Orisai\OpenAPI\Enum\SecuritySchemeType;
 use Orisai\OpenAPI\Spec\OpenIDConnectSecurityScheme;
 use PHPUnit\Framework\TestCase;
 
@@ -11,6 +12,7 @@ final class OpenIDConnectSecuritySchemeTest extends TestCase
 	public function test(): void
 	{
 		$s1 = new OpenIDConnectSecurityScheme('https://example.com');
+		self::assertSame(SecuritySchemeType::openIdConnect(), $s1->getType());
 		self::assertSame(
 			[
 				'type' => 'openIdConnect',

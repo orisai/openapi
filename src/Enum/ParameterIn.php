@@ -13,10 +13,24 @@ final class ParameterIn
 		Query = 'query';
 
 	private const ValuesAndNames = [
-		self::Cookie => 'cookie',
-		self::Header => 'header',
-		self::Path => 'path',
-		self::Query => 'query',
+		self::Cookie => 'Cookie',
+		self::Header => 'Header',
+		self::Path => 'Path',
+		self::Query => 'Query',
+	];
+
+	private const DefaultStyles = [
+		'cookie' => 'form',
+		'header' => 'simple',
+		'path' => 'simple',
+		'query' => 'form',
+	];
+
+	private const AllowedStyles = [
+		'cookie' => ['form'],
+		'header' => ['simple'],
+		'path' => ['simple', 'label', 'matrix'],
+		'query' => ['form', 'spaceDelimited', 'pipeDelimited', 'deepObject'],
 	];
 
 	/** @readonly */
@@ -87,6 +101,25 @@ final class ParameterIn
 		}
 
 		return $cases;
+	}
+
+	public function getDefaultStyle(): ParameterStyle
+	{
+		return ParameterStyle::from(self::DefaultStyles[$this->value]);
+	}
+
+	/**
+	 * @return array<ParameterStyle>
+	 */
+	public function getAllowedStyles(): array
+	{
+		$styles = [];
+
+		foreach (self::AllowedStyles[$this->value] as $style) {
+			$styles[] = ParameterStyle::from($style);
+		}
+
+		return $styles;
 	}
 
 }

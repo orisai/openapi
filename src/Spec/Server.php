@@ -7,18 +7,36 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 final class Server implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
-	public string $url;
+	private string $url;
 
 	public ?string $description = null;
 
 	/** @var array<string, ServerVariable> */
-	public array $variables = [];
+	private array $variables = [];
 
 	public function __construct(string $url)
 	{
 		$this->url = $url;
+	}
+
+	public function getUrl(): string
+	{
+		return $this->url;
+	}
+
+	public function addVariable(string $name, ServerVariable $variable): void
+	{
+		$this->variables[$name] = $variable;
+	}
+
+	/**
+	 * @return array<string, ServerVariable>
+	 */
+	public function getVariables(): array
+	{
+		return $this->variables;
 	}
 
 	public function toArray(): array

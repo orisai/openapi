@@ -5,17 +5,37 @@ namespace Orisai\OpenAPI\Spec;
 final class License implements SpecObject
 {
 
-	use SupportsSpecExtensions;
+	use SpecObjectSupportsExtensions;
 
-	public string $name;
+	/** @readonly */
+	private string $name;
 
-	public ?string $identifier = null;
+	/** @readonly */
+	private ?string $identifier;
 
-	public ?string $url = null;
+	/** @readonly */
+	private ?string $url;
 
-	public function __construct(string $name)
+	public function __construct(string $name, ?string $identifier = null, ?string $url = null)
 	{
 		$this->name = $name;
+		$this->identifier = $identifier;
+		$this->url = $url;
+	}
+
+	public function getName(): string
+	{
+		return $this->name;
+	}
+
+	public function getIdentifier(): ?string
+	{
+		return $this->identifier;
+	}
+
+	public function getUrl(): ?string
+	{
+		return $this->url;
 	}
 
 	public function toArray(): array

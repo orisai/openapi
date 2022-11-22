@@ -11,6 +11,7 @@ final class ReferenceTest extends TestCase
 	public function test(): void
 	{
 		$r1 = new Reference('#/components/schemas/Hooman');
+		self::assertSame('#/components/schemas/Hooman', $r1->getRef());
 		self::assertSame(
 			[
 				'$ref' => '#/components/schemas/Hooman',
@@ -21,6 +22,7 @@ final class ReferenceTest extends TestCase
 		$r2 = new Reference('#/components/schemas/CatLord');
 		$r2->summary = 'summary';
 		$r2->description = 'description';
+		self::assertSame('#/components/schemas/CatLord', $r2->getRef());
 		self::assertSame(
 			[
 				'$ref' => '#/components/schemas/CatLord',

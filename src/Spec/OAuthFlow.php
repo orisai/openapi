@@ -9,16 +9,21 @@ abstract class OAuthFlow implements SpecObject
 {
 
 	/** @var array<string, string> */
-	public array $scopes;
+	private array $scopes = [];
 
 	public ?string $refreshUrl = null;
 
-	/**
-	 * @param array<string, string> $scopes
-	 */
-	public function __construct(array $scopes)
+	public function addScope(string $name, string $description): void
 	{
-		$this->scopes = $scopes;
+		$this->scopes[$name] = $description;
+	}
+
+	/**
+	 * @return array<string, string>
+	 */
+	public function getScopes(): array
+	{
+		return $this->scopes;
 	}
 
 	public function toArray(): array
