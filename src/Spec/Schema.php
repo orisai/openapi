@@ -4,37 +4,67 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Expect\BoolValue;
+use Orisai\ObjectMapper\Attributes\Expect\ListOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use ReflectionProperty;
 
-abstract class Schema implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+abstract class Schema extends MappedObject implements SpecObject
 {
 
 	use SpecObjectChecksSerializableValue;
 	use SpecObjectSupportsExtensions;
 
+	/** @StringValue() */
 	public ?string $title = null;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
-	/** @var list<mixed> */
+	/**
+	 * @var list<mixed>
+	 *
+	 * @ListOf(@MixedValue())
+	 */
 	public array $enum = [];
 
-	public string $format;
+	/** @StringValue() */
+	public ?string $format = null;
 
-	/** @var mixed */
+	/**
+	 * @var mixed
+	 *
+	 * @MixedValue()
+	 */
 	public $default;
 
+	/** @BoolValue() */
 	public bool $readOnly = false;
 
+	/** @BoolValue() */
 	public bool $writeOnly = false;
 
+	/** @MappedObjectValue(XML::class) */
 	public XML $xml;
 
+	/** @MappedObjectValue(ExternalDocumentation::class) */
 	public ?ExternalDocumentation $externalDocs = null;
 
-	/** @var mixed */
+	/**
+	 * @var mixed
+	 *
+	 * @MixedValue()
+	 */
 	protected $example;
 
+	/** @BoolValue() */
 	public bool $deprecated = false;
 
 	public function __construct()

@@ -2,45 +2,106 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\BoolValue;
+use Orisai\ObjectMapper\Attributes\Expect\ListOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function array_merge;
 use function array_values;
 use function in_array;
 use function spl_object_id;
 
-final class Operation implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Operation extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
-	/** @var list<string> */
+	/**
+	 * @var list<string>
+	 *
+	 * @ListOf(@StringValue())
+	 * @todo - duplicity
+	 */
 	private array $tags = [];
 
+	/** @StringValue() */
 	public ?string $summary = null;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
+	/** @MappedObjectValue(ExternalDocumentation::class) */
 	public ?ExternalDocumentation $externalDocs = null;
 
+	/** @StringValue() */
 	public ?string $operationId = null;
 
-	/** @var array<int, Parameter|Reference> */
+	/**
+	 * @var array<int, Parameter|Reference>
+	 *
+	 * @ListOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Parameter::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     })
+	 * )
+	 * @todo - after callback
+	 */
 	private array $parameters = [];
 
-	/** @var RequestBody|Reference|null */
-	public $requestBody;
+	/**
+	 * @var RequestBody|Reference|null
+	 *
+	 * @AnyOf({
+	 *     @MappedObjectValue(RequestBody::class),
+	 *     @MappedObjectValue(Reference::class),
+	 * })
+	 * @todo - nemá pravidlo pro null, takže je podle object mapperu required
+	 *          - stači přidat typ ?object, ale lepší bude defaults předělat v object mapperu - žádná detekce nullable podle pravidel
+	 */
+	public ?object $requestBody = null;
 
+	/** @MappedObjectValue(Responses::class) */
 	public Responses $responses;
 
-	/** @var array<string, Callback|Reference> */
+	/**
+	 * @var array<string, Callback|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Callback::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(),
+	 * )
+	 */
 	private array $callbacks = [];
 
+	/** @BoolValue() */
 	public bool $deprecated = false;
 
-	/** @var array<int, SecurityRequirement> */
+	/**
+	 * @var array<int, SecurityRequirement>
+	 *
+	 * @ListOf(@MappedObjectValue(SecurityRequirement::class))
+	 * @todo - after callback
+	 */
 	private array $security = [];
 
-	/** @var array<int, Server> */
+	/**
+	 * @var array<int, Server>
+	 *
+	 * @ListOf(@MappedObjectValue(Server::class))
+	 * @todo - after callback
+	 */
 	private array $servers = [];
 
 	public function __construct()

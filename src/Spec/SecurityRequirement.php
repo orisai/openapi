@@ -2,15 +2,31 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\ListOf;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use stdClass;
 
-final class SecurityRequirement implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class SecurityRequirement extends MappedObject implements SpecObject
 {
 
-	/** @readonly */
+	/**
+	 * @readonly
+	 *
+	 * @StringValue()
+	 * @todo - nedovoluje null, ale je optional
+	 */
 	private ?string $name;
 
-	/** @var list<string> */
+	/**
+	 * @var list<string>
+	 *
+	 * @ListOf(@StringValue())
+	 */
 	private array $scopes;
 
 	/**
@@ -18,6 +34,7 @@ final class SecurityRequirement implements SpecObject
 	 */
 	private function __construct(?string $name, array $scopes)
 	{
+		// TODO - nevalidní kombinace (viz statické konstruktory)
 		$this->name = $name;
 		$this->scopes = $scopes;
 	}

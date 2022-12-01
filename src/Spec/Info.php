@@ -2,23 +2,38 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Info implements SpecObject
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
+
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Info extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
+	/** @StringValue() */
 	public string $title;
 
+	/** @StringValue() */
 	public ?string $summary = null;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
+	/** @StringValue() */
 	public ?string $termsOfService = null;
 
+	/** @MappedObjectValue(Contact::class) */
 	public Contact $contact;
 
+	/** @MappedObjectValue(License::class) */
 	public ?License $license = null;
 
+	/** @StringValue() */
 	public string $version;
 
 	public function __construct(string $title, string $version)

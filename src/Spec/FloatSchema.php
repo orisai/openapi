@@ -2,19 +2,32 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\ArrayEnumValue;
+use Orisai\ObjectMapper\Attributes\Expect\FloatValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+
+/**
+ * @CreateWithoutConstructor()
+ */
 final class FloatSchema extends Schema
 {
 
+	/** @ArrayEnumValue({"number"}) */
 	private string $type;
 
+	/** @FloatValue() */
 	public ?float $minimum = null;
 
+	/** @FloatValue() */
 	public ?float $exclusiveMinimum = null;
 
+	/** @FloatValue() */
 	public ?float $maximum = null;
 
+	/** @FloatValue() */
 	public ?float $exclusiveMaximum = null;
 
+	/** @FloatValue() */
 	public ?float $multipleOf = null;
 
 	public function __construct()

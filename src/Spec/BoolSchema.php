@@ -2,9 +2,16 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\ArrayEnumValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+
+/**
+ * @CreateWithoutConstructor()
+ */
 final class BoolSchema extends Schema
 {
 
+	/** @ArrayEnumValue({"boolean"}) */
 	private string $type;
 
 	public function __construct()

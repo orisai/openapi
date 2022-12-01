@@ -4,30 +4,56 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use ReflectionProperty;
 
-final class Link implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Link extends MappedObject implements SpecObject
 {
 
 	use SpecObjectChecksSerializableValue;
 	use SpecObjectSupportsExtensions;
 
+	/** @StringValue() */
 	private ?string $operationRef = null;
 
+	/** @StringValue() */
 	private ?string $operationId = null;
 
-	/** @var array<string, mixed> */
+	/**
+	 * @var array<string, mixed>
+	 *
+	 * @ArrayOf(
+	 *     item=@MixedValue(),
+	 *     key=@StringValue(),
+	 * )
+	 */
 	private array $parameters = [];
 
-	/** @var mixed */
+	/**
+	 * @var mixed
+	 *
+	 * @MixedValue()
+	 */
 	private $requestBody;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
+	/** @MappedObjectValue(Server::class) */
 	public ?Server $server = null;
 
 	private function __construct()
 	{
+		// TODO - nevalidní kombinace (viz statické konstruktory)
+		//TODO - call with object mapper
 		unset($this->requestBody);
 	}
 

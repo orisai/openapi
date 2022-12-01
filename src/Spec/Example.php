@@ -4,25 +4,40 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use ReflectionProperty;
 
-final class Example implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Example extends MappedObject implements SpecObject
 {
 
 	use SpecObjectChecksSerializableValue;
 	use SpecObjectSupportsExtensions;
 
+	/** @StringValue() */
 	public ?string $summary = null;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
-	/** @var mixed */
+	/**
+	 * @var mixed
+	 *
+	 * @MixedValue()
+	 */
 	private $value;
 
+	/** @StringValue() */
 	private ?string $externalValue = null;
 
 	public function __construct()
 	{
+		// TODO - call with object mapper
 		unset($this->value);
 	}
 

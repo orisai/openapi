@@ -2,19 +2,32 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\ArrayEnumValue;
+use Orisai\ObjectMapper\Attributes\Expect\IntValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+
+/**
+ * @CreateWithoutConstructor()
+ */
 final class IntSchema extends Schema
 {
 
+	/** @ArrayEnumValue({"integer"}) */
 	private string $type;
 
+	/** @IntValue() */
 	public ?int $minimum = null;
 
+	/** @IntValue() */
 	public ?int $exclusiveMinimum = null;
 
+	/** @IntValue() */
 	public ?int $maximum = null;
 
+	/** @IntValue() */
 	public ?int $exclusiveMaximum = null;
 
+	/** @IntValue() */
 	public int $multipleOf = 1;
 
 	public function __construct()

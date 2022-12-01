@@ -5,6 +5,18 @@ namespace Orisai\OpenAPI\Spec;
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Callbacks\After;
+use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\BoolValue;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Exception\ValueDoesNotMatch;
+use Orisai\ObjectMapper\MappedObject;
+use Orisai\ObjectMapper\Types\EnumType;
+use Orisai\ObjectMapper\Types\Value;
 use Orisai\OpenAPI\Enum\ParameterIn;
 use Orisai\OpenAPI\Enum\ParameterStyle;
 use Orisai\OpenAPI\Utils\Headers;
@@ -14,9 +26,13 @@ use function array_map;
 use function count;
 use function implode;
 use function in_array;
+use function is_string;
 use function preg_match;
 
-final class Parameter implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Parameter extends MappedObject implements SpecObject
 {
 
 	use SpecObjectChecksSerializableValue;
@@ -25,36 +41,87 @@ final class Parameter implements SpecObject
 	}
 	use SpecObjectSupportsExtensions;
 
-	/** @readonly */
+	/**
+	 * @readonly
+	 *
+	 * @StringValue()
+	 */
 	private string $name;
 
-	/** @readonly */
+	/**
+	 * @readonly
+	 *
+	 * @MixedValue()
+	 * @After("afterIn")
+	 */
 	private ParameterIn $in;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
+	/** @BoolValue() */
 	private bool $required;
 
+	/** @BoolValue() */
 	public bool $deprecated = false;
 
+	/** @BoolValue() */
 	private bool $allowEmptyValue = false;
 
+	/**
+	 * @MixedValue()
+	 * @After("afterStyle")
+	 */
 	private ParameterStyle $style;
 
+	/** @BoolValue() */
 	private bool $explode;
 
+	/** @BoolValue() */
 	private bool $allowReserved = false;
 
+	/**
+	 * @AnyOf({
+	 *     @MappedObjectValue(AllOfSchema::class),
+	 *     @MappedObjectValue(AnyOfSchema::class),
+	 *     @MappedObjectValue(ArraySchema::class),
+	 *     @MappedObjectValue(BoolSchema::class),
+	 *     @MappedObjectValue(FloatSchema::class),
+	 *     @MappedObjectValue(IntSchema::class),
+	 *     @MappedObjectValue(NotSchema::class),
+	 *     @MappedObjectValue(NullSchema::class),
+	 *     @MappedObjectValue(ObjectSchema::class),
+	 *     @MappedObjectValue(OneOfSchema::class),
+	 *     @MappedObjectValue(StringSchema::class),
+	 * })
+	 */
 	public ?Schema $schema = null;
 
-	/** @var mixed */
+	/**
+	 * @var mixed
+	 *
+	 * @MixedValue()
+	 * @todo - tenhle a ostatní $example a Example $value
+	 *       - hodnota je mixed a potřebuju rozlišit null a unitialized
+	 */
 	private $example;
 
-	/** @var array<string, Example|Reference> */
+	/**
+	 * @var array<string, Example|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Example::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(),
+	 * )
+	 */
 	private array $examples = [];
 
 	public function __construct(string $name, ParameterIn $in)
 	{
+		//TODO - object mapper
 		$this->name = $this->processName($name, $in);
 		$this->in = $in;
 		$this->required = $in === ParameterIn::path();
@@ -119,6 +186,24 @@ final class Parameter implements SpecObject
 		return $this->in;
 	}
 
+	/**
+	 * @param mixed $value
+	 * @throws ValueDoesNotMatch
+	 */
+	protected static function afterIn($value): ParameterIn
+	{
+		if (is_string($value) && ($in = ParameterIn::tryFrom($value)) !== null) {
+			return $in;
+		}
+
+		$cases = [];
+		foreach (ParameterIn::cases() as $case) {
+			$cases[] = $case->value;
+		}
+
+		throw ValueDoesNotMatch::create(new EnumType($cases), Value::of($value));
+	}
+
 	public function setRequired(bool $required = true): void
 	{
 		if (!$required && $this->in === ParameterIn::path()) {
@@ -158,6 +243,24 @@ final class Parameter implements SpecObject
 	public function getStyle(): ParameterStyle
 	{
 		return $this->style;
+	}
+
+	/**
+	 * @param mixed $value
+	 * @throws ValueDoesNotMatch
+	 */
+	protected static function afterStyle($value): ParameterStyle
+	{
+		if (is_string($value) && ($style = ParameterStyle::tryFrom($value)) !== null) {
+			return $style;
+		}
+
+		$cases = [];
+		foreach (ParameterStyle::cases() as $case) {
+			$cases[] = $case->value;
+		}
+
+		throw ValueDoesNotMatch::create(new EnumType($cases), Value::of($value));
 	}
 
 	public function getExplode(): bool

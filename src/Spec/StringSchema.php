@@ -2,17 +2,35 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\ArrayEnumValue;
+use Orisai\ObjectMapper\Attributes\Expect\IntValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+
+/**
+ * @CreateWithoutConstructor()
+ */
 final class StringSchema extends Schema
 {
 
+	/** @ArrayEnumValue({"string"}) */
 	private string $type;
 
-	/** @var int<0, max>|null */
+	/**
+	 * @var int<0, max>|null
+	 *
+	 * @IntValue(min=0)
+	 */
 	public ?int $minLength = null;
 
-	/** @var int<0, max>|null */
+	/**
+	 * @var int<0, max>|null
+	 *
+	 * @IntValue(min=0)
+	 */
 	public ?int $maxLength = null;
 
+	/** @StringValue() */
 	private ?string $pattern = null;
 
 	public function __construct()

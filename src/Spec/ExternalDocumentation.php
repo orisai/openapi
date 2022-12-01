@@ -2,13 +2,22 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class ExternalDocumentation implements SpecObject
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
+
+/**
+ * @CreateWithoutConstructor()
+ */
+final class ExternalDocumentation extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
+	/** @StringValue() */
 	public string $url;
 
 	public function __construct(string $url)

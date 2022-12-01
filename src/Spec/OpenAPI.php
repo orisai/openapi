@@ -2,41 +2,93 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayEnumValue;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\ListOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function array_merge;
 use function array_values;
 use function spl_object_id;
 
-final class OpenAPI implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class OpenAPI extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
-	/** @readonly */
+	/**
+	 * @readonly
+	 *
+	 * @ArrayEnumValue({"3.1.0"})
+	 */
 	private string $openapi;
 
-	/** @readonly */
+	/**
+	 * @readonly
+	 *
+	 * @MappedObjectValue(Info::class)
+	 */
 	private Info $info;
 
+	/** @StringValue() */
 	public ?string $jsonSchemaDialect = null;
 
-	/** @var array<int, Server> */
+	/**
+	 * @var array<int, Server>
+	 *
+	 * @ListOf(@MappedObjectValue(Server::class))
+	 * @todo - after callback
+	 */
 	private array $servers = [];
 
+	/** @MappedObjectValue(Paths::class) */
 	public Paths $paths;
 
-	/** @var array<string, PathItem|Reference> */
+	/**
+	 * @var array<string, PathItem|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(PathItem::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(),
+	 * )
+	 * @todo - possibly ambiguous resolving of pathitem/reference
+	 */
 	private array $webhooks = [];
 
-	/** @readonly */
+	/**
+	 * @readonly
+	 *
+	 * @MappedObjectValue(Components::class)
+	 */
 	public Components $components;
 
-	/** @var array<int, SecurityRequirement> */
+	/**
+	 * @var array<int, SecurityRequirement>
+	 *
+	 * @ListOf(@MappedObjectValue(SecurityRequirement::class))
+	 * @todo - after callback
+	 */
 	private array $security = [];
 
-	/** @var array<string, Tag> */
+	/**
+	 * @var array<string, Tag>
+	 *
+	 * @ListOf(@MappedObjectValue(Tag::class))
+	 * @todo - after callback - přidání klíčů + duplicity
+	 */
 	private array $tags = [];
 
+	/** @MappedObjectValue(ExternalDocumentation::class) */
 	public ?ExternalDocumentation $externalDocs = null;
 
 	public function __construct(Info $info)

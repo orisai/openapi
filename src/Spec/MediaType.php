@@ -4,28 +4,78 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use ReflectionProperty;
 
-final class MediaType implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class MediaType extends MappedObject implements SpecObject
 {
 
 	use SpecObjectChecksSerializableValue;
 	use SpecObjectSupportsExtensions;
 
-	public ?Schema $schema = null;
+	/**
+	 * @var Schema|Reference|null
+	 *
+	 * @AnyOf({
+	 *     @MappedObjectValue(AllOfSchema::class),
+	 *     @MappedObjectValue(AnyOfSchema::class),
+	 *     @MappedObjectValue(ArraySchema::class),
+	 *     @MappedObjectValue(BoolSchema::class),
+	 *     @MappedObjectValue(FloatSchema::class),
+	 *     @MappedObjectValue(IntSchema::class),
+	 *     @MappedObjectValue(NotSchema::class),
+	 *     @MappedObjectValue(NullSchema::class),
+	 *     @MappedObjectValue(ObjectSchema::class),
+	 *     @MappedObjectValue(OneOfSchema::class),
+	 *     @MappedObjectValue(StringSchema::class),
+	 *     @MappedObjectValue(Reference::class),
+	 * })
+	 */
+	public ?object $schema = null;
 
-	/** @var mixed */
+	/**
+	 * @var mixed
+	 *
+	 * @MixedValue()
+	 */
 	private $example;
 
-	/** @var array<string, Example|Reference> */
+	/**
+	 * @var array<string, Example|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Example::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(),
+	 * )
+	 */
 	private array $examples = [];
 
-	/** @var array<string, Encoding> */
+	/**
+	 * @var array<string, Encoding>
+	 *
+	 * @ArrayOf(
+	 *     item=@MappedObjectValue(Encoding::class),
+	 *     key=@StringValue(),
+	 * )
+	 */
 	private array $encoding = [];
 
 	public function __construct()
 	{
+		//TODO - call with object mapper
 		unset($this->example);
 	}
 

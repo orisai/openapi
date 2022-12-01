@@ -2,18 +2,35 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use Orisai\OpenAPI\Utils\SpecUtils;
 
-final class Server implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Server extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
+	/** @StringValue() */
 	private string $url;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
-	/** @var array<string, ServerVariable> */
+	/**
+	 * @var array<string, ServerVariable>
+	 *
+	 * @ArrayOf(
+	 *     item=@MappedObjectValue(ServerVariable::class),
+	 *     key=@StringValue(),
+	 * )
+	 */
 	private array $variables = [];
 
 	public function __construct(string $url)

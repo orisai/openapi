@@ -2,16 +2,25 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\BoolValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use Orisai\OpenAPI\Utils\SpecUtils;
 
-final class RequestBody implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class RequestBody extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 	use SpecObjectHasContent;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
+	/** @BoolValue() */
 	public bool $required = false;
 
 	public function toArray(): array

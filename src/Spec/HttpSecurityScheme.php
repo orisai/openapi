@@ -4,23 +4,64 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Callbacks\After;
+use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Exception\ValueDoesNotMatch;
+use Orisai\ObjectMapper\Types\EnumType;
+use Orisai\ObjectMapper\Types\Value;
 use Orisai\OpenAPI\Enum\SecuritySchemeType;
 use function strtolower;
 
+/**
+ * @CreateWithoutConstructor()
+ */
 final class HttpSecurityScheme extends SecurityScheme
 {
 
 	use SpecObjectSupportsExtensions;
 
-	/** @readonly */
+	/**
+	 * @MixedValue()
+	 * @After("afterType")
+	 */
+	private SecuritySchemeType $type;
+
+	/**
+	 * @readonly
+	 *
+	 * @StringValue()
+	 */
 	private string $scheme;
 
+	/** @StringValue() */
 	private ?string $bearerFormat = null;
 
 	public function __construct(string $scheme)
 	{
-		parent::__construct(SecuritySchemeType::http());
+		$this->type = SecuritySchemeType::http();
 		$this->scheme = $scheme;
+	}
+
+	public function getType(): SecuritySchemeType
+	{
+		return $this->type;
+	}
+
+	/**
+	 * @param mixed $value
+	 * @throws ValueDoesNotMatch
+	 */
+	protected static function afterType($value): SecuritySchemeType
+	{
+		$case = SecuritySchemeType::http();
+
+		if ($value === $case->value) {
+			return $case;
+		}
+
+		throw ValueDoesNotMatch::create(new EnumType([$case->value]), Value::of($value));
 	}
 
 	public function getScheme(): string

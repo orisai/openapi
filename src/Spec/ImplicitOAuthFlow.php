@@ -2,11 +2,18 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+
+/**
+ * @CreateWithoutConstructor()
+ */
 final class ImplicitOAuthFlow extends OAuthFlow
 {
 
 	use SpecObjectSupportsExtensions;
 
+	/** @StringValue() */
 	public string $authorizationUrl;
 
 	public function __construct(string $authorizationUrl)
