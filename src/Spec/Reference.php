@@ -2,13 +2,27 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Reference implements SpecObject
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Attributes\Modifiers\FieldName;
+use Orisai\ObjectMapper\MappedObject;
+
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Reference extends MappedObject implements SpecObject
 {
 
+	/**
+	 * @FieldName("$ref")
+	 * @StringValue()
+	 */
 	private string $ref;
 
+	/** @StringValue() */
 	public ?string $summary = null;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
 	public function __construct(string $ref)
@@ -61,7 +75,7 @@ final class Reference implements SpecObject
 		return self::of('schemas', $name);
 	}
 
-	private static function of(string $spec, string $name): self
+	protected static function of(string $spec, string $name): self
 	{
 		return new self("#/components/$spec/$name");
 	}

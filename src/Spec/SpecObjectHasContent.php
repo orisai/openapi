@@ -4,6 +4,9 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
 use Orisai\OpenAPI\Utils\MediaTypes;
 
 /**
@@ -12,7 +15,14 @@ use Orisai\OpenAPI\Utils\MediaTypes;
 trait SpecObjectHasContent
 {
 
-	/** @var array<non-empty-string, MediaType> */
+	/**
+	 * @var array<non-empty-string, MediaType>
+	 *
+	 * @ArrayOf(
+	 *     item=@MappedObjectValue(MediaType::class),
+	 *     key=@StringValue(notEmpty=true),
+	 * )
+	 */
 	private array $content = [];
 
 	/**

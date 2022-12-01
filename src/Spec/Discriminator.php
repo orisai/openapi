@@ -2,15 +2,34 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Discriminator implements SpecObject
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
+
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Discriminator extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
-	/** @readonly  */
+	/**
+	 * @readonly
+	 *
+	 * @StringValue()
+	 */
 	private string $propertyName;
 
-	/** @var array<string, string> */
+	/**
+	 * @var array<string, string>
+	 *
+	 * @ArrayOf(
+	 *     item=@StringValue(),
+	 *     key=@StringValue(),
+	 * )
+	 */
 	private array $mapping = [];
 
 	public function __construct(string $propertyName)

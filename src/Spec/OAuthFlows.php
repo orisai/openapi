@@ -2,17 +2,28 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class OAuthFlows implements SpecObject
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
+
+/**
+ * @CreateWithoutConstructor()
+ */
+final class OAuthFlows extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
+	/** @MappedObjectValue(ImplicitOAuthFlow::class) */
 	public ?ImplicitOAuthFlow $implicit = null;
 
+	/** @MappedObjectValue(PasswordOAuthFlow::class) */
 	public ?PasswordOAuthFlow $password = null;
 
+	/** @MappedObjectValue(ClientCredentialsOAuthFlow::class) */
 	public ?ClientCredentialsOAuthFlow $clientCredentials = null;
 
+	/** @MappedObjectValue(AuthorizationCodeOAuthFlow::class) */
 	public ?AuthorizationCodeOAuthFlow $authorizationCode = null;
 
 	public function toArray(): array

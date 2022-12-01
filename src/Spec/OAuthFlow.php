@@ -2,15 +2,29 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
+
 /**
+ * @CreateWithoutConstructor()
  * @internal
  */
-abstract class OAuthFlow implements SpecObject
+abstract class OAuthFlow extends MappedObject implements SpecObject
 {
 
-	/** @var array<string, string> */
-	private array $scopes = [];
+	/**
+	 * @var array<string, string>
+	 *
+	 * @ArrayOf(
+	 *     item=@StringValue(),
+	 *     key=@StringValue(),
+	 * )
+	 */
+	protected array $scopes = [];
 
+	/** @StringValue() */
 	public ?string $refreshUrl = null;
 
 	public function addScope(string $name, string $description): void

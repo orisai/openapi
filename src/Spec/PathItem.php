@@ -2,41 +2,80 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
+use Orisai\ObjectMapper\Attributes\Expect\ListOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Attributes\Modifiers\FieldName;
+use Orisai\ObjectMapper\MappedObject;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function array_values;
 use function spl_object_id;
 
-final class PathItem implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class PathItem extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
+	/**
+	 * @FieldName("$ref")
+	 * @StringValue()
+	 */
 	public ?string $ref = null;
 
+	/** @StringValue() */
 	public ?string $summary = null;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
+	/** @MappedObjectValue(Operation::class) */
 	public ?Operation $get = null;
 
+	/** @MappedObjectValue(Operation::class) */
 	public ?Operation $put = null;
 
+	/** @MappedObjectValue(Operation::class) */
 	public ?Operation $post = null;
 
+	/** @MappedObjectValue(Operation::class) */
 	public ?Operation $delete = null;
 
+	/** @MappedObjectValue(Operation::class) */
 	public ?Operation $options = null;
 
+	/** @MappedObjectValue(Operation::class) */
 	public ?Operation $head = null;
 
+	/** @MappedObjectValue(Operation::class) */
 	public ?Operation $patch = null;
 
+	/** @MappedObjectValue(Operation::class) */
 	public ?Operation $trace = null;
 
-	/** @var array<int, Server> */
+	/**
+	 * @var array<int, Server>
+	 *
+	 * @ListOf(@MappedObjectValue(Server::class))
+	 * @todo - after callback
+	 */
 	private array $servers = [];
 
-	/** @var array<int, Parameter|Reference> */
+	/**
+	 * @var array<int, Parameter|Reference>
+	 *
+	 * @ListOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Parameter::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     })
+	 * )
+	 * @todo - after callback
+	 */
 	private array $parameters = [];
 
 	public function addServer(Server $server): void

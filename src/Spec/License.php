@@ -2,19 +2,30 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class License implements SpecObject
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
+
+/**
+ * @CreateWithoutConstructor()
+ */
+final class License extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
-	/** @readonly */
+	/**
+	 * @readonly
+	 *
+	 * @StringValue()
+	 */
 	private string $name;
 
-	/** @readonly */
-	private ?string $identifier;
+	/** @StringValue() */
+	private ?string $identifier = null;
 
-	/** @readonly */
-	private ?string $url;
+	/** @StringValue() */
+	private ?string $url = null;
 
 	public function __construct(string $name, ?string $identifier = null, ?string $url = null)
 	{

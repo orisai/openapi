@@ -22,7 +22,13 @@ final class Headers
 		return implode(
 			'-',
 			array_map(
-				static fn (string $word): string => ucfirst($word),
+				static function (string $word): string {
+					if ($word === 'www') {
+						return 'WWW';
+					}
+
+					return ucfirst($word);
+				},
 				explode('-', strtolower($name)),
 			),
 		);

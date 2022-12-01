@@ -4,28 +4,71 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Callbacks\After;
+use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\BoolValue;
+use Orisai\ObjectMapper\Attributes\Expect\ListOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Exception\ValueDoesNotMatch;
+use Orisai\ObjectMapper\MappedObject;
+use Orisai\ObjectMapper\Types\EnumType;
+use Orisai\ObjectMapper\Types\Value;
 use Orisai\OpenAPI\Enum\EncodingStyle;
 use Orisai\OpenAPI\Utils\Headers;
 use Orisai\OpenAPI\Utils\MediaTypes;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function array_keys;
 use function implode;
+use function is_string;
 
-final class Encoding implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Encoding extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
-	/** @var array<string, null> */
+	/**
+	 * @var array<string, null>
+	 *
+	 * @ListOf(@StringValue())
+	 * @todo - callback - to keys + duplicates + format + validation
+	 */
 	private array $contentTypes = [];
 
-	/** @var array<string, Header|Reference> */
+	/**
+	 * @var array<string, Header|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Header::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(),
+	 * )
+	 * @todo - callback - format + validation
+	 */
 	private array $headers = [];
 
+	/**
+	 * @todo - default
+	 * @MixedValue()
+	 * @After("afterStyle")
+	 */
 	private EncodingStyle $style;
 
+	/**
+	 * @todo - podle style
+	 * @BoolValue()
+	 */
 	private bool $explode;
 
+	/** @BoolValue() */
 	private bool $allowReserved = false;
 
 	public function __construct()
@@ -104,6 +147,24 @@ final class Encoding implements SpecObject
 	public function getStyle(): EncodingStyle
 	{
 		return $this->style;
+	}
+
+	/**
+	 * @param mixed $value
+	 * @throws ValueDoesNotMatch
+	 */
+	protected static function afterStyle($value): EncodingStyle
+	{
+		if (is_string($value) && ($style = EncodingStyle::tryFrom($value)) !== null) {
+			return $style;
+		}
+
+		$cases = [];
+		foreach (EncodingStyle::cases() as $case) {
+			$cases[] = $case->value;
+		}
+
+		throw ValueDoesNotMatch::create(new EnumType($cases), Value::of($value));
 	}
 
 	public function getExplode(): bool

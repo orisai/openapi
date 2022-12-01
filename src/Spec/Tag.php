@@ -2,16 +2,30 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Tag implements SpecObject
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
+
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Tag extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
-	/** @readonly */
+	/**
+	 * @readonly
+	 *
+	 * @StringValue()
+	 */
 	private string $name;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
+	/** @MappedObjectValue(ExternalDocumentation::class) */
 	public ?ExternalDocumentation $externalDocs = null;
 
 	public function __construct(string $name)

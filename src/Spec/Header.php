@@ -4,12 +4,28 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Callbacks\After;
+use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\BoolValue;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Exception\ValueDoesNotMatch;
+use Orisai\ObjectMapper\MappedObject;
+use Orisai\ObjectMapper\Types\EnumType;
+use Orisai\ObjectMapper\Types\Value;
 use Orisai\OpenAPI\Enum\HeaderStyle;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use ReflectionProperty;
 use function count;
+use function is_string;
 
-final class Header implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Header extends MappedObject implements SpecObject
 {
 
 	use SpecObjectChecksSerializableValue;
@@ -18,26 +34,64 @@ final class Header implements SpecObject
 	}
 	use SpecObjectSupportsExtensions;
 
+	/** @StringValue() */
 	public ?string $description = null;
 
+	/** @BoolValue() */
 	public bool $required = false;
 
+	/** @BoolValue() */
 	public bool $deprecated = false;
 
+	/**
+	 * @MixedValue()
+	 * @After("afterStyle")
+	 */
 	private HeaderStyle $style;
 
+	/** @BoolValue() */
 	private bool $explode;
 
+	/**
+	 * @AnyOf({
+	 *     @MappedObjectValue(AllOfSchema::class),
+	 *     @MappedObjectValue(AnyOfSchema::class),
+	 *     @MappedObjectValue(ArraySchema::class),
+	 *     @MappedObjectValue(BoolSchema::class),
+	 *     @MappedObjectValue(FloatSchema::class),
+	 *     @MappedObjectValue(IntSchema::class),
+	 *     @MappedObjectValue(NotSchema::class),
+	 *     @MappedObjectValue(NullSchema::class),
+	 *     @MappedObjectValue(ObjectSchema::class),
+	 *     @MappedObjectValue(OneOfSchema::class),
+	 *     @MappedObjectValue(StringSchema::class),
+	 * })
+	 */
 	public ?Schema $schema = null;
 
-	/** @var mixed */
+	/**
+	 * @var mixed
+	 *
+	 * @MixedValue()
+	 */
 	private $example;
 
-	/** @var array<string, Example|Reference> */
+	/**
+	 * @var array<string, Example|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Example::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(),
+	 * )
+	 */
 	private array $examples = [];
 
 	public function __construct()
 	{
+		// TODO - nastavit hodnoty s object mapperem
 		$this->style = HeaderStyle::simple();
 		$this->explode = $this->style->getDefaultExplode();
 		unset($this->example);
@@ -57,6 +111,24 @@ final class Header implements SpecObject
 	public function getStyle(): HeaderStyle
 	{
 		return $this->style;
+	}
+
+	/**
+	 * @param mixed $value
+	 * @throws ValueDoesNotMatch
+	 */
+	protected static function afterStyle($value): HeaderStyle
+	{
+		if (is_string($value) && ($style = HeaderStyle::tryFrom($value)) !== null) {
+			return $style;
+		}
+
+		$cases = [];
+		foreach (HeaderStyle::cases() as $case) {
+			$cases[] = $case->value;
+		}
+
+		throw ValueDoesNotMatch::create(new EnumType($cases), Value::of($value));
 	}
 
 	public function getExplode(): bool

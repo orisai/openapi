@@ -2,32 +2,27 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use Orisai\OpenAPI\Enum\SecuritySchemeType;
 
 /**
  * @internal
+ * @CreateWithoutConstructor()
  */
-abstract class SecurityScheme implements SpecObject
+abstract class SecurityScheme extends MappedObject implements SpecObject
 {
 
-	private SecuritySchemeType $type;
-
+	/** @StringValue() */
 	public ?string $description = null;
 
-	protected function __construct(SecuritySchemeType $type)
-	{
-		$this->type = $type;
-	}
-
-	public function getType(): SecuritySchemeType
-	{
-		return $this->type;
-	}
+	abstract public function getType(): SecuritySchemeType;
 
 	public function toArray(): array
 	{
 		$data = [
-			'type' => $this->type->value,
+			'type' => $this->getType()->value,
 		];
 
 		if ($this->description !== null) {

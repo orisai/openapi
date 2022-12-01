@@ -6,20 +6,32 @@ use DOMElement;
 use DOMException;
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Expect\BoolValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 
-final class XML implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class XML extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
+	/** @StringValue() */
 	private ?string $name = null;
 
+	/** @StringValue() */
 	public ?string $namespace = null;
 
+	/** @StringValue() */
 	private ?string $prefix = null;
 
+	/** @BoolValue() */
 	public bool $attribute = false;
 
+	/** @BoolValue() */
 	public bool $wrapped = false;
 
 	public function setName(?string $name): void

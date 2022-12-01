@@ -2,10 +2,34 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+
+/**
+ * @CreateWithoutConstructor()
+ */
 final class NotSchema extends Schema
 {
 
-	/** @var Schema|Reference */
+	/**
+	 * @var Schema|Reference
+	 *
+	 * @AnyOf({
+	 *     @MappedObjectValue(AllOfSchema::class),
+	 *     @MappedObjectValue(AnyOfSchema::class),
+	 *     @MappedObjectValue(ArraySchema::class),
+	 *     @MappedObjectValue(BoolSchema::class),
+	 *     @MappedObjectValue(FloatSchema::class),
+	 *     @MappedObjectValue(IntSchema::class),
+	 *     @MappedObjectValue(NotSchema::class),
+	 *     @MappedObjectValue(NullSchema::class),
+	 *     @MappedObjectValue(ObjectSchema::class),
+	 *     @MappedObjectValue(OneOfSchema::class),
+	 *     @MappedObjectValue(StringSchema::class),
+	 *     @MappedObjectValue(Reference::class),
+	 * })
+	 */
 	private object $not;
 
 	/**

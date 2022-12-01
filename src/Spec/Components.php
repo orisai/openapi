@@ -4,42 +4,165 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function preg_match;
 
-final class Components implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Components extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
-	/** @var array<string, Schema|Reference> */
+	/**
+	 * @var array<string, Schema|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(AllOfSchema::class),
+	 *         @MappedObjectValue(AnyOfSchema::class),
+	 *         @MappedObjectValue(ArraySchema::class),
+	 *         @MappedObjectValue(BoolSchema::class),
+	 *         @MappedObjectValue(FloatSchema::class),
+	 *         @MappedObjectValue(IntSchema::class),
+	 *         @MappedObjectValue(NotSchema::class),
+	 *         @MappedObjectValue(NullSchema::class),
+	 *         @MappedObjectValue(ObjectSchema::class),
+	 *         @MappedObjectValue(OneOfSchema::class),
+	 *         @MappedObjectValue(StringSchema::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(pattern="~^[a-zA-Z0-9\.\-_]+$~"),
+	 * )
+	 */
 	private array $schemas = [];
 
-	/** @var array<string, Response|Reference> */
+	/**
+	 * @var array<string, Response|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Response::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(pattern="~^[a-zA-Z0-9\.\-_]+$~"),
+	 * )
+	 */
 	private array $responses = [];
 
-	/** @var array<string, Parameter|Reference> */
+	/**
+	 * @var array<string, Parameter|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Parameter::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(pattern="~^[a-zA-Z0-9\.\-_]+$~"),
+	 * )
+	 */
 	private array $parameters = [];
 
-	/** @var array<string, Example|Reference> */
+	/**
+	 * @var array<string, Example|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Example::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(pattern="~^[a-zA-Z0-9\.\-_]+$~"),
+	 * )
+	 */
 	private array $examples = [];
 
-	/** @var array<string, RequestBody|Reference> */
+	/**
+	 * @var array<string, RequestBody|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(RequestBody::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(pattern="~^[a-zA-Z0-9\.\-_]+$~"),
+	 * )
+	 */
 	private array $requestBodies = [];
 
-	/** @var array<string, Header|Reference> */
+	/**
+	 * @var array<string, Header|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Header::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(pattern="~^[a-zA-Z0-9\.\-_]+$~"),
+	 * )
+	 */
 	private array $headers = [];
 
-	/** @var array<string, SecurityScheme|Reference> */
+	/**
+	 * @var array<string, SecurityScheme|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(ApiKeySecurityScheme::class),
+	 *         @MappedObjectValue(HttpSecurityScheme::class),
+	 *         @MappedObjectValue(MutualTLSSecurityScheme::class),
+	 *         @MappedObjectValue(OAuthSecurityScheme::class),
+	 *         @MappedObjectValue(OpenIDConnectSecurityScheme::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(pattern="~^[a-zA-Z0-9\.\-_]+$~"),
+	 * )
+	 */
 	private array $securitySchemes = [];
 
-	/** @var array<string, Link|Reference> */
+	/**
+	 * @var array<string, Link|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Link::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(pattern="~^[a-zA-Z0-9\.\-_]+$~"),
+	 * )
+	 */
 	private array $links = [];
 
-	/** @var array<string, Callback|Reference> */
+	/**
+	 * @var array<string, Callback|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Callback::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(pattern="~^[a-zA-Z0-9\.\-_]+$~"),
+	 * )
+	 */
 	private array $callbacks = [];
 
-	/** @var array<string, PathItem|Reference> */
+	/**
+	 * @var array<string, PathItem|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(PathItem::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(pattern="~^[a-zA-Z0-9\.\-_]+$~"),
+	 * )
+	 */
 	private array $pathItems = [];
 
 	/**

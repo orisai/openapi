@@ -4,6 +4,9 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
 use stdClass;
 use function get_debug_type;
 use function is_array;
@@ -17,8 +20,15 @@ use function str_starts_with;
 trait SpecObjectSupportsExtensions
 {
 
-	/** @var array<string, mixed> */
-	private array $extensions = [];
+	/**
+	 * @var array<string, mixed>
+	 *
+	 * @ArrayOf(
+	 *     item=@MixedValue(),
+	 *     key=@StringValue(),
+	 * )
+	 */
+	protected array $extensions = [];
 
 	/**
 	 * @param mixed $content

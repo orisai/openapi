@@ -4,22 +4,52 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
+use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use Orisai\OpenAPI\Utils\Headers;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function preg_match;
 
-final class Response implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Response extends MappedObject implements SpecObject
 {
 
 	use SpecObjectHasContent;
 	use SpecObjectSupportsExtensions;
 
+	/** @StringValue() */
 	public string $description;
 
-	/** @var array<string, Header|Reference> */
+	/**
+	 * @var array<string, Header|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Header::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(),
+	 * )
+	 */
 	private array $headers = [];
 
-	/** @var array<string, Link|Reference> */
+	/**
+	 * @var array<string, Link|Reference>
+	 *
+	 * @ArrayOf(
+	 *     item=@AnyOf({
+	 *         @MappedObjectValue(Link::class),
+	 *         @MappedObjectValue(Reference::class),
+	 *     }),
+	 *     key=@StringValue(),
+	 * )
+	 */
 	private array $links = [];
 
 	public function __construct(string $description)

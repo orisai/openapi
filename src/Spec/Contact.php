@@ -2,15 +2,25 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-final class Contact implements SpecObject
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
+
+/**
+ * @CreateWithoutConstructor()
+ */
+final class Contact extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
+	/** @StringValue() */
 	public ?string $name = null;
 
+	/** @StringValue() */
 	public ?string $url = null;
 
+	/** @StringValue() */
 	public ?string $email = null;
 
 	public function toArray(): array

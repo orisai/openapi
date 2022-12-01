@@ -4,17 +4,30 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Expect\ListOf;
+use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\MappedObject;
 use function implode;
 use function in_array;
 
-final class ServerVariable implements SpecObject
+/**
+ * @CreateWithoutConstructor()
+ */
+final class ServerVariable extends MappedObject implements SpecObject
 {
 
 	use SpecObjectSupportsExtensions;
 
 	/**
-	 * @var non-empty-array<string>|null
+	 * @var non-empty-list<string>|null
 	 * @readonly
+	 *
+	 * @todo - optional
+	 * @ListOf(
+	 *     item=@StringValue(),
+	 *     minItems=1,
+	 * )
 	 */
 	private ?array $enum;
 
@@ -24,7 +37,7 @@ final class ServerVariable implements SpecObject
 	public ?string $description = null;
 
 	/**
-	 * @param non-empty-array<string>|null $enum
+	 * @param non-empty-list<string>|null $enum
 	 */
 	public function __construct(string $default, ?array $enum = null)
 	{
@@ -49,7 +62,7 @@ final class ServerVariable implements SpecObject
 	}
 
 	/**
-	 * @return non-empty-array<string>|null
+	 * @return non-empty-list<string>|null
 	 */
 	public function getEnum(): ?array
 	{
