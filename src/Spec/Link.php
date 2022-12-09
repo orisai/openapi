@@ -68,7 +68,10 @@ final class Link implements SpecObject
 
 	public function hasRequestBody(): bool
 	{
-		return (new ReflectionProperty($this, 'requestBody'))->isInitialized($this);
+		$property = new ReflectionProperty($this, 'requestBody');
+		$property->setAccessible(true);
+
+		return $property->isInitialized($this);
 	}
 
 	/**

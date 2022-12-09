@@ -38,7 +38,10 @@ final class Example implements SpecObject
 
 	public function hasValue(): bool
 	{
-		return (new ReflectionProperty($this, 'value'))->isInitialized($this);
+		$property = new ReflectionProperty($this, 'value');
+		$property->setAccessible(true);
+
+		return $property->isInitialized($this);
 	}
 
 	/**

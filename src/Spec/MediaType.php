@@ -40,7 +40,10 @@ final class MediaType implements SpecObject
 
 	public function hasExample(): bool
 	{
-		return (new ReflectionProperty($this, 'example'))->isInitialized($this);
+		$property = new ReflectionProperty($this, 'example');
+		$property->setAccessible(true);
+
+		return $property->isInitialized($this);
 	}
 
 	/**
