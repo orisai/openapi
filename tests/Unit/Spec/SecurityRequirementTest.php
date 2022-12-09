@@ -7,11 +7,13 @@ use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Yaml\Yaml;
 use function json_encode;
+use function str_replace;
 use const JSON_PRESERVE_ZERO_FRACTION;
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
+use const PHP_EOL;
 
 final class SecurityRequirementTest extends TestCase
 {
@@ -74,9 +76,13 @@ final class SecurityRequirementTest extends TestCase
     {}
 ]
 JSON,
-			json_encode(
-				$sr->toArray(),
-				JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
+			str_replace(
+				"\n",
+				PHP_EOL,
+				json_encode(
+					$sr->toArray(),
+					JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
+				),
 			),
 		);
 
@@ -85,7 +91,11 @@ JSON,
 - {  }
 
 YAML,
-			Yaml::dump($sr->toArray(), 2, 4, Yaml::DUMP_OBJECT_AS_MAP | Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE),
+			str_replace(
+				"\n",
+				PHP_EOL,
+				Yaml::dump($sr->toArray(), 2, 4, Yaml::DUMP_OBJECT_AS_MAP | Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE),
+			),
 		);
 	}
 

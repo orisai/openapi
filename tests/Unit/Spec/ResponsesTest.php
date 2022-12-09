@@ -10,11 +10,13 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 use function array_keys;
 use function json_encode;
+use function str_replace;
 use const JSON_PRESERVE_ZERO_FRACTION;
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
+use const PHP_EOL;
 
 final class ResponsesTest extends TestCase
 {
@@ -66,11 +68,13 @@ final class ResponsesTest extends TestCase
 		$rs = new Responses();
 
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage(<<<MSG
+		$this->expectExceptionMessage(
+			<<<MSG
 Context: Adding response with code '$code'.
 Problem: Only codes in range 100-599, '1XX', '2XX', '3XX', '4XX', '5XX' and
          'default' are allowed.
-MSG);
+MSG,
+		);
 
 		$rs->addResponse($code, new Response('description'));
 	}
@@ -126,9 +130,13 @@ MSG);
     }
 }
 JSON,
-			json_encode(
-				$rs->toArray(),
-				JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
+			str_replace(
+				"\n",
+				PHP_EOL,
+				json_encode(
+					$rs->toArray(),
+					JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
+				),
 			),
 		);
 
@@ -139,7 +147,11 @@ JSON,
     description: '200'
 
 YAML,
-			Yaml::dump($rs->toArray()),
+			str_replace(
+				"\n",
+				PHP_EOL,
+				Yaml::dump($rs->toArray()),
+			),
 		);
 	}
 
