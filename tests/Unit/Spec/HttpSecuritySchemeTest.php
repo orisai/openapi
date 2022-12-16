@@ -21,7 +21,7 @@ final class HttpSecuritySchemeTest extends TestCase
 				'type' => 'http',
 				'scheme' => 'Basic',
 			],
-			$s1->toArray(),
+			$s1->toRaw(),
 		);
 
 		$s2 = new HttpSecurityScheme('Bearer');
@@ -37,7 +37,7 @@ final class HttpSecuritySchemeTest extends TestCase
 				'bearerFormat' => 'JWT',
 				'x-a' => null,
 			],
-			$s2->toArray(),
+			$s2->toRaw(),
 		);
 	}
 
@@ -54,7 +54,7 @@ final class HttpSecuritySchemeTest extends TestCase
 				'scheme' => $scheme,
 				'bearerFormat' => 'JWT',
 			],
-			$s->toArray(),
+			$s->toRaw(),
 		);
 	}
 

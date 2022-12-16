@@ -20,9 +20,12 @@ final class BoolSchema extends Schema
 		$this->type = 'boolean';
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$data['type'] = $this->type;
 
 		return $data;

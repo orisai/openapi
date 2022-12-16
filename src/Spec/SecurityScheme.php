@@ -19,7 +19,10 @@ abstract class SecurityScheme extends MappedObject implements SpecObject
 
 	abstract public function getType(): SecuritySchemeType;
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'type' => $this->getType()->value,

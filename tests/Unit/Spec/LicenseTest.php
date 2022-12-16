@@ -18,7 +18,7 @@ final class LicenseTest extends TestCase
 			[
 				'name' => 'MPL-2.0',
 			],
-			$l1->toArray(),
+			$l1->toRaw(),
 		);
 
 		$l2 = new License('The Unlicense', 'Unlicense', 'https://unlicense.org');
@@ -34,7 +34,7 @@ final class LicenseTest extends TestCase
 				'url' => 'https://unlicense.org',
 				'x-a' => null,
 			],
-			$l2->toArray(),
+			$l2->toRaw(),
 		);
 	}
 

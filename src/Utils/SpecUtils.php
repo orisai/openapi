@@ -15,7 +15,7 @@ final class SpecUtils
 	{
 		$data = [];
 		foreach ($specs as $key => $spec) {
-			$data[$key] = $spec->toArray();
+			$data[$key] = $spec->toRaw();
 		}
 
 		return $data;

@@ -21,7 +21,7 @@ final class AuthorizationCodeOAuthFlowTest extends TestCase
 				'authorizationUrl' => 'https://example.com/api/oauth/dialog',
 				'tokenUrl' => 'https://example.com/api/oauth/token',
 			],
-			$f1->toArray(),
+			$f1->toRaw(),
 		);
 
 		$f2 = new AuthorizationCodeOAuthFlow(
@@ -50,7 +50,7 @@ final class AuthorizationCodeOAuthFlowTest extends TestCase
 				'tokenUrl' => 'https://example.com/api/oauth/token',
 				'x-a' => null,
 			],
-			$f2->toArray(),
+			$f2->toRaw(),
 		);
 	}
 

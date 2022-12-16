@@ -13,7 +13,7 @@ final class PathsTest extends TestCase
 	public function test(): void
 	{
 		$ps1 = new Paths();
-		self::assertSame([], $ps1->toArray());
+		self::assertSame([], $ps1->toRaw());
 
 		$ps2 = new Paths();
 
@@ -36,11 +36,11 @@ final class PathsTest extends TestCase
 
 		self::assertSame(
 			[
-				'/foo' => $ps2p1->toArray(),
-				'/bar' => $ps2p2->toArray(),
+				'/foo' => $ps2p1->toRaw(),
+				'/bar' => $ps2p2->toRaw(),
 				'x-a' => null,
 			],
-			$ps2->toArray(),
+			$ps2->toRaw(),
 		);
 	}
 

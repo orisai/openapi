@@ -24,7 +24,7 @@ final class HeaderTest extends TestCase
 		$h1 = new Header();
 		self::assertSame($h1->getStyle(), HeaderStyle::simple());
 		self::assertFalse($h1->getExplode());
-		self::assertSame([], $h1->toArray());
+		self::assertSame([], $h1->toRaw());
 
 		$h2 = new Header();
 		$h2->description = 'description';
@@ -54,31 +54,31 @@ final class HeaderTest extends TestCase
 			[
 				'description' => 'description',
 				'deprecated' => true,
-				'schema' => $h2->schema->toArray(),
+				'schema' => $h2->schema->toRaw(),
 				'example' => null,
 				'examples' => [
-					'foo' => $h2e1->toArray(),
-					'bar' => $h2e2->toArray(),
+					'foo' => $h2e1->toRaw(),
+					'bar' => $h2e2->toRaw(),
 				],
 				'content' => [
-					'application/json' => $h2c1->toArray(),
+					'application/json' => $h2c1->toRaw(),
 				],
 				'x-a' => null,
 			],
-			$h2->toArray(),
+			$h2->toRaw(),
 		);
 	}
 
 	public function testRequired(): void
 	{
 		$header = new Header();
-		self::assertNotContains('required', $header->toArray());
+		self::assertNotContains('required', $header->toRaw());
 
 		$header->setRequired();
-		self::assertTrue($header->toArray()['required']);
+		self::assertTrue($header->toRaw()['required']);
 
 		$header->setRequired(false);
-		self::assertNotContains('required', $header->toArray());
+		self::assertNotContains('required', $header->toRaw());
 	}
 
 	public function testStyleAndExplode(): void
@@ -86,22 +86,22 @@ final class HeaderTest extends TestCase
 		$header = new Header();
 		self::assertSame(HeaderStyle::simple(), $header->getStyle());
 		self::assertFalse($header->getExplode());
-		self::assertArrayNotHasKey('explode', $header->toArray());
+		self::assertArrayNotHasKey('explode', $header->toRaw());
 
 		$header->setStyle(HeaderStyle::simple());
 		self::assertSame(HeaderStyle::simple(), $header->getStyle());
 		self::assertFalse($header->getExplode());
-		self::assertArrayNotHasKey('explode', $header->toArray());
+		self::assertArrayNotHasKey('explode', $header->toRaw());
 
 		$header->setStyle(HeaderStyle::simple(), false);
 		self::assertSame(HeaderStyle::simple(), $header->getStyle());
 		self::assertFalse($header->getExplode());
-		self::assertArrayNotHasKey('explode', $header->toArray());
+		self::assertArrayNotHasKey('explode', $header->toRaw());
 
 		$header->setStyle(HeaderStyle::simple(), true);
 		self::assertSame(HeaderStyle::simple(), $header->getStyle());
 		self::assertTrue($header->getExplode());
-		self::assertTrue($header->toArray()['explode']);
+		self::assertTrue($header->toRaw()['explode']);
 	}
 
 	public function testSetValue(): void

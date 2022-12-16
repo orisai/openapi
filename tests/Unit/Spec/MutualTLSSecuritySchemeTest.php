@@ -17,7 +17,7 @@ final class MutualTLSSecuritySchemeTest extends TestCase
 			[
 				'type' => 'mutualTLS',
 			],
-			$s1->toArray(),
+			$s1->toRaw(),
 		);
 
 		$s2 = new MutualTLSSecurityScheme();
@@ -29,7 +29,7 @@ final class MutualTLSSecuritySchemeTest extends TestCase
 				'description' => 'description',
 				'x-a' => null,
 			],
-			$s2->toArray(),
+			$s2->toRaw(),
 		);
 	}
 

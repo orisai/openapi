@@ -38,7 +38,10 @@ final class Tag extends MappedObject implements SpecObject
 		return $this->name;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'name' => $this->name,
@@ -49,7 +52,7 @@ final class Tag extends MappedObject implements SpecObject
 		}
 
 		if ($this->externalDocs !== null) {
-			$data['externalDocs'] = $this->externalDocs->toArray();
+			$data['externalDocs'] = $this->externalDocs->toRaw();
 		}
 
 		$this->addExtensionsToData($data);

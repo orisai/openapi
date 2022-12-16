@@ -37,7 +37,7 @@ final class ComponentsTest extends TestCase
 		self::assertSame([], $c1->getLinks());
 		self::assertSame([], $c1->getCallbacks());
 		self::assertSame([], $c1->getPathItems());
-		self::assertSame([], $c1->toArray());
+		self::assertSame([], $c1->toRaw());
 
 		$c2 = new Components();
 
@@ -147,48 +147,48 @@ final class ComponentsTest extends TestCase
 		self::assertSame(
 			[
 				'schemas' => [
-					'a' => $c2s1->toArray(),
-					'b' => $c2s2->toArray(),
+					'a' => $c2s1->toRaw(),
+					'b' => $c2s2->toRaw(),
 				],
 				'responses' => [
-					'a' => $c2r1->toArray(),
-					'b' => $c2r2->toArray(),
+					'a' => $c2r1->toRaw(),
+					'b' => $c2r2->toRaw(),
 				],
 				'parameters' => [
-					'a' => $c2p1->toArray(),
-					'b' => $c2p2->toArray(),
+					'a' => $c2p1->toRaw(),
+					'b' => $c2p2->toRaw(),
 				],
 				'examples' => [
-					'a' => $c2e1->toArray(),
-					'b' => $c2e2->toArray(),
+					'a' => $c2e1->toRaw(),
+					'b' => $c2e2->toRaw(),
 				],
 				'requestBodies' => [
-					'a' => $c2rb1->toArray(),
-					'b' => $c2rb2->toArray(),
+					'a' => $c2rb1->toRaw(),
+					'b' => $c2rb2->toRaw(),
 				],
 				'headers' => [
-					'a' => $c2h1->toArray(),
-					'b' => $c2h2->toArray(),
+					'a' => $c2h1->toRaw(),
+					'b' => $c2h2->toRaw(),
 				],
 				'securitySchemes' => [
-					'a' => $c2ss1->toArray(),
-					'b' => $c2ss2->toArray(),
+					'a' => $c2ss1->toRaw(),
+					'b' => $c2ss2->toRaw(),
 				],
 				'links' => [
-					'a' => $c2l1->toArray(),
-					'b' => $c2l2->toArray(),
+					'a' => $c2l1->toRaw(),
+					'b' => $c2l2->toRaw(),
 				],
 				'callbacks' => [
-					'a' => $c2cb1->toArray(),
-					'b' => $c2cb2->toArray(),
+					'a' => $c2cb1->toRaw(),
+					'b' => $c2cb2->toRaw(),
 				],
 				'pathItems' => [
-					'a' => $c2pi1->toArray(),
-					'b' => $c2pi2->toArray(),
+					'a' => $c2pi1->toRaw(),
+					'b' => $c2pi2->toRaw(),
 				],
 				'x-a' => null,
 			],
-			$c2->toArray(),
+			$c2->toRaw(),
 		);
 	}
 
@@ -209,7 +209,7 @@ final class ComponentsTest extends TestCase
 		$c->addCallback($key, $ref);
 		$c->addPathItem($key, $ref);
 
-		self::assertCount(10, $c->toArray());
+		self::assertCount(10, $c->toRaw());
 	}
 
 	/**

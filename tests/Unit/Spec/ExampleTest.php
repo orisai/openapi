@@ -18,7 +18,7 @@ final class ExampleTest extends TestCase
 	{
 		$e1 = new Example();
 		self::assertNull($e1->getExternalValue());
-		self::assertSame([], $e1->toArray());
+		self::assertSame([], $e1->toRaw());
 
 		$e2 = new Example();
 		$e2->summary = 'summary';
@@ -34,7 +34,7 @@ final class ExampleTest extends TestCase
 				'externalValue' => 'https://example.com/user-example.json',
 				'x-a' => null,
 			],
-			$e2->toArray(),
+			$e2->toRaw(),
 		);
 
 		$e2 = new Example();
@@ -45,7 +45,7 @@ final class ExampleTest extends TestCase
 			[
 				'value' => null,
 			],
-			$e2->toArray(),
+			$e2->toRaw(),
 		);
 	}
 
@@ -58,7 +58,7 @@ final class ExampleTest extends TestCase
 			[
 				'externalValue' => 'https://example.com/user-example.json',
 			],
-			$e1->toArray(),
+			$e1->toRaw(),
 		);
 
 		$e1 = new Example();
@@ -68,7 +68,7 @@ final class ExampleTest extends TestCase
 			[
 				'value' => null,
 			],
-			$e1->toArray(),
+			$e1->toRaw(),
 		);
 	}
 

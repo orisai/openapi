@@ -9,8 +9,8 @@ interface SpecObject
 {
 
 	/**
-	 * @return array<int|string, mixed>
+	 * @return mixed
 	 */
-	public function toArray(): array;
+	public function toRaw();
 
 }

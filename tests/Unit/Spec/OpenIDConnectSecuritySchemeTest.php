@@ -18,7 +18,7 @@ final class OpenIDConnectSecuritySchemeTest extends TestCase
 				'type' => 'openIdConnect',
 				'openIdConnectUrl' => 'https://example.com',
 			],
-			$s1->toArray(),
+			$s1->toRaw(),
 		);
 
 		$s2 = new OpenIDConnectSecurityScheme('https://example.com');
@@ -31,7 +31,7 @@ final class OpenIDConnectSecuritySchemeTest extends TestCase
 				'openIdConnectUrl' => 'https://example.com',
 				'x-a' => null,
 			],
-			$s2->toArray(),
+			$s2->toRaw(),
 		);
 	}
 

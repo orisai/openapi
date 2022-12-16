@@ -4,6 +4,7 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Callbacks\After;
 use Orisai\ObjectMapper\Attributes\Callbacks\Before;
 use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
 use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
@@ -31,7 +32,7 @@ final class Paths extends MappedObject implements SpecObject
 	 *     item=@MappedObjectValue(PathItem::class),
 	 *     key=@StringValue(),
 	 * )
-	 * @todo - callback
+	 * @After("afterPaths")
 	 */
 	private array $paths = [];
 
@@ -45,7 +46,9 @@ final class Paths extends MappedObject implements SpecObject
 			return $data;
 		}
 
+		// TODO - kontrolovat, že ve třídě nejsou klíče extensions nebo paths
 		// TODO - lépe rozlišit mezi path a extension
+		//		- nebude kolidovat s before class v traitě?
 		$newData = [];
 		foreach ($data as $key => $value) {
 			if (is_string($key) && str_starts_with($key, 'x-')) {
@@ -60,7 +63,7 @@ final class Paths extends MappedObject implements SpecObject
 
 	public function addPath(string $path, PathItem $item): void
 	{
-		if (!str_starts_with($path, '/')) {
+		if (!$this->isPathValid($path)) {
 			$message = Message::create()
 				->withContext("Adding path '$path'.")
 				->withProblem("Path musts start with '/'.");
@@ -80,7 +83,27 @@ final class Paths extends MappedObject implements SpecObject
 		return $this->paths;
 	}
 
-	public function toArray(): array
+	private function isPathValid(string $path): bool
+	{
+		return str_starts_with($path, '/');
+	}
+
+	/**
+	 * @param array<string, PathItem> $values
+	 */
+	protected function afterPaths(array $values): void
+	{
+		foreach ($values as $path => $item) {
+			if (!$this->isPathValid($path)) {
+				// TODO - validate path
+			}
+		}
+	}
+
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = SpecUtils::specsToArray($this->paths);
 		$this->addExtensionsToData($data);

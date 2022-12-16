@@ -58,10 +58,13 @@ final class OAuthSecurityScheme extends SecurityScheme
 		throw ValueDoesNotMatch::create(new EnumType([$case->value]), Value::of($value));
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
-		$data['flows'] = $this->flows->toArray();
+		$data = parent::toRaw();
+		$data['flows'] = $this->flows->toRaw();
 
 		$this->addExtensionsToData($data);
 

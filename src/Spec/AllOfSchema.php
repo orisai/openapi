@@ -54,9 +54,12 @@ final class AllOfSchema extends Schema
 		return $this->allOf;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$data['allOf'] = SpecUtils::specsToArray($this->allOf);
 
 		return $data;

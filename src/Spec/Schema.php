@@ -108,17 +108,20 @@ abstract class Schema extends MappedObject implements SpecObject
 		return $this->example;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [];
 
-		$xmlData = $this->xml->toArray();
+		$xmlData = $this->xml->toRaw();
 		if ($xmlData !== []) {
 			$data['xml'] = $xmlData;
 		}
 
 		if ($this->externalDocs !== null) {
-			$data['externalDocs'] = $this->externalDocs->toArray();
+			$data['externalDocs'] = $this->externalDocs->toRaw();
 		}
 
 		if ($this->hasExample()) {

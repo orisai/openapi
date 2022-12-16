@@ -117,7 +117,10 @@ final class Response extends MappedObject implements SpecObject
 			->withMessage($message);
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'description' => $this->description,

@@ -19,7 +19,7 @@ final class EncodingTest extends TestCase
 		self::assertSame([], $e1->getContentTypes());
 		self::assertTrue($e1->getExplode());
 		self::assertFalse($e1->getAllowReserved());
-		self::assertSame([], $e1->toArray());
+		self::assertSame([], $e1->toRaw());
 
 		$e2 = new Encoding();
 
@@ -57,15 +57,15 @@ final class EncodingTest extends TestCase
 			[
 				'contentType' => 'application/json',
 				'headers' => [
-					'Transfer-Encoding' => $e2h1->toArray(),
-					'Trailer' => $e2h2->toArray(),
+					'Transfer-Encoding' => $e2h1->toRaw(),
+					'Trailer' => $e2h2->toRaw(),
 				],
 				'style' => 'deepObject',
 				'explode' => true,
 				'allowReserved' => true,
 				'x-a' => null,
 			],
-			$e2->toArray(),
+			$e2->toRaw(),
 		);
 	}
 
@@ -96,7 +96,7 @@ final class EncodingTest extends TestCase
 			[
 				'contentType' => 'text/csv, */*',
 			],
-			$encoding->toArray(),
+			$encoding->toRaw(),
 		);
 	}
 
@@ -158,37 +158,37 @@ MSG,
 		$encoding = new Encoding();
 		self::assertSame(EncodingStyle::form(), $encoding->getStyle());
 		self::assertTrue($encoding->getExplode());
-		self::assertArrayNotHasKey('explode', $encoding->toArray());
+		self::assertArrayNotHasKey('explode', $encoding->toRaw());
 
 		$encoding->setStyle(EncodingStyle::pipeDelimited());
 		self::assertSame(EncodingStyle::pipeDelimited(), $encoding->getStyle());
 		self::assertFalse($encoding->getExplode());
-		self::assertArrayNotHasKey('explode', $encoding->toArray());
+		self::assertArrayNotHasKey('explode', $encoding->toRaw());
 
 		$encoding->setStyle(EncodingStyle::pipeDelimited(), false);
 		self::assertSame(EncodingStyle::pipeDelimited(), $encoding->getStyle());
 		self::assertFalse($encoding->getExplode());
-		self::assertArrayNotHasKey('explode', $encoding->toArray());
+		self::assertArrayNotHasKey('explode', $encoding->toRaw());
 
 		$encoding->setStyle(EncodingStyle::pipeDelimited(), true);
 		self::assertSame(EncodingStyle::pipeDelimited(), $encoding->getStyle());
 		self::assertTrue($encoding->getExplode());
-		self::assertTrue($encoding->toArray()['explode']);
+		self::assertTrue($encoding->toRaw()['explode']);
 
 		$encoding->setStyle(EncodingStyle::form());
 		self::assertSame(EncodingStyle::form(), $encoding->getStyle());
 		self::assertTrue($encoding->getExplode());
-		self::assertArrayNotHasKey('explode', $encoding->toArray());
+		self::assertArrayNotHasKey('explode', $encoding->toRaw());
 
 		$encoding->setStyle(EncodingStyle::form(), true);
 		self::assertSame(EncodingStyle::form(), $encoding->getStyle());
 		self::assertTrue($encoding->getExplode());
-		self::assertArrayNotHasKey('explode', $encoding->toArray());
+		self::assertArrayNotHasKey('explode', $encoding->toRaw());
 
 		$encoding->setStyle(EncodingStyle::form(), false);
 		self::assertSame(EncodingStyle::form(), $encoding->getStyle());
 		self::assertFalse($encoding->getExplode());
-		self::assertFalse($encoding->toArray()['explode']);
+		self::assertFalse($encoding->toRaw()['explode']);
 	}
 
 }

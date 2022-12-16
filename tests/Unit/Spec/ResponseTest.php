@@ -22,7 +22,7 @@ final class ResponseTest extends TestCase
 			[
 				'description' => 'description',
 			],
-			$r1->toArray(),
+			$r1->toRaw(),
 		);
 
 		$r2 = new Response('description');
@@ -78,20 +78,20 @@ final class ResponseTest extends TestCase
 			[
 				'description' => 'description',
 				'headers' => [
-					'Transfer-Encoding' => $r2h1->toArray(),
-					'Trailer' => $r2h2->toArray(),
+					'Transfer-Encoding' => $r2h1->toRaw(),
+					'Trailer' => $r2h2->toRaw(),
 				],
 				'content' => [
-					'application/json' => $r2mt1->toArray(),
-					'application/xml' => $r2mt2->toArray(),
+					'application/json' => $r2mt1->toRaw(),
+					'application/xml' => $r2mt2->toRaw(),
 				],
 				'links' => [
-					'l1' => $r2l1->toArray(),
-					'l2' => $r2l2->toArray(),
+					'l1' => $r2l1->toRaw(),
+					'l2' => $r2l2->toRaw(),
 				],
 				'x-a' => null,
 			],
-			$r2->toArray(),
+			$r2->toRaw(),
 		);
 	}
 
@@ -189,7 +189,7 @@ MSG,
 					'*/*' => [],
 				],
 			],
-			$r->toArray(),
+			$r->toRaw(),
 		);
 	}
 

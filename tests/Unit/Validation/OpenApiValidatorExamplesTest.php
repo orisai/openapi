@@ -41,7 +41,7 @@ final class OpenApiValidatorExamplesTest extends TestCase
 			$result->getErrors(),
 		);
 		self::assertSame(
-			require __DIR__ . '/examples.warnings.php',
+			require __DIR__ . '/OpenApiValidator.examples.warnings.php',
 			$result->getWarnings(),
 		);
 

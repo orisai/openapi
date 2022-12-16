@@ -32,7 +32,7 @@ final class ParameterTest extends TestCase
 				'name' => 'p1',
 				'in' => 'query',
 			],
-			$p1->toArray(),
+			$p1->toRaw(),
 		);
 
 		$p2 = new Parameter('p2', ParameterIn::path());
@@ -44,7 +44,7 @@ final class ParameterTest extends TestCase
 				'in' => 'path',
 				'required' => true,
 			],
-			$p2->toArray(),
+			$p2->toRaw(),
 		);
 
 		$p3 = new Parameter('p3', ParameterIn::cookie());
@@ -55,7 +55,7 @@ final class ParameterTest extends TestCase
 				'name' => 'p3',
 				'in' => 'cookie',
 			],
-			$p3->toArray(),
+			$p3->toRaw(),
 		);
 
 		$p4 = new Parameter('transfer-encoding', ParameterIn::header());
@@ -66,7 +66,7 @@ final class ParameterTest extends TestCase
 				'name' => 'Transfer-Encoding',
 				'in' => 'header',
 			],
-			$p4->toArray(),
+			$p4->toRaw(),
 		);
 	}
 
@@ -105,18 +105,18 @@ final class ParameterTest extends TestCase
 				'required' => true,
 				'deprecated' => true,
 				'explode' => false,
-				'schema' => $p->schema->toArray(),
+				'schema' => $p->schema->toRaw(),
 				'example' => null,
 				'examples' => [
-					'foo' => $pe1->toArray(),
-					'bar' => $pe2->toArray(),
+					'foo' => $pe1->toRaw(),
+					'bar' => $pe2->toRaw(),
 				],
 				'content' => [
-					'application/json' => $pc1->toArray(),
+					'application/json' => $pc1->toRaw(),
 				],
 				'x-a' => null,
 			],
-			$p->toArray(),
+			$p->toRaw(),
 		);
 	}
 
@@ -163,13 +163,13 @@ MSG,
 	 */
 	public function testRequired(Parameter $parameter): void
 	{
-		self::assertNotContains('required', $parameter->toArray());
+		self::assertNotContains('required', $parameter->toRaw());
 
 		$parameter->setRequired();
-		self::assertTrue($parameter->toArray()['required']);
+		self::assertTrue($parameter->toRaw()['required']);
 
 		$parameter->setRequired(false);
-		self::assertNotContains('required', $parameter->toArray());
+		self::assertNotContains('required', $parameter->toRaw());
 	}
 
 	public function provideRequired(): Generator
@@ -182,10 +182,10 @@ MSG,
 	public function testInPathNotRequired(): void
 	{
 		$p = new Parameter('name', ParameterIn::path());
-		self::assertTrue($p->toArray()['required']);
+		self::assertTrue($p->toRaw()['required']);
 
 		$p->setRequired();
-		self::assertTrue($p->toArray()['required']);
+		self::assertTrue($p->toRaw()['required']);
 
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage(
@@ -211,10 +211,10 @@ MSG,
 			self::assertSame($style->getDefaultExplode(), $parameter->getExplode());
 
 			if ($style === $parameter->getIn()->getDefaultStyle()) {
-				self::assertNotContains('style', $parameter->toArray());
+				self::assertNotContains('style', $parameter->toRaw());
 			} else {
-				self::assertArrayHasKey('style', $parameter->toArray());
-				self::assertSame($style->value, $parameter->toArray()['style']);
+				self::assertArrayHasKey('style', $parameter->toRaw());
+				self::assertSame($style->value, $parameter->toRaw()['style']);
 			}
 		}
 	}
@@ -317,7 +317,7 @@ MSG,
 				'in' => 'query',
 				'allowReserved' => true,
 			],
-			$parameter->toArray(),
+			$parameter->toRaw(),
 		);
 
 		$parameter->setAllowReserved(false);
@@ -326,7 +326,7 @@ MSG,
 				'name' => 'name',
 				'in' => 'query',
 			],
-			$parameter->toArray(),
+			$parameter->toRaw(),
 		);
 	}
 
@@ -358,7 +358,7 @@ MSG,
 				'in' => 'query',
 				'allowEmptyValue' => true,
 			],
-			$parameter->toArray(),
+			$parameter->toRaw(),
 		);
 
 		$parameter->setAllowEmptyValue(false);
@@ -367,7 +367,7 @@ MSG,
 				'name' => 'name',
 				'in' => 'query',
 			],
-			$parameter->toArray(),
+			$parameter->toRaw(),
 		);
 	}
 

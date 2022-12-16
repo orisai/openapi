@@ -26,9 +26,9 @@ final class OpenAPITest extends TestCase
 		self::assertSame(
 			[
 				'openapi' => '3.1.0',
-				'info' => $i1->toArray(),
+				'info' => $i1->toRaw(),
 			],
-			$oa1->toArray(),
+			$oa1->toRaw(),
 		);
 
 		$i2 = new Info('api', 'version');
@@ -57,12 +57,12 @@ final class OpenAPITest extends TestCase
 
 		$oa2->components->addRequestBody('foo', new RequestBody());
 
-		$oa2->addSecurity($oa2sr1 = SecurityRequirement::create('api_key'));
+		$oa2->addSecurity($oa2sr1 = new SecurityRequirement(['api_key' => []]));
 		$oa2->addSecurity($oa2sr1);
-		$oa2->addSecurity($oa2sr2 = SecurityRequirement::create('petstore_auth', ['foo']));
+		$oa2->addSecurity($oa2sr2 = new SecurityRequirement(['petstore_auth' => ['foo']]));
 		self::assertSame(
 			[$oa2sr1, $oa2sr2],
-			$oa2->getSecurityRequirements(),
+			$oa2->getSecurity(),
 		);
 
 		$oa2->addTag($oa2t1 = new Tag('t1'));
@@ -79,48 +79,30 @@ final class OpenAPITest extends TestCase
 		self::assertSame(
 			[
 				'openapi' => '3.1.0',
-				'info' => $i2->toArray(),
+				'info' => $i2->toRaw(),
 				'jsonSchemaDialect' => 'dialect',
 				'servers' => [
-					$oa2s1->toArray(),
-					$oa2s2->toArray(),
+					$oa2s1->toRaw(),
+					$oa2s2->toRaw(),
 				],
-				'paths' => $oa2->paths->toArray(),
+				'paths' => $oa2->paths->toRaw(),
 				'webhooks' => [
-					'foo' => $oa2wh1->toArray(),
-					'bar' => $oa2wh2->toArray(),
+					'foo' => $oa2wh1->toRaw(),
+					'bar' => $oa2wh2->toRaw(),
 				],
-				'components' => $oa2->components->toArray(),
+				'components' => $oa2->components->toRaw(),
 				'security' => array_merge(
-					$oa2sr1->toArray(),
-					$oa2sr2->toArray(),
+					$oa2sr1->toRaw(),
+					$oa2sr2->toRaw(),
 				),
 				'tags' => [
-					$oa2t1->toArray(),
-					$oa2t2->toArray(),
+					$oa2t1->toRaw(),
+					$oa2t2->toRaw(),
 				],
-				'externalDocs' => $oa2ed->toArray(),
+				'externalDocs' => $oa2ed->toRaw(),
 				'x-a' => null,
 			],
-			$oa2->toArray(),
-		);
-	}
-
-	public function testOptionalSecurityRequirementIsNotDuplicated(): void
-	{
-		$i = new Info('title', 'version');
-		$oa = new OpenAPI($i);
-
-		$oa->addSecurity(SecurityRequirement::createOptional());
-		$oa->addSecurity(SecurityRequirement::createOptional());
-
-		self::assertEquals(
-			[
-				'openapi' => '3.1.0',
-				'info' => $i->toArray(),
-				'security' => SecurityRequirement::createOptional()->toArray(),
-			],
-			$oa->toArray(),
+			$oa2->toRaw(),
 		);
 	}
 

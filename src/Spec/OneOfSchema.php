@@ -57,13 +57,16 @@ final class OneOfSchema extends Schema
 		return $this->oneOf;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$data['oneOf'] = SpecUtils::specsToArray($this->oneOf);
 
 		if ($this->discriminator !== null) {
-			$data['discriminator'] = $this->discriminator->toArray();
+			$data['discriminator'] = $this->discriminator->toRaw();
 		}
 
 		return $data;

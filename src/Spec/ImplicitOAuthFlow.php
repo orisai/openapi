@@ -21,9 +21,12 @@ final class ImplicitOAuthFlow extends OAuthFlow
 		$this->authorizationUrl = $authorizationUrl;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$data['authorizationUrl'] = $this->authorizationUrl;
 		$this->addExtensionsToData($data);
 

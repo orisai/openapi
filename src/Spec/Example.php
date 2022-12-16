@@ -88,7 +88,10 @@ final class Example extends MappedObject implements SpecObject
 		return $this->externalValue;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [];
 

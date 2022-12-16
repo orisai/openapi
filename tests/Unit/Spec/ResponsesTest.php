@@ -24,7 +24,7 @@ final class ResponsesTest extends TestCase
 	public function test(): void
 	{
 		$rs1 = new Responses();
-		self::assertSame([], $rs1->toArray());
+		self::assertSame([], $rs1->toRaw());
 
 		$rs2 = new Responses();
 
@@ -49,12 +49,12 @@ final class ResponsesTest extends TestCase
 		);
 		self::assertSame(
 			[
-				204 => $rs2r1->toArray(),
-				404 => $rs2r2->toArray(),
-				'default' => $rs2rsd->toArray(),
+				204 => $rs2r1->toRaw(),
+				404 => $rs2r2->toRaw(),
+				'default' => $rs2rsd->toRaw(),
 				'x-a' => null,
 			],
-			$rs2->toArray(),
+			$rs2->toRaw(),
 		);
 	}
 
@@ -113,7 +113,7 @@ MSG,
 
 		self::assertSame(
 			[100, 199, '1XX', 200, 299, '2XX', 300, 399, '3XX', 400, 499, '4XX', 500, 599, '5XX', 'default'],
-			array_keys($rs->toArray()),
+			array_keys($rs->toRaw()),
 		);
 	}
 
@@ -134,7 +134,7 @@ JSON,
 				"\n",
 				PHP_EOL,
 				json_encode(
-					$rs->toArray(),
+					$rs->toRaw(),
 					JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
 				),
 			),
@@ -150,7 +150,7 @@ YAML,
 			str_replace(
 				"\n",
 				PHP_EOL,
-				Yaml::dump($rs->toArray()),
+				Yaml::dump($rs->toRaw()),
 			),
 		);
 	}
@@ -161,8 +161,8 @@ YAML,
 		$rs->addResponse('200', $r = new Response('200'));
 
 		self::assertSame(
-			[200 => $r->toArray()],
-			$rs->toArray(),
+			[200 => $r->toRaw()],
+			$rs->toRaw(),
 		);
 	}
 

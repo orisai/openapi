@@ -25,7 +25,10 @@ final class ExternalDocumentation extends MappedObject implements SpecObject
 		$this->url = $url;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'url' => $this->url,

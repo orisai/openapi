@@ -23,7 +23,10 @@ final class RequestBody extends MappedObject implements SpecObject
 	/** @BoolValue() */
 	public bool $required = false;
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'content' => SpecUtils::specsToArray($this->getContent()),

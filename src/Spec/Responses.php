@@ -58,7 +58,9 @@ final class Responses extends MappedObject implements SpecObject
 			return $data;
 		}
 
+		// TODO - kontrolovat, že ve třídě nejsou klíče extensions nebo responses
 		// TODO - lépe rozlišit mezi response a extension
+		//		- nebude kolidovat s before class v traitě?
 		$newData = [];
 		foreach ($data as $key => $value) {
 			if (is_string($key) && str_starts_with($key, 'x-')) {
@@ -111,7 +113,10 @@ final class Responses extends MappedObject implements SpecObject
 		return $this->responses;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = SpecUtils::specsToArray($this->getResponses());
 

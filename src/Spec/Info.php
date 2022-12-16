@@ -43,7 +43,10 @@ final class Info extends MappedObject implements SpecObject
 		$this->contact = new Contact();
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'title' => $this->title,
@@ -62,13 +65,13 @@ final class Info extends MappedObject implements SpecObject
 			$data['termsOfService'] = $this->termsOfService;
 		}
 
-		$contactData = $this->contact->toArray();
+		$contactData = $this->contact->toRaw();
 		if ($contactData !== []) {
 			$data['contact'] = $contactData;
 		}
 
 		if ($this->license !== null) {
-			$data['license'] = $this->license->toArray();
+			$data['license'] = $this->license->toRaw();
 		}
 
 		$this->addExtensionsToData($data);

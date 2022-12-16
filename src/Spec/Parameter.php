@@ -364,7 +364,10 @@ final class Parameter extends MappedObject implements SpecObject
 		$this->addContentTrait($name, $mediaType);
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'name' => $this->name,
@@ -400,7 +403,7 @@ final class Parameter extends MappedObject implements SpecObject
 		}
 
 		if ($this->schema !== null) {
-			$data['schema'] = $this->schema->toArray();
+			$data['schema'] = $this->schema->toRaw();
 		}
 
 		if ($this->hasExample()) {

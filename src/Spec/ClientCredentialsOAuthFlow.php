@@ -21,9 +21,12 @@ final class ClientCredentialsOAuthFlow extends OAuthFlow
 		$this->tokenUrl = $tokenUrl;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$data['tokenUrl'] = $this->tokenUrl;
 
 		$this->addExtensionsToData($data);

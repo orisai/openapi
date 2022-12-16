@@ -11,7 +11,7 @@ final class ContactTest extends TestCase
 	public function test(): void
 	{
 		$c1 = new Contact();
-		self::assertSame([], $c1->toArray());
+		self::assertSame([], $c1->toRaw());
 
 		$c2 = new Contact();
 		$c2->name = 'Example';
@@ -25,7 +25,7 @@ final class ContactTest extends TestCase
 				'email' => 'example@example.com',
 				'x-a' => null,
 			],
-			$c2->toArray(),
+			$c2->toRaw(),
 		);
 	}
 

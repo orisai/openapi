@@ -66,7 +66,10 @@ final class XML extends MappedObject implements SpecObject
 		}
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [];
 

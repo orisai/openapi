@@ -17,7 +17,7 @@ final class TagTest extends TestCase
 			[
 				'name' => 'name',
 			],
-			$t1->toArray(),
+			$t1->toRaw(),
 		);
 
 		$t2 = new Tag('name');
@@ -34,7 +34,7 @@ final class TagTest extends TestCase
 				],
 				'x-a' => null,
 			],
-			$t2->toArray(),
+			$t2->toRaw(),
 		);
 	}
 

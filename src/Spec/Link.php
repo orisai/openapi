@@ -134,7 +134,10 @@ final class Link extends MappedObject implements SpecObject
 		return $this->parameters;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [];
 
@@ -159,7 +162,7 @@ final class Link extends MappedObject implements SpecObject
 		}
 
 		if ($this->server !== null) {
-			$data['server'] = $this->server->toArray();
+			$data['server'] = $this->server->toRaw();
 		}
 
 		$this->addExtensionsToData($data);

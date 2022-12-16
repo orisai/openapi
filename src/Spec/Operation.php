@@ -2,6 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Callbacks\After;
 use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
 use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
 use Orisai\ObjectMapper\Attributes\Expect\BoolValue;
@@ -53,7 +54,7 @@ final class Operation extends MappedObject implements SpecObject
 	 *         @MappedObjectValue(Reference::class),
 	 *     })
 	 * )
-	 * @todo - after callback
+	 * @After("afterParameters")
 	 */
 	private array $parameters = [];
 
@@ -89,18 +90,18 @@ final class Operation extends MappedObject implements SpecObject
 	public bool $deprecated = false;
 
 	/**
-	 * @var array<int, SecurityRequirement>
+	 * @var array<int, SecurityRequirement>|null
 	 *
 	 * @ListOf(@MappedObjectValue(SecurityRequirement::class))
-	 * @todo - after callback
+	 * @After("afterSecurity")
 	 */
-	private array $security = [];
+	private ?array $security = null;
 
 	/**
 	 * @var array<int, Server>
 	 *
 	 * @ListOf(@MappedObjectValue(Server::class))
-	 * @todo - after callback
+	 * @After("afterServers")
 	 */
 	private array $servers = [];
 
@@ -143,6 +144,20 @@ final class Operation extends MappedObject implements SpecObject
 	}
 
 	/**
+	 * @param list<Parameter|Reference> $values
+	 * @return array<int, Parameter|Reference>
+	 */
+	protected function afterParameters(array $values): array
+	{
+		$parameters = [];
+		foreach ($values as $value) {
+			$parameters[spl_object_id($value)] = $value;
+		}
+
+		return $parameters;
+	}
+
+	/**
 	 * @param Callback|Reference $callback
 	 */
 	public function addCallback(string $key, $callback): void
@@ -158,17 +173,38 @@ final class Operation extends MappedObject implements SpecObject
 		return $this->callbacks;
 	}
 
+	public function setNoSecurity(): void
+	{
+		$this->security = [];
+	}
+
 	public function addSecurity(SecurityRequirement $requirement): void
 	{
 		$this->security[spl_object_id($requirement)] = $requirement;
 	}
 
 	/**
-	 * @return list<SecurityRequirement>
+	 * @return list<SecurityRequirement>|null
 	 */
-	public function getSecurityRequirements(): array
+	public function getSecurity(): ?array
 	{
-		return array_values($this->security);
+		return $this->security === null
+			? null
+			: array_values($this->security);
+	}
+
+	/**
+	 * @param list<SecurityRequirement> $values
+	 * @return array<int, SecurityRequirement>
+	 */
+	protected function afterSecurity(array $values): array
+	{
+		$security = [];
+		foreach ($values as $value) {
+			$security[spl_object_id($value)] = $value;
+		}
+
+		return $security;
 	}
 
 	public function addServer(Server $server): void
@@ -184,7 +220,24 @@ final class Operation extends MappedObject implements SpecObject
 		return array_values($this->servers);
 	}
 
-	public function toArray(): array
+	/**
+	 * @param list<Server> $values
+	 * @return array<int, Server>
+	 */
+	protected function afterServers(array $values): array
+	{
+		$servers = [];
+		foreach ($values as $value) {
+			$servers[spl_object_id($value)] = $value;
+		}
+
+		return $servers;
+	}
+
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [];
 
@@ -202,7 +255,7 @@ final class Operation extends MappedObject implements SpecObject
 		}
 
 		if ($this->externalDocs !== null) {
-			$data['externalDocs'] = $this->externalDocs->toArray();
+			$data['externalDocs'] = $this->externalDocs->toRaw();
 		}
 
 		if ($this->operationId !== null) {
@@ -214,10 +267,10 @@ final class Operation extends MappedObject implements SpecObject
 		}
 
 		if ($this->requestBody !== null) {
-			$data['requestBody'] = $this->requestBody->toArray();
+			$data['requestBody'] = $this->requestBody->toRaw();
 		}
 
-		$responsesData = $this->responses->toArray();
+		$responsesData = $this->responses->toRaw();
 		if ($responsesData !== []) {
 			$data['responses'] = $responsesData;
 		}
@@ -230,10 +283,10 @@ final class Operation extends MappedObject implements SpecObject
 			$data['deprecated'] = $this->deprecated;
 		}
 
-		if ($this->security !== []) {
+		if ($this->security !== null) {
 			$securityByObject = [];
 			foreach ($this->security as $object) {
-				$securityByObject[] = $object->toArray();
+				$securityByObject[] = $object->toRaw();
 			}
 
 			$data['security'] = array_merge(...$securityByObject);

@@ -2,82 +2,72 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Callbacks\Before;
+use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
 use Orisai\ObjectMapper\Attributes\Expect\ListOf;
 use Orisai\ObjectMapper\Attributes\Expect\StringValue;
 use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\MappedObject;
 use stdClass;
+use function is_array;
 
 /**
  * @CreateWithoutConstructor()
+ * @Before("beforeClass")
  */
 final class SecurityRequirement extends MappedObject implements SpecObject
 {
 
 	/**
-	 * @readonly
+	 * @var array<string, list<string>>
 	 *
-	 * @StringValue()
-	 * @todo - nedovoluje null, ale je optional
+	 * @ArrayOf(
+	 *     item=@ListOf(@StringValue()),
+	 *     key=@StringValue(),
+	 * )
 	 */
-	private ?string $name;
+	private array $nameAndScopePairs = [];
 
 	/**
-	 * @var list<string>
-	 *
-	 * @ListOf(@StringValue())
+	 * @param array<string, list<string>> $nameAndScopePairs
 	 */
-	private array $scopes;
-
-	/**
-	 * @param list<string> $scopes
-	 */
-	private function __construct(?string $name, array $scopes)
+	public function __construct(array $nameAndScopePairs)
 	{
-		// TODO - nevalidní kombinace (viz statické konstruktory)
-		$this->name = $name;
-		$this->scopes = $scopes;
+		$this->nameAndScopePairs = $nameAndScopePairs;
 	}
 
-	public static function createOptional(): self
+	/**
+	 * @param mixed $data
+	 * @return mixed
+	 */
+	protected function beforeClass($data)
 	{
-		static $inst = null;
-
-		if ($inst === null) {
-			$inst = new self(null, []);
+		if (!is_array($data)) {
+			return $data;
 		}
 
-		return $inst;
+		// TODO - kontrolovat, že ve třídě není klíč nameAndScopePairs
+		return [
+			'nameAndScopePairs' => $data,
+		];
 	}
 
 	/**
-	 * @param list<string> $scopes
+	 * @return array<string, list<string>>
 	 */
-	public static function create(string $name, array $scopes = []): self
+	public function getNameAndScopePairs(): array
 	{
-		return new self($name, $scopes);
-	}
-
-	public function getName(): ?string
-	{
-		return $this->name;
+		return $this->nameAndScopePairs;
 	}
 
 	/**
-	 * @return list<string>
+	 * @return mixed
 	 */
-	public function getScopes(): array
+	public function toRaw()
 	{
-		return $this->scopes;
-	}
-
-	public function toArray(): array
-	{
-		if ($this->name === null) {
-			return [new stdClass()];
-		}
-
-		return [$this->name => $this->scopes];
+		return $this->nameAndScopePairs === []
+			? new stdClass()
+			: $this->nameAndScopePairs;
 	}
 
 }
