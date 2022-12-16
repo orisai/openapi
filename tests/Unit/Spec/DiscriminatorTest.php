@@ -17,7 +17,7 @@ final class DiscriminatorTest extends TestCase
 			[
 				'propertyName' => 'property',
 			],
-			$d1->toArray(),
+			$d1->toRaw(),
 		);
 
 		$d2 = new Discriminator('petType');
@@ -47,7 +47,7 @@ final class DiscriminatorTest extends TestCase
 				],
 				'x-a' => null,
 			],
-			$d2->toArray(),
+			$d2->toRaw(),
 		);
 	}
 

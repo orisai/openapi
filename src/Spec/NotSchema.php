@@ -49,10 +49,13 @@ final class NotSchema extends Schema
 		return $this->not;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
-		$data['not'] = $this->not->toArray();
+		$data = parent::toRaw();
+		$data['not'] = $this->not->toRaw();
 
 		return $data;
 	}

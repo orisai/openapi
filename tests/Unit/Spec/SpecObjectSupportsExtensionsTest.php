@@ -24,7 +24,7 @@ final class SpecObjectSupportsExtensionsTest extends TestCase
 	public function testExtensionContent(): void
 	{
 		self::assertSame([], $this->object->getExtensions());
-		self::assertSame([], $this->object->toArray());
+		self::assertSame([], $this->object->toRaw());
 
 		$this->object->addExtension('x-a', null);
 		$this->object->addExtension('x-a', '');
@@ -54,7 +54,7 @@ final class SpecObjectSupportsExtensionsTest extends TestCase
 				'x-e' => $o,
 				'x-f' => [$o],
 			],
-			$this->object->toArray(),
+			$this->object->toRaw(),
 		);
 	}
 

@@ -57,13 +57,16 @@ final class AnyOfSchema extends Schema
 		return $this->anyOf;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$data['anyOf'] = SpecUtils::specsToArray($this->anyOf);
 
 		if ($this->discriminator !== null) {
-			$data['discriminator'] = $this->discriminator->toArray();
+			$data['discriminator'] = $this->discriminator->toRaw();
 		}
 
 		return $data;

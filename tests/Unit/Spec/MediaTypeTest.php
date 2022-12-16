@@ -22,7 +22,7 @@ final class MediaTypeTest extends TestCase
 	public function test(): void
 	{
 		$mt1 = new MediaType();
-		self::assertSame([], $mt1->toArray());
+		self::assertSame([], $mt1->toRaw());
 
 		$mt2 = new MediaType();
 
@@ -56,19 +56,19 @@ final class MediaTypeTest extends TestCase
 
 		self::assertSame(
 			[
-				'schema' => $mt2s->toArray(),
+				'schema' => $mt2s->toRaw(),
 				'example' => null,
 				'examples' => [
-					'foo' => $h2ex1->toArray(),
-					'bar' => $h2ex2->toArray(),
+					'foo' => $h2ex1->toRaw(),
+					'bar' => $h2ex2->toRaw(),
 				],
 				'encoding' => [
-					'foo' => $h2en1->toArray(),
-					'bar' => $h2en2->toArray(),
+					'foo' => $h2en1->toRaw(),
+					'bar' => $h2en2->toRaw(),
 				],
 				'x-a' => null,
 			],
-			$mt2->toArray(),
+			$mt2->toRaw(),
 		);
 	}
 

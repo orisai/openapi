@@ -61,9 +61,12 @@ final class ArraySchema extends Schema
 		$this->type = 'array';
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$data['type'] = $this->type;
 
 		if ($this->minItems !== null) {

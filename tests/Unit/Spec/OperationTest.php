@@ -22,9 +22,15 @@ final class OperationTest extends TestCase
 	public function test(): void
 	{
 		$op1 = new Operation();
-		self::assertSame([], $op1->getTags());
+		self::assertSame([], $op1->getCallbacks());
 		self::assertSame([], $op1->getParameters());
-		self::assertSame([], $op1->toArray());
+		self::assertNull($op1->getSecurity());
+		self::assertSame([], $op1->getServers());
+		self::assertSame([], $op1->getTags());
+		self::assertSame([], $op1->toRaw());
+
+		$op1->setNoSecurity();
+		self::assertSame([], $op1->getSecurity());
 
 		$op2 = new Operation();
 
@@ -59,12 +65,12 @@ final class OperationTest extends TestCase
 
 		$op2->deprecated = true;
 
-		$op2->addSecurity($op2sr1 = SecurityRequirement::create('api_key'));
+		$op2->addSecurity($op2sr1 = new SecurityRequirement(['api_key' => []]));
 		$op2->addSecurity($op2sr1);
-		$op2->addSecurity($op2sr2 = SecurityRequirement::create('petstore_auth', ['foo']));
+		$op2->addSecurity($op2sr2 = new SecurityRequirement(['petstore_auth' => ['foo']]));
 		self::assertSame(
 			[$op2sr1, $op2sr2],
-			$op2->getSecurityRequirements(),
+			$op2->getSecurity(),
 		);
 
 		$op2->addServer($op2s1 = new Server('https://example.com'));
@@ -82,54 +88,39 @@ final class OperationTest extends TestCase
 				'tags' => ['foo', 'bar', '123'],
 				'summary' => 'summary',
 				'description' => 'description',
-				'externalDocs' => $op2ed->toArray(),
+				'externalDocs' => $op2ed->toRaw(),
 				'operationId' => 'operationId',
 				'parameters' => [
-					$op2p1->toArray(),
-					$op2p2->toArray(),
+					$op2p1->toRaw(),
+					$op2p2->toRaw(),
 				],
-				'requestBody' => $op2rb->toArray(),
-				'responses' => $op2->responses->toArray(),
+				'requestBody' => $op2rb->toRaw(),
+				'responses' => $op2->responses->toRaw(),
 				'callbacks' => [
-					'a' => $op2cb1->toArray(),
-					'b' => $op2cb2->toArray(),
+					'a' => $op2cb1->toRaw(),
+					'b' => $op2cb2->toRaw(),
 				],
 				'deprecated' => true,
 				'security' => array_merge(
-					$op2sr1->toArray(),
-					$op2sr2->toArray(),
+					$op2sr1->toRaw(),
+					$op2sr2->toRaw(),
 				),
 				'servers' => [
-					$op2s1->toArray(),
-					$op2s2->toArray(),
+					$op2s1->toRaw(),
+					$op2s2->toRaw(),
 				],
 				'x-a' => null,
 			],
-			$op2->toArray(),
+			$op2->toRaw(),
 		);
 
 		$op3 = new Operation();
 		$op3->requestBody = $op3rb = new Reference('body');
 		self::assertSame(
 			[
-				'requestBody' => $op3rb->toArray(),
+				'requestBody' => $op3rb->toRaw(),
 			],
-			$op3->toArray(),
-		);
-	}
-
-	public function testOptionalSecurityRequirementIsNotDuplicated(): void
-	{
-		$op = new Operation();
-
-		$op->addSecurity(SecurityRequirement::createOptional());
-		$op->addSecurity(SecurityRequirement::createOptional());
-
-		self::assertEquals(
-			[
-				'security' => SecurityRequirement::createOptional()->toArray(),
-			],
-			$op->toArray(),
+			$op3->toRaw(),
 		);
 	}
 

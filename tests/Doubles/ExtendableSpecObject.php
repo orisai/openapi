@@ -10,7 +10,7 @@ final class ExtendableSpecObject implements SpecObject
 
 	use SpecObjectSupportsExtensions;
 
-	public function toArray(): array
+	public function toRaw(): array
 	{
 		$data = [];
 		$this->addExtensionsToData($data);

@@ -40,7 +40,10 @@ abstract class OAuthFlow extends MappedObject implements SpecObject
 		return $this->scopes;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'scopes' => $this->scopes,

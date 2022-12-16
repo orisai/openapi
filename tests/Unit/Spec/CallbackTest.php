@@ -15,7 +15,7 @@ final class CallbackTest extends TestCase
 	{
 		$cb1 = new Callback();
 		self::assertSame([], $cb1->getExpressions());
-		self::assertSame([], $cb1->toArray());
+		self::assertSame([], $cb1->toRaw());
 
 		$cb2 = new Callback();
 
@@ -37,11 +37,11 @@ final class CallbackTest extends TestCase
 		);
 		self::assertSame(
 			[
-				'/foo' => $cb2pi1->toArray(),
-				'/bar' => $cb2pi2->toArray(),
+				'/foo' => $cb2pi1->toRaw(),
+				'/bar' => $cb2pi2->toRaw(),
 				'x-a' => null,
 			],
-			$cb2->toArray(),
+			$cb2->toRaw(),
 		);
 	}
 

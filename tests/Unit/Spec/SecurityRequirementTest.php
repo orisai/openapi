@@ -20,67 +20,48 @@ final class SecurityRequirementTest extends TestCase
 
 	public function test(): void
 	{
-		$sr1 = SecurityRequirement::createOptional();
-		self::assertNull($sr1->getName());
-		self::assertSame([], $sr1->getScopes());
-		self::assertEquals([new stdClass()], $sr1->toArray());
+		$sr1Pairs = [];
+		$sr1 = new SecurityRequirement($sr1Pairs);
+		self::assertSame($sr1Pairs, $sr1->getNameAndScopePairs());
+		self::assertEquals(new stdClass(), $sr1->toRaw());
 
-		$sr2 = SecurityRequirement::create('api_key');
-		self::assertSame('api_key', $sr2->getName());
-		self::assertSame([], $sr2->getScopes());
-		self::assertSame(['api_key' => []], $sr2->toArray());
+		$sr2Pairs = [
+			'api_key' => [],
+			'another_api_key' => ['role1', 'role2'],
+		];
+		$sr2 = new SecurityRequirement($sr2Pairs);
+		self::assertSame($sr2Pairs, $sr2->getNameAndScopePairs());
+		self::assertSame($sr2Pairs, $sr2->toRaw());
 
-		$sr3 = SecurityRequirement::create('petstore_auth', [
-			'write:pets',
-			'read:pets',
-		]);
-		self::assertSame('petstore_auth', $sr3->getName());
-		self::assertSame(
-			[
+		$sr3Pairs = [
+			'petstore_auth' => [
 				'write:pets',
 				'read:pets',
 			],
-			$sr3->getScopes(),
-		);
-		self::assertSame(
-			[
-				'petstore_auth' => [
-					'write:pets',
-					'read:pets',
-				],
-			],
-			$sr3->toArray(),
-		);
-	}
-
-	public function testOptionalIsSameInstance(): void
-	{
-		self::assertSame(
-			SecurityRequirement::createOptional(),
-			SecurityRequirement::createOptional(),
-		);
+		];
+		$sr3 = new SecurityRequirement($sr3Pairs);
+		self::assertSame($sr3Pairs, $sr3->getNameAndScopePairs());
+		self::assertSame($sr3Pairs, $sr3->toRaw());
 	}
 
 	public function testEncodeEmptyRequirementsAsObject(): void
 	{
-		$sr = SecurityRequirement::createOptional();
+		$sr = new SecurityRequirement([]);
 
 		self::assertEquals(
-			[new stdClass()],
-			$sr->toArray(),
+			new stdClass(),
+			$sr->toRaw(),
 		);
 
 		self::assertSame(
 			<<<'JSON'
-[
-    {}
-]
+{}
 JSON,
 			str_replace(
 				"\n",
 				PHP_EOL,
 				json_encode(
-					$sr->toArray(),
+					$sr->toRaw(),
 					JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
 				),
 			),
@@ -88,13 +69,12 @@ JSON,
 
 		self::assertSame(
 			<<<'YAML'
-- {  }
-
+{  }
 YAML,
 			str_replace(
 				"\n",
 				PHP_EOL,
-				Yaml::dump($sr->toArray(), 2, 4, Yaml::DUMP_OBJECT_AS_MAP | Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE),
+				Yaml::dump($sr->toRaw(), 2, 4, Yaml::DUMP_OBJECT_AS_MAP | Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE),
 			),
 		);
 	}

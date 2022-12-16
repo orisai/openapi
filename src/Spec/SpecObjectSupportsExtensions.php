@@ -4,6 +4,7 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\ObjectMapper\Attributes\Callbacks\Before;
 use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
 use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
 use Orisai\ObjectMapper\Attributes\Expect\StringValue;
@@ -16,6 +17,7 @@ use function str_starts_with;
 
 /**
  * @internal
+ * @Before("beforeClassExtensions")
  */
 trait SpecObjectSupportsExtensions
 {
@@ -55,6 +57,22 @@ trait SpecObjectSupportsExtensions
 	final public function getExtensions(): array
 	{
 		return $this->extensions;
+	}
+
+	/**
+	 * @param mixed $data
+	 * @return mixed
+	 */
+	final protected function beforeClassExtensions($data)
+	{
+		if (!is_array($data)) {
+			return $data;
+		}
+
+		//TODO - co když bude existovat klíč extensions? přidat chybu a unset?
+		//TODO - přesunout x- klíče do extensions
+		//TODO - zvalidovat obsah extensions (v samostatné metodě)
+		return $data;
 	}
 
 	/**

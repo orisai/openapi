@@ -16,7 +16,7 @@ final class ReferenceTest extends TestCase
 			[
 				'$ref' => '#/components/schemas/Hooman',
 			],
-			$r1->toArray(),
+			$r1->toRaw(),
 		);
 
 		$r2 = new Reference('#/components/schemas/CatLord');
@@ -29,7 +29,7 @@ final class ReferenceTest extends TestCase
 				'summary' => 'summary',
 				'description' => 'description',
 			],
-			$r2->toArray(),
+			$r2->toRaw(),
 		);
 	}
 
@@ -39,63 +39,63 @@ final class ReferenceTest extends TestCase
 			[
 				'$ref' => '#/components/callbacks/name',
 			],
-			Reference::ofCallback('name')->toArray(),
+			Reference::ofCallback('name')->toRaw(),
 		);
 
 		self::assertSame(
 			[
 				'$ref' => '#/components/examples/name',
 			],
-			Reference::ofExample('name')->toArray(),
+			Reference::ofExample('name')->toRaw(),
 		);
 
 		self::assertSame(
 			[
 				'$ref' => '#/components/headers/name',
 			],
-			Reference::ofHeader('name')->toArray(),
+			Reference::ofHeader('name')->toRaw(),
 		);
 
 		self::assertSame(
 			[
 				'$ref' => '#/components/links/name',
 			],
-			Reference::ofLink('name')->toArray(),
+			Reference::ofLink('name')->toRaw(),
 		);
 
 		self::assertSame(
 			[
 				'$ref' => '#/components/parameters/name',
 			],
-			Reference::ofParameter('name')->toArray(),
+			Reference::ofParameter('name')->toRaw(),
 		);
 
 		self::assertSame(
 			[
 				'$ref' => '#/components/responses/name',
 			],
-			Reference::ofResponse('name')->toArray(),
+			Reference::ofResponse('name')->toRaw(),
 		);
 
 		self::assertSame(
 			[
 				'$ref' => '#/components/requestBodies/name',
 			],
-			Reference::ofRequestBody('name')->toArray(),
+			Reference::ofRequestBody('name')->toRaw(),
 		);
 
 		self::assertSame(
 			[
 				'$ref' => '#/components/securitySchemes/name',
 			],
-			Reference::ofSecurityScheme('name')->toArray(),
+			Reference::ofSecurityScheme('name')->toRaw(),
 		);
 
 		self::assertSame(
 			[
 				'$ref' => '#/components/schemas/name',
 			],
-			Reference::ofSchema('name')->toArray(),
+			Reference::ofSchema('name')->toRaw(),
 		);
 	}
 

@@ -19,9 +19,9 @@ final class OAuthSecuritySchemeTest extends TestCase
 		self::assertSame(
 			[
 				'type' => 'oauth2',
-				'flows' => $f1->toArray(),
+				'flows' => $f1->toRaw(),
 			],
-			$s1->toArray(),
+			$s1->toRaw(),
 		);
 
 		$f2 = new OAuthFlows();
@@ -35,10 +35,10 @@ final class OAuthSecuritySchemeTest extends TestCase
 			[
 				'type' => 'oauth2',
 				'description' => 'description',
-				'flows' => $f2->toArray(),
+				'flows' => $f2->toRaw(),
 				'x-a' => null,
 			],
-			$s2->toArray(),
+			$s2->toRaw(),
 		);
 	}
 

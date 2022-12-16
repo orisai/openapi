@@ -37,7 +37,7 @@ final class Encoding extends MappedObject implements SpecObject
 	 * @var array<string, null>
 	 *
 	 * @ListOf(@StringValue())
-	 * @todo - callback - to keys + duplicates + format + validation
+	 * @After("afterContentTypes")
 	 */
 	private array $contentTypes = [];
 
@@ -51,7 +51,7 @@ final class Encoding extends MappedObject implements SpecObject
 	 *     }),
 	 *     key=@StringValue(),
 	 * )
-	 * @todo - callback - format + validation
+	 * @After("afterHeaders")
 	 */
 	private array $headers = [];
 
@@ -110,6 +110,21 @@ final class Encoding extends MappedObject implements SpecObject
 	}
 
 	/**
+	 * @param list<string> $values
+	 * @return array<string, null>
+	 */
+	protected function afterContentTypes(array $values): array
+	{
+		// TODO - callback - to keys + duplicates + format + validation
+		$contentTypes = [];
+		foreach ($values as $value) {
+			$contentTypes[$value] = null;
+		}
+
+		return $contentTypes;
+	}
+
+	/**
 	 * @param Header|Reference $header
 	 */
 	public function addHeader(string $name, $header): void
@@ -136,6 +151,16 @@ final class Encoding extends MappedObject implements SpecObject
 	public function getHeaders(): array
 	{
 		return $this->headers;
+	}
+
+	/**
+	 * @param array<string, Header|Reference> $values
+	 * @return array<string, Header|Reference>
+	 */
+	protected function afterHeaders(array $values): array
+	{
+		// todo - callback - format + validation
+		return $values;
 	}
 
 	public function setStyle(EncodingStyle $style, ?bool $explode = null): void
@@ -182,7 +207,10 @@ final class Encoding extends MappedObject implements SpecObject
 		return $this->allowReserved;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [];
 

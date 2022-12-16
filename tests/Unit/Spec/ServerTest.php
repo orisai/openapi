@@ -18,7 +18,7 @@ final class ServerTest extends TestCase
 			[
 				'url' => 'https://example.com',
 			],
-			$s1->toArray(),
+			$s1->toRaw(),
 		);
 
 		$s2 = new Server('https://example.com');
@@ -46,12 +46,12 @@ final class ServerTest extends TestCase
 				'url' => 'https://example.com',
 				'description' => 'description',
 				'variables' => [
-					'v1' => $v1->toArray(),
-					'v2' => $v2->toArray(),
+					'v1' => $v1->toRaw(),
+					'v2' => $v2->toRaw(),
 				],
 				'x-a' => null,
 			],
-			$s2->toArray(),
+			$s2->toRaw(),
 		);
 	}
 

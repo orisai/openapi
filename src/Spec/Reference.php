@@ -85,7 +85,10 @@ final class Reference extends MappedObject implements SpecObject
 		return $this->ref;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'$ref' => $this->ref,

@@ -49,9 +49,12 @@ final class MutualTLSSecurityScheme extends SecurityScheme
 		throw ValueDoesNotMatch::create(new EnumType([$case->value]), Value::of($value));
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$this->addExtensionsToData($data);
 
 		return $data;

@@ -15,7 +15,7 @@ final class OAuthFlowsTest extends TestCase
 	public function test(): void
 	{
 		$f1 = new OAuthFlows();
-		self::assertSame([], $f1->toArray());
+		self::assertSame([], $f1->toRaw());
 
 		$f2 = new OAuthFlows();
 		$f2->authorizationCode = $f2ac = new AuthorizationCodeOAuthFlow(
@@ -34,13 +34,13 @@ final class OAuthFlowsTest extends TestCase
 		$f2->addExtension('x-a', null);
 		self::assertSame(
 			[
-				'implicit' => $f2i->toArray(),
-				'password' => $f2p->toArray(),
-				'clientCredentials' => $f2cc->toArray(),
-				'authorizationCode' => $f2ac->toArray(),
+				'implicit' => $f2i->toRaw(),
+				'password' => $f2p->toRaw(),
+				'clientCredentials' => $f2cc->toRaw(),
+				'authorizationCode' => $f2ac->toRaw(),
 				'x-a' => null,
 			],
-			$f2->toArray(),
+			$f2->toRaw(),
 		);
 	}
 

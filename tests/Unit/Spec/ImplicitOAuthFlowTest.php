@@ -17,7 +17,7 @@ final class ImplicitOAuthFlowTest extends TestCase
 				'scopes' => [],
 				'authorizationUrl' => 'https://example.com/api/oauth/dialog',
 			],
-			$f1->toArray(),
+			$f1->toRaw(),
 		);
 
 		$f2 = new ImplicitOAuthFlow('https://example.com/api/oauth/dialog');
@@ -42,7 +42,7 @@ final class ImplicitOAuthFlowTest extends TestCase
 				'authorizationUrl' => 'https://example.com/api/oauth/dialog',
 				'x-a' => null,
 			],
-			$f2->toArray(),
+			$f2->toRaw(),
 		);
 	}
 

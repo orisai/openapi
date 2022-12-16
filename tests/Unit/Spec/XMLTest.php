@@ -12,7 +12,7 @@ final class XMLTest extends TestCase
 	public function test(): void
 	{
 		$x1 = new XML();
-		self::assertSame([], $x1->toArray());
+		self::assertSame([], $x1->toRaw());
 
 		$x2 = new XML();
 		$x2->setName(null);
@@ -32,7 +32,7 @@ final class XMLTest extends TestCase
 				'wrapped' => true,
 				'x-a' => null,
 			],
-			$x2->toArray(),
+			$x2->toRaw(),
 		);
 	}
 

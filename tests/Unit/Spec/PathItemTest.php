@@ -16,7 +16,7 @@ final class PathItemTest extends TestCase
 	public function test(): void
 	{
 		$pi1 = new PathItem();
-		self::assertSame([], $pi1->toArray());
+		self::assertSame([], $pi1->toRaw());
 
 		$pi2 = new PathItem();
 		$pi2->ref = 'ref';
@@ -70,25 +70,25 @@ final class PathItemTest extends TestCase
 				'$ref' => 'ref',
 				'summary' => 'summary',
 				'description' => 'description',
-				'get' => $get->toArray(),
-				'put' => $put->toArray(),
-				'post' => $post->toArray(),
-				'delete' => $delete->toArray(),
-				'options' => $options->toArray(),
-				'head' => $head->toArray(),
-				'patch' => $patch->toArray(),
-				'trace' => $trace->toArray(),
+				'get' => $get->toRaw(),
+				'put' => $put->toRaw(),
+				'post' => $post->toRaw(),
+				'delete' => $delete->toRaw(),
+				'options' => $options->toRaw(),
+				'head' => $head->toRaw(),
+				'patch' => $patch->toRaw(),
+				'trace' => $trace->toRaw(),
 				'servers' => [
-					$pi2s1->toArray(),
-					$pi2s2->toArray(),
+					$pi2s1->toRaw(),
+					$pi2s2->toRaw(),
 				],
 				'parameters' => [
-					$pi2p1->toArray(),
-					$pi2p2->toArray(),
+					$pi2p1->toRaw(),
+					$pi2p2->toRaw(),
 				],
 				'x-a' => null,
 			],
-			$pi2->toArray(),
+			$pi2->toRaw(),
 		);
 	}
 

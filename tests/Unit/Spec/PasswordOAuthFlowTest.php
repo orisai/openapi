@@ -17,7 +17,7 @@ final class PasswordOAuthFlowTest extends TestCase
 				'scopes' => [],
 				'tokenUrl' => 'https://example.com/api/oauth/token',
 			],
-			$f1->toArray(),
+			$f1->toRaw(),
 		);
 
 		$f2 = new PasswordOAuthFlow('https://example.com/api/oauth/token');
@@ -42,7 +42,7 @@ final class PasswordOAuthFlowTest extends TestCase
 				'tokenUrl' => 'https://example.com/api/oauth/token',
 				'x-a' => null,
 			],
-			$f2->toArray(),
+			$f2->toRaw(),
 		);
 	}
 

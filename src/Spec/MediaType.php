@@ -143,12 +143,15 @@ final class MediaType extends MappedObject implements SpecObject
 		return $this->encoding;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [];
 
 		if ($this->schema !== null) {
-			$data['schema'] = $this->schema->toArray();
+			$data['schema'] = $this->schema->toRaw();
 		}
 
 		if ($this->hasExample()) {

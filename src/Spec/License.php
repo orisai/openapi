@@ -49,7 +49,10 @@ final class License extends MappedObject implements SpecObject
 		return $this->url;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'name' => $this->name,

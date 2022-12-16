@@ -26,7 +26,7 @@ final class LinkTest extends TestCase
 			[
 				'operationId' => 'id',
 			],
-			$l1->toArray(),
+			$l1->toRaw(),
 		);
 
 		$l2 = Link::forRef('ref');
@@ -62,10 +62,10 @@ final class LinkTest extends TestCase
 				],
 				'requestBody' => 'requestBody',
 				'description' => 'description',
-				'server' => $s2->toArray(),
+				'server' => $s2->toRaw(),
 				'x-a' => null,
 			],
-			$l2->toArray(),
+			$l2->toRaw(),
 		);
 	}
 

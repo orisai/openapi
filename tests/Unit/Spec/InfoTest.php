@@ -17,7 +17,7 @@ final class InfoTest extends TestCase
 				'title' => 'title',
 				'version' => 'version',
 			],
-			$i1->toArray(),
+			$i1->toRaw(),
 		);
 
 		$i2 = new Info('t', 'v');
@@ -34,11 +34,11 @@ final class InfoTest extends TestCase
 				'summary' => 'summary',
 				'description' => 'description',
 				'termsOfService' => 'terms',
-				'contact' => $i2->contact->toArray(),
-				'license' => $i2l->toArray(),
+				'contact' => $i2->contact->toRaw(),
+				'license' => $i2l->toRaw(),
 				'x-a' => null,
 			],
-			$i2->toArray(),
+			$i2->toRaw(),
 		);
 	}
 

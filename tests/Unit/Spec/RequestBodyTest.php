@@ -20,7 +20,7 @@ final class RequestBodyTest extends TestCase
 			[
 				'content' => [],
 			],
-			$rb1->toArray(),
+			$rb1->toRaw(),
 		);
 
 		$rb2mt1 = new MediaType();
@@ -49,14 +49,14 @@ final class RequestBodyTest extends TestCase
 		self::assertSame(
 			[
 				'content' => [
-					'application/json' => $rb2mt1->toArray(),
-					'application/xml' => $rb2mt2->toArray(),
+					'application/json' => $rb2mt1->toRaw(),
+					'application/xml' => $rb2mt2->toRaw(),
 				],
 				'description' => 'description',
 				'required' => true,
 				'x-a' => null,
 			],
-			$rb2->toArray(),
+			$rb2->toRaw(),
 		);
 	}
 
@@ -110,7 +110,7 @@ final class RequestBodyTest extends TestCase
 					'*/*' => [],
 				],
 			],
-			$r->toArray(),
+			$r->toRaw(),
 		);
 	}
 

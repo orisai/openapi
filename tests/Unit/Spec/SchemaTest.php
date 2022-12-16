@@ -24,7 +24,7 @@ final class SchemaTest extends TestCase
 			[
 				'type' => 'null',
 			],
-			$s1->toArray(),
+			$s1->toRaw(),
 		);
 
 		$s2 = new ObjectSchema();
@@ -40,13 +40,13 @@ final class SchemaTest extends TestCase
 
 		self::assertSame(
 			[
-				'xml' => $x2->toArray(),
-				'externalDocs' => $ed2->toArray(),
+				'xml' => $x2->toRaw(),
+				'externalDocs' => $ed2->toRaw(),
 				'example' => null,
 				'type' => 'object',
-				'discriminator' => $d2->toArray(),
+				'discriminator' => $d2->toRaw(),
 			],
-			$s2->toArray(),
+			$s2->toRaw(),
 		);
 	}
 

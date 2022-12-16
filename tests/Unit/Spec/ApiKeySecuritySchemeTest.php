@@ -20,7 +20,7 @@ final class ApiKeySecuritySchemeTest extends TestCase
 				'name' => 'api_key',
 				'in' => 'header',
 			],
-			$s1->toArray(),
+			$s1->toRaw(),
 		);
 
 		$s2 = new ApiKeySecurityScheme('access_cookie', SecuritySchemeIn::cookie());
@@ -34,7 +34,7 @@ final class ApiKeySecuritySchemeTest extends TestCase
 				'in' => 'cookie',
 				'x-a' => null,
 			],
-			$s2->toArray(),
+			$s2->toRaw(),
 		);
 	}
 

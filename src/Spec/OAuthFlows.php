@@ -26,24 +26,27 @@ final class OAuthFlows extends MappedObject implements SpecObject
 	/** @MappedObjectValue(AuthorizationCodeOAuthFlow::class) */
 	public ?AuthorizationCodeOAuthFlow $authorizationCode = null;
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [];
 
 		if ($this->implicit !== null) {
-			$data['implicit'] = $this->implicit->toArray();
+			$data['implicit'] = $this->implicit->toRaw();
 		}
 
 		if ($this->password !== null) {
-			$data['password'] = $this->password->toArray();
+			$data['password'] = $this->password->toRaw();
 		}
 
 		if ($this->clientCredentials !== null) {
-			$data['clientCredentials'] = $this->clientCredentials->toArray();
+			$data['clientCredentials'] = $this->clientCredentials->toRaw();
 		}
 
 		if ($this->authorizationCode !== null) {
-			$data['authorizationCode'] = $this->authorizationCode->toArray();
+			$data['authorizationCode'] = $this->authorizationCode->toRaw();
 		}
 
 		$this->addExtensionsToData($data);

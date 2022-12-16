@@ -99,9 +99,12 @@ final class ObjectSchema extends Schema
 		$this->type = 'object';
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$data['type'] = $this->type;
 
 		if ($this->properties !== []) {
@@ -125,7 +128,7 @@ final class ObjectSchema extends Schema
 		}
 
 		if ($this->discriminator !== null) {
-			$data['discriminator'] = $this->discriminator->toArray();
+			$data['discriminator'] = $this->discriminator->toRaw();
 		}
 
 		return $data;

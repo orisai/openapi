@@ -83,9 +83,12 @@ final class HttpSecurityScheme extends SecurityScheme
 		$this->bearerFormat = $format;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$data['scheme'] = $this->scheme;
 
 		if ($this->bearerFormat !== null) {

@@ -15,7 +15,7 @@ final class ExternalDocumentationTest extends TestCase
 			[
 				'url' => 'https://example.com',
 			],
-			$d1->toArray(),
+			$d1->toRaw(),
 		);
 
 		$d2 = new ExternalDocumentation('https://example.com');
@@ -27,7 +27,7 @@ final class ExternalDocumentationTest extends TestCase
 				'description' => 'description',
 				'x-a' => null,
 			],
-			$d2->toArray(),
+			$d2->toRaw(),
 		);
 	}
 

@@ -2,6 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Callbacks\After;
 use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
 use Orisai\ObjectMapper\Attributes\Expect\ArrayEnumValue;
 use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
@@ -44,7 +45,7 @@ final class OpenAPI extends MappedObject implements SpecObject
 	 * @var array<int, Server>
 	 *
 	 * @ListOf(@MappedObjectValue(Server::class))
-	 * @todo - after callback
+	 * @After("afterServers")
 	 */
 	private array $servers = [];
 
@@ -56,12 +57,11 @@ final class OpenAPI extends MappedObject implements SpecObject
 	 *
 	 * @ArrayOf(
 	 *     item=@AnyOf({
-	 *         @MappedObjectValue(PathItem::class),
 	 *         @MappedObjectValue(Reference::class),
+	 *         @MappedObjectValue(PathItem::class),
 	 *     }),
 	 *     key=@StringValue(),
 	 * )
-	 * @todo - possibly ambiguous resolving of pathitem/reference
 	 */
 	private array $webhooks = [];
 
@@ -76,7 +76,7 @@ final class OpenAPI extends MappedObject implements SpecObject
 	 * @var array<int, SecurityRequirement>
 	 *
 	 * @ListOf(@MappedObjectValue(SecurityRequirement::class))
-	 * @todo - after callback
+	 * @After("afterSecurity")
 	 */
 	private array $security = [];
 
@@ -84,7 +84,7 @@ final class OpenAPI extends MappedObject implements SpecObject
 	 * @var array<string, Tag>
 	 *
 	 * @ListOf(@MappedObjectValue(Tag::class))
-	 * @todo - after callback - přidání klíčů + duplicity
+	 * @After("afterTags")
 	 */
 	private array $tags = [];
 
@@ -123,6 +123,20 @@ final class OpenAPI extends MappedObject implements SpecObject
 	}
 
 	/**
+	 * @param list<Server> $values
+	 * @return array<int, Server>
+	 */
+	protected function afterServers(array $values): array
+	{
+		$servers = [];
+		foreach ($values as $value) {
+			$servers[spl_object_id($value)] = $value;
+		}
+
+		return $servers;
+	}
+
+	/**
 	 * @param PathItem|Reference $webhook
 	 */
 	public function addWebhook(string $key, $webhook): void
@@ -146,9 +160,23 @@ final class OpenAPI extends MappedObject implements SpecObject
 	/**
 	 * @return list<SecurityRequirement>
 	 */
-	public function getSecurityRequirements(): array
+	public function getSecurity(): array
 	{
 		return array_values($this->security);
+	}
+
+	/**
+	 * @param list<SecurityRequirement> $values
+	 * @return array<int, SecurityRequirement>
+	 */
+	protected function afterSecurity(array $values): array
+	{
+		$security = [];
+		foreach ($values as $value) {
+			$security[spl_object_id($value)] = $value;
+		}
+
+		return $security;
 	}
 
 	public function addTag(Tag $tag): void
@@ -164,11 +192,29 @@ final class OpenAPI extends MappedObject implements SpecObject
 		return array_values($this->tags);
 	}
 
-	public function toArray(): array
+	/**
+	 * @param list<Tag> $values
+	 * @return array<string, Tag>
+	 */
+	protected function afterTags(array $values): array
+	{
+		// TODO - duplicates
+		$tags = [];
+		foreach ($values as $value) {
+			$tags[$value->getName()] = $value;
+		}
+
+		return $tags;
+	}
+
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'openapi' => $this->openapi,
-			'info' => $this->info->toArray(),
+			'info' => $this->info->toRaw(),
 		];
 
 		if ($this->jsonSchemaDialect !== null) {
@@ -179,7 +225,7 @@ final class OpenAPI extends MappedObject implements SpecObject
 			$data['servers'] = SpecUtils::specsToArray(array_values($this->servers));
 		}
 
-		$pathsData = $this->paths->toArray();
+		$pathsData = $this->paths->toRaw();
 		if ($pathsData !== []) {
 			$data['paths'] = $pathsData;
 		}
@@ -188,7 +234,7 @@ final class OpenAPI extends MappedObject implements SpecObject
 			$data['webhooks'] = SpecUtils::specsToArray($this->webhooks);
 		}
 
-		$componentsData = $this->components->toArray();
+		$componentsData = $this->components->toRaw();
 		if ($componentsData !== []) {
 			$data['components'] = $componentsData;
 		}
@@ -196,7 +242,7 @@ final class OpenAPI extends MappedObject implements SpecObject
 		if ($this->security !== []) {
 			$securityByObject = [];
 			foreach ($this->security as $object) {
-				$securityByObject[] = $object->toArray();
+				$securityByObject[] = $object->toRaw();
 			}
 
 			$data['security'] = array_merge(...$securityByObject);
@@ -207,7 +253,7 @@ final class OpenAPI extends MappedObject implements SpecObject
 		}
 
 		if ($this->externalDocs !== null) {
-			$data['externalDocs'] = $this->externalDocs->toArray();
+			$data['externalDocs'] = $this->externalDocs->toRaw();
 		}
 
 		$this->addExtensionsToData($data);

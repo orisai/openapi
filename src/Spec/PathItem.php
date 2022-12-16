@@ -2,6 +2,7 @@
 
 namespace Orisai\OpenAPI\Spec;
 
+use Orisai\ObjectMapper\Attributes\Callbacks\After;
 use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
 use Orisai\ObjectMapper\Attributes\Expect\ListOf;
 use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
@@ -61,7 +62,7 @@ final class PathItem extends MappedObject implements SpecObject
 	 * @var array<int, Server>
 	 *
 	 * @ListOf(@MappedObjectValue(Server::class))
-	 * @todo - after callback
+	 * @After("afterServers")
 	 */
 	private array $servers = [];
 
@@ -74,7 +75,7 @@ final class PathItem extends MappedObject implements SpecObject
 	 *         @MappedObjectValue(Reference::class),
 	 *     })
 	 * )
-	 * @todo - after callback
+	 * @After("afterParameters")
 	 */
 	private array $parameters = [];
 
@@ -89,6 +90,20 @@ final class PathItem extends MappedObject implements SpecObject
 	public function getServers(): array
 	{
 		return array_values($this->servers);
+	}
+
+	/**
+	 * @param list<Server> $values
+	 * @return array<int, Server>
+	 */
+	protected function afterServers(array $values): array
+	{
+		$servers = [];
+		foreach ($values as $value) {
+			$servers[spl_object_id($value)] = $value;
+		}
+
+		return $servers;
 	}
 
 	/**
@@ -107,7 +122,24 @@ final class PathItem extends MappedObject implements SpecObject
 		return array_values($this->parameters);
 	}
 
-	public function toArray(): array
+	/**
+	 * @param list<Parameter|Reference> $values
+	 * @return array<int, Parameter|Reference>
+	 */
+	protected function afterParameters(array $values): array
+	{
+		$parameters = [];
+		foreach ($values as $value) {
+			$parameters[spl_object_id($value)] = $value;
+		}
+
+		return $parameters;
+	}
+
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [];
 
@@ -124,35 +156,35 @@ final class PathItem extends MappedObject implements SpecObject
 		}
 
 		if ($this->get !== null) {
-			$data['get'] = $this->get->toArray();
+			$data['get'] = $this->get->toRaw();
 		}
 
 		if ($this->put !== null) {
-			$data['put'] = $this->put->toArray();
+			$data['put'] = $this->put->toRaw();
 		}
 
 		if ($this->post !== null) {
-			$data['post'] = $this->post->toArray();
+			$data['post'] = $this->post->toRaw();
 		}
 
 		if ($this->delete !== null) {
-			$data['delete'] = $this->delete->toArray();
+			$data['delete'] = $this->delete->toRaw();
 		}
 
 		if ($this->options !== null) {
-			$data['options'] = $this->options->toArray();
+			$data['options'] = $this->options->toRaw();
 		}
 
 		if ($this->head !== null) {
-			$data['head'] = $this->head->toArray();
+			$data['head'] = $this->head->toRaw();
 		}
 
 		if ($this->patch !== null) {
-			$data['patch'] = $this->patch->toArray();
+			$data['patch'] = $this->patch->toRaw();
 		}
 
 		if ($this->trace !== null) {
-			$data['trace'] = $this->trace->toArray();
+			$data['trace'] = $this->trace->toRaw();
 		}
 
 		if ($this->servers !== []) {

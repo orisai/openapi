@@ -23,7 +23,10 @@ final class Contact extends MappedObject implements SpecObject
 	/** @StringValue() */
 	public ?string $email = null;
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [];
 

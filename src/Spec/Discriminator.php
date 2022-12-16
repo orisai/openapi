@@ -55,7 +55,10 @@ final class Discriminator extends MappedObject implements SpecObject
 		return $this->mapping;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'propertyName' => $this->propertyName,

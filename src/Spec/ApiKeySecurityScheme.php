@@ -81,9 +81,12 @@ final class ApiKeySecurityScheme extends SecurityScheme
 		throw ValueDoesNotMatch::create(new EnumType($cases), Value::of($value));
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$data['name'] = $this->name;
 		$data['in'] = $this->in->value;
 		$this->addExtensionsToData($data);

@@ -36,9 +36,12 @@ final class FloatSchema extends Schema
 		$this->type = 'number';
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
-		$data = parent::toArray();
+		$data = parent::toRaw();
 		$data['type'] = $this->type;
 
 		if ($this->minimum !== null) {

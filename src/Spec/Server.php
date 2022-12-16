@@ -56,7 +56,10 @@ final class Server extends MappedObject implements SpecObject
 		return $this->variables;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'url' => $this->url,

@@ -69,7 +69,10 @@ final class ServerVariable extends MappedObject implements SpecObject
 		return $this->enum;
 	}
 
-	public function toArray(): array
+	/**
+	 * @return array<int|string, mixed>
+	 */
+	public function toRaw(): array
 	{
 		$data = [
 			'default' => $this->default,

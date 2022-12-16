@@ -18,7 +18,7 @@ final class ServerVariableTest extends TestCase
 			[
 				'default' => 'default',
 			],
-			$v1->toArray(),
+			$v1->toRaw(),
 		);
 
 		$v2 = new ServerVariable('a', ['a', 'b', 'c']);
@@ -33,7 +33,7 @@ final class ServerVariableTest extends TestCase
 				'description' => 'description',
 				'x-a' => null,
 			],
-			$v2->toArray(),
+			$v2->toRaw(),
 		);
 	}
 
