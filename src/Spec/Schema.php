@@ -16,7 +16,7 @@ use ReflectionProperty;
 /**
  * @CreateWithoutConstructor()
  */
-abstract class Schema extends MappedObject implements SpecObject
+abstract class Schema implements SpecObject, MappedObject
 {
 
 	use SpecObjectChecksSerializableValue;

@@ -15,7 +15,7 @@ use function is_array;
  * @CreateWithoutConstructor()
  * @Before("beforeClass")
  */
-final class SecurityRequirement extends MappedObject implements SpecObject
+final class SecurityRequirement implements SpecObject, MappedObject
 {
 
 	/**

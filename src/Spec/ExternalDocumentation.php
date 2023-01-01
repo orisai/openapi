@@ -9,7 +9,7 @@ use Orisai\ObjectMapper\MappedObject;
 /**
  * @CreateWithoutConstructor()
  */
-final class ExternalDocumentation extends MappedObject implements SpecObject
+final class ExternalDocumentation implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

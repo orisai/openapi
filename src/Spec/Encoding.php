@@ -28,7 +28,7 @@ use function is_string;
 /**
  * @CreateWithoutConstructor()
  */
-final class Encoding extends MappedObject implements SpecObject
+final class Encoding implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

@@ -18,7 +18,7 @@ use function str_starts_with;
 /**
  * @CreateWithoutConstructor()
  */
-final class Callback extends MappedObject implements SpecObject
+final class Callback implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

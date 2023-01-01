@@ -11,7 +11,7 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 /**
  * @CreateWithoutConstructor()
  */
-final class RequestBody extends MappedObject implements SpecObject
+final class RequestBody implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

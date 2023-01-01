@@ -14,7 +14,7 @@ use Orisai\ObjectMapper\MappedObject;
 /**
  * @CreateWithoutConstructor()
  */
-final class XML extends MappedObject implements SpecObject
+final class XML implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

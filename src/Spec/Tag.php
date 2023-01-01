@@ -10,7 +10,7 @@ use Orisai\ObjectMapper\MappedObject;
 /**
  * @CreateWithoutConstructor()
  */
-final class Tag extends MappedObject implements SpecObject
+final class Tag implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

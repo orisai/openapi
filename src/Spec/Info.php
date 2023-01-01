@@ -10,7 +10,7 @@ use Orisai\ObjectMapper\MappedObject;
 /**
  * @CreateWithoutConstructor()
  */
-final class Info extends MappedObject implements SpecObject
+final class Info implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

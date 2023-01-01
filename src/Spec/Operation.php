@@ -20,7 +20,7 @@ use function spl_object_id;
 /**
  * @CreateWithoutConstructor()
  */
-final class Operation extends MappedObject implements SpecObject
+final class Operation implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

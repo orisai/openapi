@@ -11,7 +11,7 @@ use Orisai\ObjectMapper\MappedObject;
  * @CreateWithoutConstructor()
  * @internal
  */
-abstract class OAuthFlow extends MappedObject implements SpecObject
+abstract class OAuthFlow implements SpecObject, MappedObject
 {
 
 	/**

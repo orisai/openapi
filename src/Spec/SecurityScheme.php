@@ -11,7 +11,7 @@ use Orisai\OpenAPI\Enum\SecuritySchemeType;
  * @internal
  * @CreateWithoutConstructor()
  */
-abstract class SecurityScheme extends MappedObject implements SpecObject
+abstract class SecurityScheme implements SpecObject, MappedObject
 {
 
 	/** @StringValue() */

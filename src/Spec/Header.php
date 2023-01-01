@@ -25,7 +25,7 @@ use function is_string;
 /**
  * @CreateWithoutConstructor()
  */
-final class Header extends MappedObject implements SpecObject
+final class Header implements SpecObject, MappedObject
 {
 
 	use SpecObjectChecksSerializableValue;

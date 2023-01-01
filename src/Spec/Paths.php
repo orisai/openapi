@@ -20,7 +20,7 @@ use function str_starts_with;
  * @CreateWithoutConstructor()
  * @Before("beforeClass")
  */
-final class Paths extends MappedObject implements SpecObject
+final class Paths implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

@@ -15,7 +15,7 @@ use ReflectionProperty;
 /**
  * @CreateWithoutConstructor()
  */
-final class Link extends MappedObject implements SpecObject
+final class Link implements SpecObject, MappedObject
 {
 
 	use SpecObjectChecksSerializableValue;

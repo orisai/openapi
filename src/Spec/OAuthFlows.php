@@ -9,7 +9,7 @@ use Orisai\ObjectMapper\MappedObject;
 /**
  * @CreateWithoutConstructor()
  */
-final class OAuthFlows extends MappedObject implements SpecObject
+final class OAuthFlows implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

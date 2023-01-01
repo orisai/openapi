@@ -10,7 +10,7 @@ use Orisai\ObjectMapper\MappedObject;
 /**
  * @CreateWithoutConstructor()
  */
-final class Discriminator extends MappedObject implements SpecObject
+final class Discriminator implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;
