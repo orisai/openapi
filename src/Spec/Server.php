@@ -12,7 +12,7 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 /**
  * @CreateWithoutConstructor()
  */
-final class Server extends MappedObject implements SpecObject
+final class Server implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

@@ -17,7 +17,7 @@ use function spl_object_id;
 /**
  * @CreateWithoutConstructor()
  */
-final class PathItem extends MappedObject implements SpecObject
+final class PathItem implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

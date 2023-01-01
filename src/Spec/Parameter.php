@@ -32,7 +32,7 @@ use function preg_match;
 /**
  * @CreateWithoutConstructor()
  */
-final class Parameter extends MappedObject implements SpecObject
+final class Parameter implements SpecObject, MappedObject
 {
 
 	use SpecObjectChecksSerializableValue;

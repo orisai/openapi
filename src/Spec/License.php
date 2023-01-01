@@ -9,7 +9,7 @@ use Orisai\ObjectMapper\MappedObject;
 /**
  * @CreateWithoutConstructor()
  */
-final class License extends MappedObject implements SpecObject
+final class License implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

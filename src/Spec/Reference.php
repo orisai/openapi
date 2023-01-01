@@ -10,7 +10,7 @@ use Orisai\ObjectMapper\MappedObject;
 /**
  * @CreateWithoutConstructor()
  */
-final class Reference extends MappedObject implements SpecObject
+final class Reference implements SpecObject, MappedObject
 {
 
 	/**

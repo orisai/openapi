@@ -17,7 +17,7 @@ use function preg_match;
 /**
  * @CreateWithoutConstructor()
  */
-final class Response extends MappedObject implements SpecObject
+final class Response implements SpecObject, MappedObject
 {
 
 	use SpecObjectHasContent;

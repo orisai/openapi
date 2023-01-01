@@ -33,7 +33,7 @@ final class SchemasValidationTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider provideAdapter
+	 * @dataProvider provide
 	 */
 	public function test(string $fileName): void
 	{
@@ -64,18 +64,18 @@ final class SchemasValidationTest extends TestCase
 		//		- souhrn, v jakém bodě nastal problém nebo jaký problém zmizel
 	}
 
-	public function provideAdapter(): Generator
+	public function provide(): Generator
 	{
 		$basePath = __DIR__ . '/../../../vendor/';
 
-		foreach ($this->provide() as $item) {
+		foreach ($this->provideSource() as $item) {
 			$path = str_replace($basePath, '', $item[0]);
 
 			yield $path => $item;
 		}
 	}
 
-	private function provide(): Generator
+	private function provideSource(): Generator
 	{
 		// TODO - snapshot testing - compare tests with diffs
 		//		- when updating schema repositories

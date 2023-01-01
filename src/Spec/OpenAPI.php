@@ -19,7 +19,7 @@ use function spl_object_id;
 /**
  * @CreateWithoutConstructor()
  */
-final class OpenAPI extends MappedObject implements SpecObject
+final class OpenAPI implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

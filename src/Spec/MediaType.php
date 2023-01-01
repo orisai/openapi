@@ -17,7 +17,7 @@ use ReflectionProperty;
 /**
  * @CreateWithoutConstructor()
  */
-final class MediaType extends MappedObject implements SpecObject
+final class MediaType implements SpecObject, MappedObject
 {
 
 	use SpecObjectChecksSerializableValue;

@@ -16,7 +16,7 @@ use function preg_match;
 /**
  * @CreateWithoutConstructor()
  */
-final class Components extends MappedObject implements SpecObject
+final class Components implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

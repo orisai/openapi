@@ -26,7 +26,7 @@ use const SORT_STRING;
  * @CreateWithoutConstructor()
  * @Before("beforeClass")
  */
-final class Responses extends MappedObject implements SpecObject
+final class Responses implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;

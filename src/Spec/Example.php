@@ -13,7 +13,7 @@ use ReflectionProperty;
 /**
  * @CreateWithoutConstructor()
  */
-final class Example extends MappedObject implements SpecObject
+final class Example implements SpecObject, MappedObject
 {
 
 	use SpecObjectChecksSerializableValue;

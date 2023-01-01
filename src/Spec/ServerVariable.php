@@ -14,7 +14,7 @@ use function in_array;
 /**
  * @CreateWithoutConstructor()
  */
-final class ServerVariable extends MappedObject implements SpecObject
+final class ServerVariable implements SpecObject, MappedObject
 {
 
 	use SpecObjectSupportsExtensions;
