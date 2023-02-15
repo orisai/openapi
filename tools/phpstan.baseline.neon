@@ -1,0 +1,71 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$name of method Orisai\\\\OpenAPI\\\\Spec\\\\Encoding\\:\\:addContentType\\(\\) expects non\\-empty\\-string, string given\\.$#"
+			count: 1
+			path: ../tests/Unit/Spec/EncodingTest.php
+
+		-
+			message: "#^Cannot call method toArray\\(\\) on Orisai\\\\OpenAPI\\\\Spec\\\\Schema\\|null\\.$#"
+			count: 1
+			path: ../tests/Unit/Spec/HeaderTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$name of method Orisai\\\\OpenAPI\\\\Spec\\\\Header\\:\\:addContent\\(\\) expects non\\-empty\\-string, string given\\.$#"
+			count: 1
+			path: ../tests/Unit/Spec/HeaderTest.php
+
+		-
+			message: "#^Cannot call method toArray\\(\\) on Orisai\\\\OpenAPI\\\\Spec\\\\Schema\\|null\\.$#"
+			count: 1
+			path: ../tests/Unit/Spec/ParameterTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$name of method Orisai\\\\OpenAPI\\\\Spec\\\\Parameter\\:\\:addContent\\(\\) expects non\\-empty\\-string, string given\\.$#"
+			count: 1
+			path: ../tests/Unit/Spec/ParameterTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$name of method Orisai\\\\OpenAPI\\\\Spec\\\\RequestBody\\:\\:addContent\\(\\) expects non\\-empty\\-string, string given\\.$#"
+			count: 1
+			path: ../tests/Unit/Spec/RequestBodyTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$name of method Orisai\\\\OpenAPI\\\\Spec\\\\Response\\:\\:addContent\\(\\) expects non\\-empty\\-string, string given\\.$#"
+			count: 1
+			path: ../tests/Unit/Spec/ResponseTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$code of method Orisai\\\\OpenAPI\\\\Spec\\\\Responses\\:\\:addResponse\\(\\) expects '1XX'\\|'2XX'\\|'3XX'\\|'4XX'\\|'default'\\|int\\<100, 599\\>, '200' given\\.$#"
+			count: 1
+			path: ../tests/Unit/Spec/ResponsesTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$code of method Orisai\\\\OpenAPI\\\\Spec\\\\Responses\\:\\:addResponse\\(\\) expects '1XX'\\|'2XX'\\|'3XX'\\|'4XX'\\|'default'\\|int\\<100, 599\\>, '5XX' given\\.$#"
+			count: 1
+			path: ../tests/Unit/Spec/ResponsesTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$code of method Orisai\\\\OpenAPI\\\\Spec\\\\Responses\\:\\:addResponse\\(\\) expects '1XX'\\|'2XX'\\|'3XX'\\|'4XX'\\|'default'\\|int\\<100, 599\\>, int\\|string given\\.$#"
+			count: 1
+			path: ../tests/Unit/Spec/ResponsesTest.php
+
+		-
+			message: "#^Offset 0 might not exist on list\\<string\\|null\\>\\|null\\.$#"
+			count: 1
+			path: ../tests/Unit/Utils/HeadersTest.php
+
+		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{application/json\\: null, application/xml\\: null, application/x\\-neon\\: null, application/x\\-yaml\\: null, text/csv\\: null, text/\\*\\: null, \\*/\\*\\: null\\} and array\\{text/\\*\\: null, \\*/\\*\\: null, text/csv\\: null, application/x\\-neon\\: null, application/xml\\: null, application/x\\-yaml\\: null, application/json\\: null\\} will always evaluate to false\\.$#"
+			count: 1
+			path: ../tests/Unit/Utils/MediaTypesTest.php
+
+		-
+			message: "#^Offset 1 might not exist on list\\<string\\|null\\>\\|null\\.$#"
+			count: 1
+			path: ../tests/Unit/Utils/MediaTypesTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$mediaType of static method Orisai\\\\OpenAPI\\\\Utils\\\\MediaTypes\\:\\:format\\(\\) expects non\\-empty\\-string, string given\\.$#"
+			count: 1
+			path: ../tests/Unit/Utils/MediaTypesTest.php
