@@ -51,7 +51,7 @@ final class ValidationNode
 	 * @param list<int|string> $path
 	 * @return list<string>
 	 */
-	private function getNodeErrors(ValidationNode $node, array $path): array
+	private function getNodeErrors(self $node, array $path): array
 	{
 		$errorsByNode = [];
 		$errorsByNode[] = $this->getPrefixedMessages($node->errors, $path);
@@ -75,7 +75,7 @@ final class ValidationNode
 	 * @param list<int|string> $path
 	 * @return list<string>
 	 */
-	private function getNodeWarnings(ValidationNode $node, array $path): array
+	private function getNodeWarnings(self $node, array $path): array
 	{
 		$warningsByNode = [];
 		$warningsByNode[] = $this->getPrefixedMessages($node->warnings, $path);
