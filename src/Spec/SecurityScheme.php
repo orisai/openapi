@@ -3,13 +3,11 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\OpenAPI\Enum\SecuritySchemeType;
 
 /**
  * @internal
- * @CreateWithoutConstructor()
  */
 abstract class SecurityScheme implements SpecObject, MappedObject
 {

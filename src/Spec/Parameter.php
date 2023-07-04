@@ -8,7 +8,7 @@ use Orisai\Exceptions\Message;
 use Orisai\ObjectMapper\Callbacks\After;
 use Orisai\ObjectMapper\Exception\ValueDoesNotMatch;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Processing\Value;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\ArrayOf;
 use Orisai\ObjectMapper\Rules\BoolValue;
@@ -16,7 +16,6 @@ use Orisai\ObjectMapper\Rules\MappedObjectValue;
 use Orisai\ObjectMapper\Rules\MixedValue;
 use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\ObjectMapper\Types\EnumType;
-use Orisai\ObjectMapper\Processing\Value;
 use Orisai\OpenAPI\Enum\ParameterIn;
 use Orisai\OpenAPI\Enum\ParameterStyle;
 use Orisai\OpenAPI\Utils\Headers;
@@ -29,9 +28,6 @@ use function in_array;
 use function is_string;
 use function preg_match;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class Parameter implements SpecObject, MappedObject
 {
 

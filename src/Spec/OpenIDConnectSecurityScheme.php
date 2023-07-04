@@ -4,16 +4,12 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\ObjectMapper\Callbacks\After;
 use Orisai\ObjectMapper\Exception\ValueDoesNotMatch;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Processing\Value;
 use Orisai\ObjectMapper\Rules\MixedValue;
 use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\ObjectMapper\Types\EnumType;
-use Orisai\ObjectMapper\Processing\Value;
 use Orisai\OpenAPI\Enum\SecuritySchemeType;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class OpenIDConnectSecurityScheme extends SecurityScheme
 {
 

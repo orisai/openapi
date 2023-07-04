@@ -5,7 +5,6 @@ namespace Orisai\OpenAPI\Spec;
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\ArrayOf;
 use Orisai\ObjectMapper\Rules\MappedObjectValue;
@@ -13,9 +12,6 @@ use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function preg_match;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class Components implements SpecObject, MappedObject
 {
 

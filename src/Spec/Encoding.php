@@ -7,7 +7,7 @@ use Orisai\Exceptions\Message;
 use Orisai\ObjectMapper\Callbacks\After;
 use Orisai\ObjectMapper\Exception\ValueDoesNotMatch;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Processing\Value;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\ArrayOf;
 use Orisai\ObjectMapper\Rules\BoolValue;
@@ -16,7 +16,6 @@ use Orisai\ObjectMapper\Rules\MappedObjectValue;
 use Orisai\ObjectMapper\Rules\MixedValue;
 use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\ObjectMapper\Types\EnumType;
-use Orisai\ObjectMapper\Processing\Value;
 use Orisai\OpenAPI\Enum\EncodingStyle;
 use Orisai\OpenAPI\Utils\Headers;
 use Orisai\OpenAPI\Utils\MediaTypes;
@@ -25,9 +24,6 @@ use function array_keys;
 use function implode;
 use function is_string;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class Encoding implements SpecObject, MappedObject
 {
 

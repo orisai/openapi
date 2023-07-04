@@ -2,14 +2,10 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\ArrayEnumValue;
 use Orisai\ObjectMapper\Rules\IntValue;
 use Orisai\ObjectMapper\Rules\StringValue;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class StringSchema extends Schema
 {
 

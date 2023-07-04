@@ -3,12 +3,8 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\MappedObjectValue;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class OAuthFlows implements SpecObject, MappedObject
 {
 

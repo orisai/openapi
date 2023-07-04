@@ -3,13 +3,9 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\MappedObjectValue;
 use Orisai\ObjectMapper\Rules\StringValue;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class Tag implements SpecObject, MappedObject
 {
 

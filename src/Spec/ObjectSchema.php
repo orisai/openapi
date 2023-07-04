@@ -2,7 +2,6 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Modifiers\FieldName;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\ArrayEnumValue;
@@ -14,9 +13,6 @@ use Orisai\ObjectMapper\Rules\MappedObjectValue;
 use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\OpenAPI\Utils\SpecUtils;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class ObjectSchema extends Schema
 {
 

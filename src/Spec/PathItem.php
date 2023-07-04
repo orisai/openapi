@@ -4,7 +4,6 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\ObjectMapper\Callbacks\After;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Modifiers\FieldName;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\ListOf;
@@ -14,9 +13,6 @@ use Orisai\OpenAPI\Utils\SpecUtils;
 use function array_values;
 use function spl_object_id;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class PathItem implements SpecObject, MappedObject
 {
 

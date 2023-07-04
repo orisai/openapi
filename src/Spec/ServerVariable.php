@@ -5,15 +5,11 @@ namespace Orisai\OpenAPI\Spec;
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\ListOf;
 use Orisai\ObjectMapper\Rules\StringValue;
 use function implode;
 use function in_array;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class ServerVariable implements SpecObject, MappedObject
 {
 

@@ -2,16 +2,12 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\ArrayEnumValue;
 use Orisai\ObjectMapper\Rules\BoolValue;
 use Orisai\ObjectMapper\Rules\IntValue;
 use Orisai\ObjectMapper\Rules\MappedObjectValue;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class ArraySchema extends Schema
 {
 

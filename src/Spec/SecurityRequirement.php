@@ -4,7 +4,6 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\ObjectMapper\Callbacks\Before;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\ArrayOf;
 use Orisai\ObjectMapper\Rules\ListOf;
 use Orisai\ObjectMapper\Rules\StringValue;
@@ -12,7 +11,6 @@ use stdClass;
 use function is_array;
 
 /**
- * @CreateWithoutConstructor()
  * @Before("beforeClass")
  */
 final class SecurityRequirement implements SpecObject, MappedObject

@@ -2,15 +2,11 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\ListOf;
 use Orisai\ObjectMapper\Rules\MappedObjectValue;
 use Orisai\OpenAPI\Utils\SpecUtils;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class AnyOfSchema extends Schema
 {
 

@@ -2,13 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\MappedObjectValue;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class NotSchema extends Schema
 {
 

@@ -3,14 +3,10 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\BoolValue;
 use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\OpenAPI\Utils\SpecUtils;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class RequestBody implements SpecObject, MappedObject
 {
 

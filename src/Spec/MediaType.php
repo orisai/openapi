@@ -5,7 +5,6 @@ namespace Orisai\OpenAPI\Spec;
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\ArrayOf;
 use Orisai\ObjectMapper\Rules\MappedObjectValue;
@@ -14,9 +13,6 @@ use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use ReflectionProperty;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class MediaType implements SpecObject, MappedObject
 {
 

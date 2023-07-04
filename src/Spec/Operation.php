@@ -4,7 +4,6 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\ObjectMapper\Callbacks\After;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\ArrayOf;
 use Orisai\ObjectMapper\Rules\BoolValue;
@@ -17,9 +16,6 @@ use function array_values;
 use function in_array;
 use function spl_object_id;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class Operation implements SpecObject, MappedObject
 {
 

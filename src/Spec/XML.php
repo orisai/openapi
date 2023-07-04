@@ -7,13 +7,9 @@ use DOMException;
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\BoolValue;
 use Orisai\ObjectMapper\Rules\StringValue;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class XML implements SpecObject, MappedObject
 {
 

@@ -2,12 +2,8 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\ArrayEnumValue;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class BoolSchema extends Schema
 {
 

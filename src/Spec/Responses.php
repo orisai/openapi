@@ -6,7 +6,6 @@ use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
 use Orisai\ObjectMapper\Callbacks\Before;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\ArrayEnumValue;
 use Orisai\ObjectMapper\Rules\ArrayOf;
@@ -23,7 +22,6 @@ use function str_starts_with;
 use const SORT_STRING;
 
 /**
- * @CreateWithoutConstructor()
  * @Before("beforeClass")
  */
 final class Responses implements SpecObject, MappedObject

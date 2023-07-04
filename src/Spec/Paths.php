@@ -7,7 +7,6 @@ use Orisai\Exceptions\Message;
 use Orisai\ObjectMapper\Callbacks\After;
 use Orisai\ObjectMapper\Callbacks\Before;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\ArrayOf;
 use Orisai\ObjectMapper\Rules\MappedObjectValue;
 use Orisai\ObjectMapper\Rules\StringValue;
@@ -17,7 +16,6 @@ use function is_string;
 use function str_starts_with;
 
 /**
- * @CreateWithoutConstructor()
  * @Before("beforeClass")
  */
 final class Paths implements SpecObject, MappedObject

@@ -2,13 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\ArrayEnumValue;
 use Orisai\ObjectMapper\Rules\FloatValue;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class FloatSchema extends Schema
 {
 

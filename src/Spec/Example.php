@@ -5,14 +5,10 @@ namespace Orisai\OpenAPI\Spec;
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\MixedValue;
 use Orisai\ObjectMapper\Rules\StringValue;
 use ReflectionProperty;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class Example implements SpecObject, MappedObject
 {
 

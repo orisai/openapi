@@ -4,18 +4,14 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\ObjectMapper\Callbacks\After;
 use Orisai\ObjectMapper\Exception\ValueDoesNotMatch;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Processing\Value;
 use Orisai\ObjectMapper\Rules\MixedValue;
 use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\ObjectMapper\Types\EnumType;
-use Orisai\ObjectMapper\Processing\Value;
 use Orisai\OpenAPI\Enum\SecuritySchemeIn;
 use Orisai\OpenAPI\Enum\SecuritySchemeType;
 use function is_string;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class ApiKeySecurityScheme extends SecurityScheme
 {
 

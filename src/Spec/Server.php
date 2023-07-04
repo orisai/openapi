@@ -3,15 +3,11 @@
 namespace Orisai\OpenAPI\Spec;
 
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\ArrayOf;
 use Orisai\ObjectMapper\Rules\MappedObjectValue;
 use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\OpenAPI\Utils\SpecUtils;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class Server implements SpecObject, MappedObject
 {
 

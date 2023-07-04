@@ -5,7 +5,6 @@ namespace Orisai\OpenAPI\Spec;
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
 use Orisai\ObjectMapper\MappedObject;
-use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\Rules\AnyOf;
 use Orisai\ObjectMapper\Rules\ArrayOf;
 use Orisai\ObjectMapper\Rules\MappedObjectValue;
@@ -15,9 +14,6 @@ use function is_array;
 use function is_string;
 use function str_starts_with;
 
-/**
- * @CreateWithoutConstructor()
- */
 final class Callback implements SpecObject, MappedObject
 {
 
