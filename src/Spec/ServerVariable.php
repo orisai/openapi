@@ -4,10 +4,10 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
-use Orisai\ObjectMapper\Attributes\Expect\ListOf;
-use Orisai\ObjectMapper\Attributes\Expect\StringValue;
-use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\MappedObject;
+use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Rules\ListOf;
+use Orisai\ObjectMapper\Rules\StringValue;
 use function implode;
 use function in_array;
 

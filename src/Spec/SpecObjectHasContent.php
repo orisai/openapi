@@ -4,9 +4,9 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
-use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
-use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
-use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Rules\ArrayOf;
+use Orisai\ObjectMapper\Rules\MappedObjectValue;
+use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\OpenAPI\Utils\MediaTypes;
 
 /**

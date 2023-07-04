@@ -2,12 +2,12 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Attributes\Callbacks\Before;
-use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
-use Orisai\ObjectMapper\Attributes\Expect\ListOf;
-use Orisai\ObjectMapper\Attributes\Expect\StringValue;
-use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Callbacks\Before;
 use Orisai\ObjectMapper\MappedObject;
+use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Rules\ArrayOf;
+use Orisai\ObjectMapper\Rules\ListOf;
+use Orisai\ObjectMapper\Rules\StringValue;
 use stdClass;
 use function is_array;
 

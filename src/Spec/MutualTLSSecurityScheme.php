@@ -2,12 +2,12 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Attributes\Callbacks\After;
-use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
-use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Callbacks\After;
 use Orisai\ObjectMapper\Exception\ValueDoesNotMatch;
+use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Rules\MixedValue;
 use Orisai\ObjectMapper\Types\EnumType;
-use Orisai\ObjectMapper\Types\Value;
+use Orisai\ObjectMapper\Processing\Value;
 use Orisai\OpenAPI\Enum\SecuritySchemeType;
 
 /**

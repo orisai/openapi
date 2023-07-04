@@ -4,10 +4,10 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\Exceptions\Message;
-use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
-use Orisai\ObjectMapper\Attributes\Expect\StringValue;
-use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\MappedObject;
+use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Rules\MixedValue;
+use Orisai\ObjectMapper\Rules\StringValue;
 use ReflectionProperty;
 
 /**

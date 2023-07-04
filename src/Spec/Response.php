@@ -4,12 +4,12 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
-use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
-use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
-use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
-use Orisai\ObjectMapper\Attributes\Expect\StringValue;
-use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\MappedObject;
+use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Rules\AnyOf;
+use Orisai\ObjectMapper\Rules\ArrayOf;
+use Orisai\ObjectMapper\Rules\MappedObjectValue;
+use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\OpenAPI\Utils\Headers;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function preg_match;

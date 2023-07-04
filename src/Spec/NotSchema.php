@@ -2,9 +2,9 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
-use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
-use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Rules\AnyOf;
+use Orisai\ObjectMapper\Rules\MappedObjectValue;
 
 /**
  * @CreateWithoutConstructor()

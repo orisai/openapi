@@ -2,10 +2,10 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
-use Orisai\ObjectMapper\Attributes\Expect\StringValue;
-use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
 use Orisai\ObjectMapper\MappedObject;
+use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Rules\MappedObjectValue;
+use Orisai\ObjectMapper\Rules\StringValue;
 
 /**
  * @CreateWithoutConstructor()

@@ -2,16 +2,16 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
-use Orisai\ObjectMapper\Attributes\Expect\ArrayEnumValue;
-use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
-use Orisai\ObjectMapper\Attributes\Expect\BoolValue;
-use Orisai\ObjectMapper\Attributes\Expect\IntValue;
-use Orisai\ObjectMapper\Attributes\Expect\ListOf;
-use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
-use Orisai\ObjectMapper\Attributes\Expect\StringValue;
-use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
-use Orisai\ObjectMapper\Attributes\Modifiers\FieldName;
+use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Modifiers\FieldName;
+use Orisai\ObjectMapper\Rules\AnyOf;
+use Orisai\ObjectMapper\Rules\ArrayEnumValue;
+use Orisai\ObjectMapper\Rules\ArrayOf;
+use Orisai\ObjectMapper\Rules\BoolValue;
+use Orisai\ObjectMapper\Rules\IntValue;
+use Orisai\ObjectMapper\Rules\ListOf;
+use Orisai\ObjectMapper\Rules\MappedObjectValue;
+use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\OpenAPI\Utils\SpecUtils;
 
 /**

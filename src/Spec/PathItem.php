@@ -2,14 +2,14 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Attributes\Callbacks\After;
-use Orisai\ObjectMapper\Attributes\Expect\AnyOf;
-use Orisai\ObjectMapper\Attributes\Expect\ListOf;
-use Orisai\ObjectMapper\Attributes\Expect\MappedObjectValue;
-use Orisai\ObjectMapper\Attributes\Expect\StringValue;
-use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
-use Orisai\ObjectMapper\Attributes\Modifiers\FieldName;
+use Orisai\ObjectMapper\Callbacks\After;
 use Orisai\ObjectMapper\MappedObject;
+use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Modifiers\FieldName;
+use Orisai\ObjectMapper\Rules\AnyOf;
+use Orisai\ObjectMapper\Rules\ListOf;
+use Orisai\ObjectMapper\Rules\MappedObjectValue;
+use Orisai\ObjectMapper\Rules\StringValue;
 use Orisai\OpenAPI\Utils\SpecUtils;
 use function array_values;
 use function spl_object_id;

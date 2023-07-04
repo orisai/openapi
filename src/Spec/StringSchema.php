@@ -2,10 +2,10 @@
 
 namespace Orisai\OpenAPI\Spec;
 
-use Orisai\ObjectMapper\Attributes\Expect\ArrayEnumValue;
-use Orisai\ObjectMapper\Attributes\Expect\IntValue;
-use Orisai\ObjectMapper\Attributes\Expect\StringValue;
-use Orisai\ObjectMapper\Attributes\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Modifiers\CreateWithoutConstructor;
+use Orisai\ObjectMapper\Rules\ArrayEnumValue;
+use Orisai\ObjectMapper\Rules\IntValue;
+use Orisai\ObjectMapper\Rules\StringValue;
 
 /**
  * @CreateWithoutConstructor()

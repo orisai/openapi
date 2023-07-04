@@ -4,10 +4,10 @@ namespace Orisai\OpenAPI\Spec;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
-use Orisai\ObjectMapper\Attributes\Callbacks\Before;
-use Orisai\ObjectMapper\Attributes\Expect\ArrayOf;
-use Orisai\ObjectMapper\Attributes\Expect\MixedValue;
-use Orisai\ObjectMapper\Attributes\Expect\StringValue;
+use Orisai\ObjectMapper\Callbacks\Before;
+use Orisai\ObjectMapper\Rules\ArrayOf;
+use Orisai\ObjectMapper\Rules\MixedValue;
+use Orisai\ObjectMapper\Rules\StringValue;
 use stdClass;
 use function get_debug_type;
 use function is_array;
