@@ -21,15 +21,14 @@ use const JSON_THROW_ON_ERROR;
 final class SchemasValidationTest extends TestCase
 {
 
-	private static Processor $processor;
+	private Processor $processor;
 
-	public static function setUpBeforeClass(): void
+	protected function setUp(): void
 	{
-		parent::setUpBeforeClass();
-
 		$tester = new ObjectMapperTester();
 		$deps = $tester->buildDependencies();
-		self::$processor = $deps->processor;
+
+		$this->processor = $deps->processor;
 	}
 
 	/**
@@ -49,7 +48,7 @@ final class SchemasValidationTest extends TestCase
 		// TODO - vypsat co se skipnulo, protože není podporovaná verze openapi
 		$openapi = null;
 		try {
-			$openapi = self::$processor->process($data, OpenAPI::class);
+			$openapi = $this->processor->process($data, OpenAPI::class);
 		} catch (InvalidData $data) {
 			$printer = new ErrorVisualPrinter(new TypeToStringConverter());
 			// TODO - vypsat chyby při validaci
