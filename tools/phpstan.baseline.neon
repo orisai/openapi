@@ -6,7 +6,7 @@ parameters:
 			path: ../tests/Unit/Spec/EncodingTest.php
 
 		-
-			message: "#^Cannot call method toArray\\(\\) on Orisai\\\\OpenAPI\\\\Spec\\\\Schema\\|null\\.$#"
+			message: "#^Cannot call method toRaw\\(\\) on Orisai\\\\OpenAPI\\\\Spec\\\\Schema\\|null\\.$#"
 			count: 1
 			path: ../tests/Unit/Spec/HeaderTest.php
 
@@ -16,7 +16,7 @@ parameters:
 			path: ../tests/Unit/Spec/HeaderTest.php
 
 		-
-			message: "#^Cannot call method toArray\\(\\) on Orisai\\\\OpenAPI\\\\Spec\\\\Schema\\|null\\.$#"
+			message: "#^Cannot call method toRaw\\(\\) on Orisai\\\\OpenAPI\\\\Spec\\\\Schema\\|null\\.$#"
 			count: 1
 			path: ../tests/Unit/Spec/ParameterTest.php
 
@@ -69,3 +69,23 @@ parameters:
 			message: "#^Parameter \\#1 \\$mediaType of static method Orisai\\\\OpenAPI\\\\Utils\\\\MediaTypes\\:\\:format\\(\\) expects non\\-empty\\-string, string given\\.$#"
 			count: 1
 			path: ../tests/Unit/Utils/MediaTypesTest.php
+
+		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertTrue\\(\\) with true will always evaluate to true\\.$#"
+			count: 1
+			path: ../tests/Unit/Validation/MappedObjectsTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$input of static method Symfony\\\\Component\\\\Yaml\\\\Yaml\\:\\:parse\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: ../tests/Unit/Validation/SchemasValidationTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 1
+			path: ../tests/Unit/Validation/SchemasValidationTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$str of function strtolower expects string, \\(string\\|false\\) given\\.$#"
+			count: 1
+			path: ../tests/Unit/Validation/SchemasValidationTest.php

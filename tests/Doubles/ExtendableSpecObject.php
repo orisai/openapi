@@ -10,6 +10,9 @@ final class ExtendableSpecObject implements SpecObject
 
 	use SpecObjectSupportsExtensions;
 
+	/**
+	 * @return array<mixed>
+	 */
 	public function toRaw(): array
 	{
 		$data = [];
