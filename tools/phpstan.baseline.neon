@@ -56,11 +56,6 @@ parameters:
 			path: ../tests/Unit/Utils/HeadersTest.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{application/json\\: null, application/xml\\: null, application/x\\-neon\\: null, application/x\\-yaml\\: null, text/csv\\: null, text/\\*\\: null, \\*/\\*\\: null\\} and array\\{text/\\*\\: null, \\*/\\*\\: null, text/csv\\: null, application/x\\-neon\\: null, application/xml\\: null, application/x\\-yaml\\: null, application/json\\: null\\} will always evaluate to false\\.$#"
-			count: 1
-			path: ../tests/Unit/Utils/MediaTypesTest.php
-
-		-
 			message: "#^Offset 1 might not exist on list\\<string\\|null\\>\\|null\\.$#"
 			count: 1
 			path: ../tests/Unit/Utils/MediaTypesTest.php

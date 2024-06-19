@@ -53,9 +53,8 @@ REGEX;
 	}
 
 	/**
-	 * @template T of array<string, mixed>
-	 * @param T $mediaTypes
-	 * @param-out T $mediaTypes
+	 * @param array<string, mixed> $mediaTypes
+	 * @param-out array<string, mixed> $mediaTypes
 	 */
 	public static function sortTypesInKeys(array &$mediaTypes): void
 	{
