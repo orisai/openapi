@@ -33,15 +33,25 @@ final class ParameterIn
 		'query' => ['form', 'spaceDelimited', 'pipeDelimited', 'deepObject'],
 	];
 
-	/** @readonly */
+	/**
+	 * @var value-of<self::ValuesAndNames>
+	 * @readonly
+	 */
 	public string $name;
 
-	/** @readonly */
+	/**
+	 * @var key-of<self::ValuesAndNames>
+	 * @readonly
+	 */
 	public string $value;
 
 	/** @var array<string, self> */
 	private static array $instances = [];
 
+	/**
+	 * @param value-of<self::ValuesAndNames> $name
+	 * @param key-of<self::ValuesAndNames> $value
+	 */
 	private function __construct(string $name, string $value)
 	{
 		$this->name = $name;

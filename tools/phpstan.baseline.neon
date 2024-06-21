@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\#2 \\$value of class Orisai\\\\OpenAPI\\\\Enum\\\\ParameterIn constructor expects 'cookie'\\|'header'\\|'path'\\|'query', string given\\.$#"
+			count: 1
+			path: ../src/Enum/ParameterIn.php
+
+		-
 			message: "#^Parameter \\#1 \\$name of method Orisai\\\\OpenAPI\\\\Spec\\\\Encoding\\:\\:addContentType\\(\\) expects non\\-empty\\-string, string given\\.$#"
 			count: 1
 			path: ../tests/Unit/Spec/EncodingTest.php
@@ -49,16 +54,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$code of method Orisai\\\\OpenAPI\\\\Spec\\\\Responses\\:\\:addResponse\\(\\) expects '1XX'\\|'2XX'\\|'3XX'\\|'4XX'\\|'default'\\|int\\<100, 599\\>, int\\|string given\\.$#"
 			count: 1
 			path: ../tests/Unit/Spec/ResponsesTest.php
-
-		-
-			message: "#^Offset 0 might not exist on list\\<string\\|null\\>\\|null\\.$#"
-			count: 1
-			path: ../tests/Unit/Utils/HeadersTest.php
-
-		-
-			message: "#^Offset 1 might not exist on list\\<string\\|null\\>\\|null\\.$#"
-			count: 1
-			path: ../tests/Unit/Utils/MediaTypesTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$mediaType of static method Orisai\\\\OpenAPI\\\\Utils\\\\MediaTypes\\:\\:format\\(\\) expects non\\-empty\\-string, string given\\.$#"
