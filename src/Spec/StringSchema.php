@@ -13,7 +13,7 @@ final class StringSchema extends Schema
 	/** @var int<0, max>|null */
 	public ?int $maxLength = null;
 
-	private ?string $pattern = null;
+	public ?string $pattern = null;
 
 	public function __construct()
 	{
